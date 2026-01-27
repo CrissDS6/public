@@ -1,0 +1,589 @@
+/* ========================================
+    VARIABLES Y CONFIGURACIÓN GENERAL
+   ======================================== */
+:root {
+    /* Colores principales del logo */
+    --primary-blue: #1E5A7D;
+    --secondary-blue: #4A9FD8;
+    --light-blue: #E8F4F8;
+    --accent-yellow: #FFD93D;
+    --accent-orange: #FFA726;
+
+    /* Colores complementarios */
+    --white: #FFFFFF;
+    --light-gray: #F5F8FA;
+    --medium-gray: #B0BEC5;
+    --dark-gray: #37474F;
+    --text-dark: #263238;
+
+    /* Fuente */
+    --font-primary: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ========================================
+    NAVBAR
+   ======================================== */
+.navbar {
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.logo-icon {
+    display: flex;
+    align-items: center;
+}
+
+.logo-icon img {
+    height: 70px;
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+.logo-icon img:hover {
+    transform: scale(1.05);
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+}
+
+.logo-title img {
+    height: 90px;
+    width: auto;
+    margin-left: 0.5rem;
+}
+
+.nav-link {
+    color: var(--text-dark) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.nav-link:hover {
+    color: var(--secondary-blue) !important;
+    background-color: var(--light-blue);
+}
+
+.btn-register {
+    background: var(--secondary-blue);
+    color: var(--white);
+    padding: 0.6rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-register:hover {
+    background: var(--primary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30, 90, 125, 0.3);
+    color: var(--white);
+}
+
+
+/* ========================================
+    HERO SECTION
+   ======================================== */
+.hero {
+    background: linear-gradient(135deg, var(--light-blue) 0%, #F0F8FF 50%, #FFFEF0 100%);
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 217, 61, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--dark-gray);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+.btn-hero {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    font-weight: 700;
+    border: none;
+    box-shadow: 0 6px 20px rgba(255, 217, 61, 0.3);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-hero:hover {
+    background: var(--accent-orange);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 167, 38, 0.4);
+}
+
+.hero-image-container {
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.hero-image {
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.weather-card {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--white);
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10;
+}
+
+.weather-card i {
+    font-size: 2rem;
+    color: var(--accent-yellow);
+}
+
+.weather-card small {
+    display: block;
+    color: var(--medium-gray);
+    font-size: 0.75rem;
+}
+
+.weather-card h5 {
+    color: var(--primary-blue);
+    font-weight: 600;
+    margin: 0;
+}
+
+.floating-element {
+    position: absolute;
+    font-size: 2.5rem;
+    animation: float-rotate 4s ease-in-out infinite;
+}
+
+.element-1 {
+    top: 50%;
+    right: -20px;
+    animation-delay: 0.5s;
+}
+
+.element-2 {
+    bottom: 10%;
+    left: -20px;
+    animation-delay: 1s;
+}
+
+@keyframes float-rotate {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-30px) rotate(10deg);
+    }
+}
+
+/* ========================================
+    SECCIONES GENERALES
+   ======================================== */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--dark-gray);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ========================================
+    ¿QUÉ ES METEOPET?
+   ======================================== */
+.section-what {
+    background: var(--white);
+}
+
+.feature-card-simple {
+    background: var(--light-gray);
+    padding: 2rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.feature-card-simple:hover {
+    background: var(--light-blue);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.icon-wrapper i {
+    font-size: 1.8rem;
+    color: var(--secondary-blue);
+}
+
+.feature-card-simple h5 {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+/* ========================================
+    LO QUE OFRECE LA PLATAFORMA
+   ======================================== */
+.section-features {
+    background: linear-gradient(135deg, #F5F9FF 0%, #EEF6FF 100%);
+}
+
+.platform-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.platform-card:hover {
+    border-color: var(--secondary-blue);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(74, 159, 216, 0.15);
+}
+
+.card-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--light-blue) 0%, var(--secondary-blue) 100%);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.card-icon i {
+    font-size: 2rem;
+    color: var(--white);
+}
+
+.platform-card h5 {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+/* Tarjeta destacada (LIVE WEATHER HUB) */
+.platform-card-highlight {
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.platform-card-highlight::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+}
+
+.weather-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.weather-badge i {
+    font-size: 1.2rem;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+/* ========================================
+    CONVERSACIONES RECIENTES (FORO)
+   ======================================== */
+.section-forum {
+    background: var(--white);
+}
+
+.forum-card {
+    background: #F0F6FF;
+    padding: 1.5rem;
+    border-radius: 15px;
+    border-left: 4px solid var(--secondary-blue);
+    display: flex;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.forum-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px rgba(74, 159, 216, 0.15);
+}
+
+.forum-card-highlight {
+    background: linear-gradient(135deg, #FFF9E6 0%, #FFF4CC 100%);
+    border-left-color: var(--accent-yellow);
+}
+
+.forum-avatar {
+    flex-shrink: 0;
+}
+
+.forum-avatar i {
+    font-size: 3rem;
+    color: var(--secondary-blue);
+}
+
+.forum-content h6 {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.forum-content p {
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--secondary-blue);
+    color: var(--secondary-blue);
+    padding: 0.7rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background: var(--secondary-blue);
+    color: var(--white);
+    transform: translateY(-3px);
+}
+
+/* ========================================
+    CTA SECTION
+   ======================================== */
+.section-cta {
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+    padding: 4rem 0;
+}
+
+.cta-box {
+    padding: 2rem;
+}
+
+.btn-cta {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    padding: 1rem 3rem;
+    border-radius: 30px;
+    font-weight: 700;
+    border: none;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+    background: var(--accent-orange);
+    color: var(--white);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+    FOOTER
+   ======================================== */
+.footer {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.text-light-gray {
+    color: var(--medium-gray);
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    color: var(--medium-gray);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent-yellow);
+    padding-left: 5px;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    transform: translateY(-3px);
+}
+
+/* ========================================
+    RESPONSIVE
+   ======================================== */
+@media (max-width: 992px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .hero {
+        padding: 3rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+    }
+
+    .weather-card {
+        position: static;
+        margin-bottom: 1rem;
+    }
+
+    .floating-element {
+        display: none;
+    }
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .logo-icon img {
+        height: 38px;
+    }
+
+    .logo-title img {
+        height: 26px;
+    }
+}
+
+/* ========================================
+    UTILIDADES
+   ======================================== */
+.text-primary {
+    color: var(--secondary-blue) !important;
+}
+
+.text-dark {
+    color: var(--text-dark) !important;
+}
+
+.bg-light-blue {
+    background-color: var(--light-blue) !important;
+}
