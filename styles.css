@@ -1,10 +1,6 @@
 /* ========================================
     VARIABLES Y CONFIGURACIÓN GENERAL
    ======================================== */
-body {
-    background: lime !important;
-}
-
 :root {
     /* Colores principales del logo */
     --primary-blue: #1E5A7D;
@@ -35,6 +31,29 @@ body {
     color: var(--text-dark);
     line-height: 1.6;
     overflow-x: hidden;
+    background: var(--white);
+}
+
+/* ========================================
+    CONTAINER Y GRID SYSTEM
+   ======================================== */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: var(--dark-gray);
+}
+
+.text-white {
+    color: var(--white);
 }
 
 /* ========================================
@@ -42,12 +61,25 @@ body {
    ======================================== */
 .navbar {
     padding: 1rem 0;
+    background: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
 }
 
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .navbar-brand {
-    font-weight: 700;
-    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 0.5rem;
 }
 
 .logo-icon {
@@ -71,26 +103,68 @@ body {
 }
 
 .logo-title img {
-    height: 100px;
+    height: 120px;
     width: auto;
     margin-left: 0.5rem;
-
 }
 
 .logo-title img:hover {
     transform: scale(1.05);
 }
 
+.navbar-toggler {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.navbar-toggler span {
+    width: 25px;
+    height: 3px;
+    background: var(--primary-blue);
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.navbar-toggler.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.navbar-toggler.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-toggler.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    list-style: none;
+}
+
 .nav-link {
-    color: var(--text-dark) !important;
+    color: var(--text-dark);
+    text-decoration: none;
     font-weight: 500;
-    padding: 0.5rem 1rem !important;
+    padding: 0.5rem 1rem;
     transition: all 0.3s ease;
     border-radius: 8px;
+    display: block;
 }
 
 .nav-link:hover {
-    color: var(--secondary-blue) !important;
+    color: var(--secondary-blue);
     background-color: var(--light-blue);
 }
 
@@ -102,6 +176,9 @@ body {
     font-weight: 600;
     transition: all 0.3s ease;
     border: none;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 1rem;
 }
 
 .btn-register:hover {
@@ -110,7 +187,6 @@ body {
     box-shadow: 0 5px 15px rgba(30, 90, 125, 0.3);
     color: var(--white);
 }
-
 
 /* ========================================
     HERO SECTION
@@ -133,11 +209,28 @@ body {
     border-radius: 50%;
 }
 
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
 .hero-title {
     font-size: 3rem;
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1.5rem;
+}
+
+.hero-title .text-primary {
+    color: var(--secondary-blue);
+    display: block;
+}
+
+.hero-title .text-dark {
+    color: var(--text-dark);
+    display: block;
 }
 
 .hero-subtitle {
@@ -158,6 +251,9 @@ body {
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .btn-hero:hover {
@@ -165,6 +261,10 @@ body {
     color: var(--white);
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(255, 167, 38, 0.4);
+}
+
+.btn-hero .arrow {
+    font-size: 1.2rem;
 }
 
 .hero-image-container {
@@ -185,8 +285,10 @@ body {
 }
 
 .hero-image {
+    width: 100%;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    display: block;
 }
 
 .weather-card {
@@ -203,9 +305,8 @@ body {
     z-index: 10;
 }
 
-.weather-card i {
+.weather-card .weather-icon {
     font-size: 2rem;
-    color: var(--accent-yellow);
 }
 
 .weather-card small {
@@ -218,6 +319,7 @@ body {
     color: var(--primary-blue);
     font-weight: 600;
     margin: 0;
+    font-size: 1rem;
 }
 
 .floating-element {
@@ -267,11 +369,23 @@ body {
     margin: 0 auto;
 }
 
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
 /* ========================================
     ¿QUÉ ES METEOPET?
    ======================================== */
 .section-what {
     background: var(--white);
+    padding: 5rem 0;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
 }
 
 .feature-card-simple {
@@ -279,6 +393,7 @@ body {
     padding: 2rem;
     border-radius: 15px;
     transition: all 0.3s ease;
+    text-align: center;
 }
 
 .feature-card-simple:hover {
@@ -295,18 +410,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
+    margin: 0 auto 1rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-.icon-wrapper i {
+.icon-wrapper .icon {
     font-size: 1.8rem;
-    color: var(--secondary-blue);
 }
 
 .feature-card-simple h5 {
     color: var(--primary-blue);
     font-weight: 600;
+    margin-bottom: 0.5rem;
 }
 
 /* ========================================
@@ -314,6 +429,13 @@ body {
    ======================================== */
 .section-features {
     background: linear-gradient(135deg, #F5F9FF 0%, #EEF6FF 100%);
+    padding: 5rem 0;
+}
+
+.platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
 }
 
 .platform-card {
@@ -339,17 +461,22 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
+    margin: 0 auto 1rem;
 }
 
-.card-icon i {
+.card-icon .icon {
     font-size: 2rem;
-    color: var(--white);
 }
 
 .platform-card h5 {
     color: var(--primary-blue);
     font-weight: 600;
+    margin: 1rem 0 0.5rem;
+}
+
+.platform-card p {
+    font-size: 0.875rem;
+    margin: 0;
 }
 
 /* Tarjeta destacada (LIVE WEATHER HUB) */
@@ -382,7 +509,7 @@ body {
     margin-bottom: 1rem;
 }
 
-.weather-badge i {
+.weather-badge .badge-icon {
     font-size: 1.2rem;
 }
 
@@ -397,6 +524,14 @@ body {
    ======================================== */
 .section-forum {
     background: var(--white);
+    padding: 5rem 0;
+}
+
+.forum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .forum-card {
@@ -423,28 +558,47 @@ body {
     flex-shrink: 0;
 }
 
-.forum-avatar i {
+.forum-avatar .avatar-icon {
     font-size: 3rem;
     color: var(--secondary-blue);
+}
+
+.forum-content {
+    flex: 1;
+}
+
+.forum-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 0.5rem;
 }
 
 .forum-content h6 {
     color: var(--primary-blue);
     font-weight: 600;
+    margin: 0;
 }
 
 .forum-content p {
     color: var(--dark-gray);
     line-height: 1.6;
+    margin: 0;
 }
 
 .btn-outline-primary {
     border: 2px solid var(--secondary-blue);
     color: var(--secondary-blue);
+    background: transparent;
     padding: 0.7rem 2rem;
     border-radius: 25px;
     font-weight: 600;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
 }
 
 .btn-outline-primary:hover {
@@ -463,6 +617,18 @@ body {
 
 .cta-box {
     padding: 2rem;
+    text-align: center;
+}
+
+.cta-box h2 {
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.cta-box p {
+    color: var(--white);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
 }
 
 .btn-cta {
@@ -474,6 +640,9 @@ body {
     border: none;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
 }
 
 .btn-cta:hover {
@@ -489,25 +658,36 @@ body {
 .footer {
     background: var(--primary-blue);
     color: var(--white);
+    padding: 3rem 0 1.5rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-col h5,
+.footer-col h6 {
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.footer-icon {
+    font-size: 1.5rem;
 }
 
 .text-light-gray {
     color: var(--medium-gray);
-}
-
-.footer-links li {
-    margin-bottom: 0.5rem;
-}
-
-.footer-links a {
-    color: var(--medium-gray);
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.footer-links a:hover {
-    color: var(--accent-yellow);
-    padding-left: 5px;
+    margin-bottom: 1rem;
 }
 
 .social-links {
@@ -535,6 +715,48 @@ body {
     transform: translateY(-3px);
 }
 
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    color: var(--medium-gray);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent-yellow);
+    padding-left: 5px;
+}
+
+.footer-icon-small {
+    margin-right: 0.5rem;
+}
+
+.footer-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 2rem 0;
+}
+
+.footer-bottom {
+    text-align: center;
+    color: var(--medium-gray);
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+.heart {
+    color: #ff6b6b;
+}
+
 /* ========================================
     RESPONSIVE
    ======================================== */
@@ -550,9 +772,60 @@ body {
     .hero {
         padding: 3rem 0;
     }
+
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .platform-grid,
+    .features-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
+    .navbar-toggler {
+        display: flex;
+    }
+
+    .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .navbar-collapse.active {
+        max-height: 500px;
+        padding: 1rem 0;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+    }
+
+    .nav-link {
+        padding: 1rem 1.5rem;
+        width: 100%;
+    }
+
+    .btn-register {
+        margin: 0.5rem 1.5rem;
+        text-align: center;
+    }
+
     .hero-title {
         font-size: 2rem;
     }
@@ -569,30 +842,46 @@ body {
     .floating-element {
         display: none;
     }
-}
 
-/* Responsive para móviles */
-@media (max-width: 768px) {
     .logo-icon img {
-        height: 38px;
+        height: 50px;
     }
 
     .logo-title img {
-        height: 26px;
+        height: 40px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-grid,
+    .platform-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .forum-grid {
+        grid-template-columns: 1fr;
     }
 }
 
 /* ========================================
-    UTILIDADES
+    UTILIDADES ADICIONALES
    ======================================== */
-.text-primary {
-    color: var(--secondary-blue) !important;
+.emoji {
+    display: inline-block;
 }
 
-.text-dark {
-    color: var(--text-dark) !important;
+.star {
+    color: var(--accent-yellow);
 }
 
-.bg-light-blue {
-    background-color: var(--light-blue) !important;
+.arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.btn-hero:hover .arrow,
+.btn-outline-primary:hover .arrow {
+    transform: translateX(5px);
 }
