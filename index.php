@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeteoPet - Cuida a tus mascotas según el clima</title>
+    <title>MeteoPet - Cuida a tus mascotas según el tiempo</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -60,10 +60,10 @@
                 <div class="hero-text">
                     <h1 class="hero-title">
                         <span class="text-primary">Cuida a tus mascotas</span>
-                        <span class="text-dark">según el clima</span>
+                        <span class="text-dark">según el tiempo</span>
                     </h1>
                     <p class="hero-subtitle">
-                        Consejos personalizados para tus amigos peludos basados en el tiempo que hace en tu ciudad.
+                        Recomendaciones diarias para tus peludos según el tiempo real de tu ciudad.
                         ¡La plataforma más alegre para dueños responsables!
                     </p>
                     <a href="#registro" class="btn-hero">
@@ -72,69 +72,10 @@
                 </div>
                 <div class="hero-image-wrapper">
                     <div class="hero-image-container">
-                        <div class="weather-card">
-                            <span class="weather-icon">☀</span>
-                            <div>
-                                <small>Salamanca HOY</small>
-                                <h5>Soleado, 22°C</h5>
-                            </div>
-                        </div>
-                        <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=600&h=400&fit=crop"
-                            alt="Perro feliz" class="hero-image">
-                        <div class="floating-element element-1">
-                            <span>🌧</span>
-                        </div>
-                        <div class="floating-element element-2">
-                            <span>☀</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- ¿QUÉ ES METEOPET? -->
-    <section class="section-what" id="que-es">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">
-                    ¿Qué es MeteoPet?
-                    <span class="emoji">😊</span>
-                    <span class="emoji heart">❤️</span>
-                </h2>
-                <p class="section-subtitle">
-                    Tu compañero esencial para el cuidado de mascotas informado por el clima.
-                </p>
-            </div>
+                        <img src="assets/img/ui/imagen-hero.png" alt="Perro y gato" class="hero-image">
 
-            <div class="features-grid">
-                <div class="feature-card-simple">
-                    <div class="icon-wrapper">
-                        <span class="icon">⛅</span>
                     </div>
-                    <h5>Clima</h5>
-                    <p class="text-muted">Seguimiento meteorológico optimizado para actividades al aire libre.</p>
-                </div>
-                <div class="feature-card-simple">
-                    <div class="icon-wrapper">
-                        <span class="icon">💗</span>
-                    </div>
-                    <h5>Salud</h5>
-                    <p class="text-muted">Monitoreo de salud diaria con cambios básicos de temperatura.</p>
-                </div>
-                <div class="feature-card-simple">
-                    <div class="icon-wrapper">
-                        <span class="icon">🔔</span>
-                    </div>
-                    <h5>Alertas</h5>
-                    <p class="text-muted">Alertas climáticas en tiempo real diseñadas para dueños de mascotas.</p>
-                </div>
-                <div class="feature-card-simple">
-                    <div class="icon-wrapper">
-                        <span class="icon">🛡</span>
-                    </div>
-                    <h5>Seguridad</h5>
-                    <p class="text-muted">Recomendaciones de seguridad en interiores para climas extremos.</p>
                 </div>
             </div>
         </div>
@@ -154,10 +95,10 @@
             <div class="platform-grid">
                 <div class="platform-card">
                     <div class="card-icon">
-                        <span class="icon">💡</span>
+                        <span class="icon"><img src="assets/img/ui/emojiPerro.png" alt=""></span>
                     </div>
                     <h5>Tips Diarios</h5>
-                    <p class="text-muted">Cuidado diario basado en humedad y temperatura local.</p>
+                    <p class="text-muted">Cuidado diario basado en el tiempo de tu ciudad.</p>
                 </div>
 
                 <div class="platform-card">
@@ -165,13 +106,13 @@
                         <span class="icon">💬</span>
                     </div>
                     <h5>Comunidad</h5>
-                    <p class="text-muted">Foro especializado para consejos entre dueños de mascotas.</p>
+                    <p class="text-muted">Foro para intercambiar consejos para tu peludo.</p>
                 </div>
 
                 <div class="platform-card platform-card-highlight">
                     <div class="weather-badge">
                         <span class="badge-icon">🌦</span>
-                        <span>LIVE WEATHER HUB</span>
+                        <span>TIEMPO ACTUAL</span>
                     </div>
                     <div class="stat-number">78%</div>
                     <p class="text-white">Humedad Promedio</p>
@@ -182,7 +123,7 @@
                         <span class="icon">📄</span>
                     </div>
                     <h5>Perfiles Pet</h5>
-                    <p class="text-muted">Registro digital minimalista para tus mascotas.</p>
+                    <p class="text-muted">Registra a todos tus peludos.</p>
                 </div>
             </div>
         </div>
@@ -193,7 +134,7 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Conversaciones recientes</h2>
-                <p class="section-subtitle">Únete a la conversación en nuestra comunidad</p>
+                <p class="section-subtitle">Participa en las conversaciones de nuestra comunidad</p>
             </div>
 
             <div class="forum-grid">
@@ -206,7 +147,7 @@
                             <h6>@LUNADOGS</h6>
                             <small class="text-muted">Hace 2h</small>
                         </div>
-                        <p>¿Alguien sabe si es seguro pasear con este nivel de humedad? Mi Golden se
+                        <p>¿Alguien sabe si es seguro pasear con esta temperatura? Mi Golden se
                             cansa rápido.</p>
                     </div>
                 </div>
@@ -239,7 +180,7 @@
         <div class="container">
             <div class="cta-box">
                 <h2>¡Únete a MeteoPet hoy!</h2>
-                <p>Miles de dueños ya cuidan mejor de sus mascotas gracias a nuestros consejos
+                <p>Miles de humanos ya cuidan mejor de sus peludos gracias a nuestros consejos
                     climáticos</p>
                 <a href="#registro" class="btn-cta">Crear Cuenta Gratis</a>
             </div>
@@ -256,7 +197,7 @@
                         <h5>MeteoPet</h5>
                     </div>
                     <p class="text-light-gray">
-                        Cuidando a tus mascotas inteligentemente con el clima.
+                        Cuidando de tus mascotas inteligentemente.
                     </p>
                     <div class="social-links">
                         <a href="#" aria-label="Facebook">f</a>
