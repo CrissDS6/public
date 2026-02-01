@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 
 </head>
 
@@ -40,7 +40,7 @@
                         <a class="nav-link" href="#foro">Foro</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#login">Iniciar sesión</a>
+                        <a class="nav-link" href="login.php">Iniciar sesión</a>
                     </li>
 
                     <li class="nav-item">
