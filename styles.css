@@ -5,6 +5,7 @@
     /* Colores principales del logo */
     --primary-blue: #1E5A7D;
     --secondary-blue: #4A9FD8;
+    --descriptions: #3485b4;
     --light-blue: #E8F4F8;
     --accent-yellow: #FFD93D;
     --accent-orange: #FFA726;
@@ -31,42 +32,32 @@ body {
     color: var(--text-dark);
     line-height: 1.6;
     overflow-x: hidden;
-    background: var(--white);
 }
 
-/* ========================================
-    CONTAINER Y GRID SYSTEM
-   ======================================== */
 .container {
-    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.text-muted {
-    color: var(--dark-gray);
-}
-
-.text-white {
-    color: var(--white);
+    padding: 0 2rem;
 }
 
 /* ========================================
     NAVBAR
    ======================================== */
 .navbar {
+    background: linear-gradient(135deg, rgba(232, 244, 248, 0.95) 0%, rgba(245, 248, 250, 0.95) 100%);
+    backdrop-filter: blur(10px);
     padding: 1rem 0;
-    background: var(--white);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: linear-gradient(135deg, rgba(232, 244, 248, 0.85) 0%, rgba(245, 248, 250, 0.85) 100%);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .navbar .container {
@@ -78,8 +69,8 @@ body {
 .navbar-brand {
     display: flex;
     align-items: center;
-    text-decoration: none;
     gap: 0.5rem;
+    text-decoration: none;
 }
 
 .logo-icon {
@@ -103,31 +94,27 @@ body {
 }
 
 .logo-title img {
-    height: 120px;
+    height: 100px;
     width: auto;
     margin-left: 0.5rem;
-}
-
-.logo-title img:hover {
-    transform: scale(1.05);
 }
 
 .navbar-toggler {
     display: none;
     flex-direction: column;
     gap: 4px;
-    background: transparent;
+    background: none;
     border: none;
     cursor: pointer;
-    padding: 10px;
+    padding: 0.5rem;
 }
 
 .navbar-toggler span {
     width: 25px;
     height: 3px;
     background: var(--primary-blue);
-    transition: all 0.3s ease;
     border-radius: 2px;
+    transition: all 0.3s ease;
 }
 
 .navbar-toggler.active span:nth-child(1) {
@@ -142,11 +129,16 @@ body {
     transform: rotate(-45deg) translate(7px, -6px);
 }
 
+.navbar-collapse {
+    display: block;
+}
+
 .navbar-nav {
     display: flex;
     list-style: none;
+    gap: 2rem;
     align-items: center;
-    gap: 0.5rem;
+    margin: 0;
 }
 
 .nav-item {
@@ -178,14 +170,12 @@ body {
     border: none;
     text-decoration: none;
     display: inline-block;
-    margin-left: 1rem;
 }
 
 .btn-register:hover {
     background: var(--primary-blue);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(30, 90, 125, 0.3);
-    color: var(--white);
 }
 
 /* ========================================
@@ -207,6 +197,7 @@ body {
     height: 600px;
     background: radial-gradient(circle, rgba(255, 217, 61, 0.15) 0%, transparent 70%);
     border-radius: 50%;
+    pointer-events: none;
 }
 
 .hero-content {
@@ -214,6 +205,12 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-text {
+    max-width: 100%;
 }
 
 .hero-title {
@@ -263,8 +260,12 @@ body {
     box-shadow: 0 10px 30px rgba(255, 167, 38, 0.4);
 }
 
-.btn-hero .arrow {
+.arrow {
     font-size: 1.2rem;
+}
+
+.hero-image-wrapper {
+    width: 100%;
 }
 
 .hero-image-container {
@@ -286,80 +287,29 @@ body {
 
 .hero-image {
     width: 100%;
+    height: auto;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     display: block;
 }
 
-.weather-card {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: var(--white);
-    padding: 1rem 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    z-index: 10;
-}
-
-.weather-card .weather-icon {
-    font-size: 2rem;
-}
-
-.weather-card small {
-    display: block;
-    color: var(--medium-gray);
-    font-size: 0.75rem;
-}
-
-.weather-card h5 {
-    color: var(--primary-blue);
-    font-weight: 600;
-    margin: 0;
-    font-size: 1rem;
-}
-
-.floating-element {
-    position: absolute;
-    font-size: 2.5rem;
-    animation: float-rotate 4s ease-in-out infinite;
-}
-
-.element-1 {
-    top: 50%;
-    right: -20px;
-    animation-delay: 0.5s;
-}
-
-.element-2 {
-    bottom: 10%;
-    left: -20px;
-    animation-delay: 1s;
-}
-
-@keyframes float-rotate {
-
-    0%,
-    100% {
-        transform: translateY(0) rotate(0deg);
-    }
-
-    50% {
-        transform: translateY(-30px) rotate(10deg);
-    }
-}
-
 /* ========================================
     SECCIONES GENERALES
    ======================================== */
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
 .section-title {
     font-size: 2.5rem;
     font-weight: 700;
     color: var(--primary-blue);
     margin-bottom: 1rem;
+}
+
+.star {
+    color: var(--accent-yellow);
 }
 
 .section-subtitle {
@@ -369,64 +319,8 @@ body {
     margin: 0 auto;
 }
 
-.section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
 /* ========================================
-    ¿QUÉ ES METEOPET?
-   ======================================== */
-.section-what {
-    background: var(--white);
-    padding: 5rem 0;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-
-.feature-card-simple {
-    background: var(--light-gray);
-    padding: 2rem;
-    border-radius: 15px;
-    transition: all 0.3s ease;
-    text-align: center;
-}
-
-.feature-card-simple:hover {
-    background: var(--light-blue);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-}
-
-.icon-wrapper {
-    width: 60px;
-    height: 60px;
-    background: var(--white);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-
-.icon-wrapper .icon {
-    font-size: 1.8rem;
-}
-
-.feature-card-simple h5 {
-    color: var(--primary-blue);
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-/* ========================================
-/* ========================================
-   LO QUE OFRECE LA PLATAFORMA
+    EN METEOPET ENCONTRARÁS...
    ======================================== */
 .section-features {
     background: linear-gradient(135deg, #F5F9FF 0%, #EEF6FF 100%);
@@ -436,7 +330,7 @@ body {
 .platform-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .platform-card {
@@ -455,47 +349,41 @@ body {
 }
 
 .card-icon {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon img {
     width: 70px;
-    height: 70px;
-    background: linear-gradient(135deg, var(--light-blue) 0%, var(--secondary-blue) 100%);
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-}
-
-.card-icon .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-}
-
-.card-icon .icon img {
-    width: 45px;
-    height: 45px;
+    height: auto;
     object-fit: contain;
-}
-
-.card-icon i {
-    font-size: 2rem;
-    color: var(--white);
 }
 
 .platform-card h5 {
     color: var(--primary-blue);
     font-weight: 600;
-    margin: 1rem 0 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
 }
 
 .platform-card p {
-    font-size: 0.875rem;
     margin: 0;
 }
 
-/* Tarjeta destacada (LIVE WEATHER HUB) */
+.text-muted {
+    color: var(--descriptions);
+    font-size: 0.95rem;
+}
+
+/* Tarjeta destacada (TIEMPO ACTUAL) */
 .platform-card-highlight {
     background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
     color: var(--white);
@@ -511,6 +399,11 @@ body {
     width: 200%;
     height: 200%;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.platform-card-highlight:hover {
+    border-color: transparent;
 }
 
 .weather-badge {
@@ -523,9 +416,11 @@ body {
     font-size: 0.75rem;
     font-weight: 600;
     margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
 }
 
-.weather-badge .badge-icon {
+.badge-icon {
     font-size: 1.2rem;
 }
 
@@ -533,6 +428,17 @@ body {
     font-size: 3rem;
     font-weight: 700;
     margin: 1rem 0;
+    position: relative;
+    z-index: 1;
+}
+
+.text-white {
+    color: var(--white);
+}
+
+.platform-card-highlight .text-white {
+    position: relative;
+    z-index: 1;
 }
 
 /* ========================================
@@ -545,7 +451,6 @@ body {
 
 .forum-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -574,9 +479,8 @@ body {
     flex-shrink: 0;
 }
 
-.forum-avatar .avatar-icon {
+.avatar-icon {
     font-size: 3rem;
-    color: var(--secondary-blue);
 }
 
 .forum-content {
@@ -586,7 +490,7 @@ body {
 .forum-header {
     display: flex;
     justify-content: space-between;
-    align-items: start;
+    align-items: center;
     margin-bottom: 0.5rem;
 }
 
@@ -594,6 +498,11 @@ body {
     color: var(--primary-blue);
     font-weight: 600;
     margin: 0;
+    font-size: 1rem;
+}
+
+.forum-header .text-muted {
+    font-size: 0.85rem;
 }
 
 .forum-content p {
@@ -602,18 +511,22 @@ body {
     margin: 0;
 }
 
+.text-center {
+    text-align: center;
+}
+
 .btn-outline-primary {
     border: 2px solid var(--secondary-blue);
-    color: var(--secondary-blue);
     background: transparent;
+    color: var(--secondary-blue);
     padding: 0.7rem 2rem;
     border-radius: 25px;
     font-weight: 600;
     transition: all 0.3s ease;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    text-decoration: none;
     cursor: pointer;
 }
 
@@ -632,19 +545,20 @@ body {
 }
 
 .cta-box {
-    padding: 2rem;
     text-align: center;
+    color: var(--white);
 }
 
 .cta-box h2 {
-    color: var(--white);
+    font-size: 2.5rem;
     margin-bottom: 1rem;
+    color: var(--white);
 }
 
 .cta-box p {
-    color: var(--white);
+    font-size: 1.2rem;
     margin-bottom: 2rem;
-    font-size: 1.1rem;
+    color: var(--white);
 }
 
 .btn-cta {
@@ -656,8 +570,8 @@ body {
     border: none;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
-    text-decoration: none;
     display: inline-block;
+    text-decoration: none;
     cursor: pointer;
 }
 
@@ -669,46 +583,45 @@ body {
 }
 
 /* ========================================
-    FOOTER
+   FOOTER
    ======================================== */
 .footer {
     background: var(--primary-blue);
     color: var(--white);
-    padding: 3rem 0 1.5rem;
+    padding: 3rem 0 1rem;
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
     margin-bottom: 2rem;
 }
 
-.footer-col h5,
-.footer-col h6 {
-    color: var(--white);
-    margin-bottom: 1rem;
+.footer-col {
+    display: flex;
+    flex-direction: column;
 }
 
 .footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
-.footer-icon {
-    font-size: 1.5rem;
+.footer-title {
+    height: 35px;
+    width: auto;
+    background: transparent;
 }
 
 .text-light-gray {
     color: var(--medium-gray);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .social-links {
     display: flex;
     gap: 1rem;
+    justify-content: center;
 }
 
 .social-links a {
@@ -731,12 +644,25 @@ body {
     transform: translateY(-3px);
 }
 
+.footer-col h6 {
+    color: var(--accent-yellow);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
 .footer-links {
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .footer-links li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+    color: var(--medium-gray);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .footer-links a {
@@ -747,16 +673,15 @@ body {
 
 .footer-links a:hover {
     color: var(--accent-yellow);
-    padding-left: 5px;
 }
 
 .footer-icon-small {
-    margin-right: 0.5rem;
+    font-size: 1rem;
 }
 
 .footer-divider {
     border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin: 2rem 0;
 }
 
@@ -767,6 +692,7 @@ body {
 
 .footer-bottom p {
     margin: 0;
+    font-size: 0.95rem;
 }
 
 .heart {
@@ -774,7 +700,7 @@ body {
 }
 
 /* ========================================
-    RESPONSIVE
+   RESPONSIVE
    ======================================== */
 @media (max-width: 992px) {
     .hero-title {
@@ -791,16 +717,11 @@ body {
 
     .hero-content {
         grid-template-columns: 1fr;
-        gap: 2rem;
     }
 
     .footer-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .platform-grid,
-    .features-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
 }
 
@@ -815,31 +736,34 @@ body {
         left: 0;
         right: 0;
         background: var(--white);
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
     }
 
     .navbar-collapse.active {
-        max-height: 500px;
-        padding: 1rem 0;
+        max-height: 400px;
     }
 
     .navbar-nav {
         flex-direction: column;
-        width: 100%;
         gap: 0;
+        padding: 1rem 0;
+    }
+
+    .nav-item {
+        width: 100%;
+        text-align: center;
     }
 
     .nav-link {
-        padding: 1rem 1.5rem;
-        width: 100%;
+        display: block;
+        padding: 1rem;
     }
 
     .btn-register {
-        margin: 0.5rem 1.5rem;
-        text-align: center;
+        margin: 1rem;
     }
 
     .hero-title {
@@ -850,54 +774,19 @@ body {
         font-size: 1.75rem;
     }
 
-    .weather-card {
-        position: static;
-        margin-bottom: 1rem;
-    }
-
-    .floating-element {
-        display: none;
-    }
-
     .logo-icon img {
-        height: 50px;
+        height: 60px;
     }
 
     .logo-title img {
-        height: 40px;
+        height: 65px;
     }
 
-    .footer-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .features-grid,
     .platform-grid {
         grid-template-columns: 1fr;
     }
 
-    .forum-grid {
-        grid-template-columns: 1fr;
+    .social-links {
+        justify-content: flex-start;
     }
-}
-
-/* ========================================
-    UTILIDADES ADICIONALES
-   ======================================== */
-.emoji {
-    display: inline-block;
-}
-
-.star {
-    color: var(--accent-yellow);
-}
-
-.arrow {
-    display: inline-block;
-    transition: transform 0.3s ease;
-}
-
-.btn-hero:hover .arrow,
-.btn-outline-primary:hover .arrow {
-    transform: translateX(5px);
 }

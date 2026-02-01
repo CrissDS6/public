@@ -42,9 +42,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#login">Iniciar sesión</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contacto">Contacto</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="btn-register" href="#registro">Regístrate</a>
                     </li>
@@ -72,7 +70,6 @@
                 </div>
                 <div class="hero-image-wrapper">
                     <div class="hero-image-container">
-
                         <img src="assets/img/ui/imagen-hero.png" alt="Perro y gato" class="hero-image">
 
                     </div>
@@ -81,13 +78,13 @@
         </div>
     </section>
 
-    <!-- LO QUE OFRECE LA PLATAFORMA -->
+    <!--  EN METEOPET ENCONTRARÁS... -->
     <section class="section-features">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">
                     <span class="star">⭐</span>
-                    Lo que ofrece la plataforma
+                    En Meteopet encontrarás...
                     <span class="star">⭐</span>
                 </h2>
             </div>
@@ -95,7 +92,7 @@
             <div class="platform-grid">
                 <div class="platform-card">
                     <div class="card-icon">
-                        <span class="icon"><img src="assets/img/ui/emojiPerro.png" alt=""></span>
+                        <span class="icon"><img src="assets/img/ui/emojiPerro.png" alt="emoji perro tips"></span>
                     </div>
                     <h5>Tips Diarios</h5>
                     <p class="text-muted">Cuidado diario basado en el tiempo de tu ciudad.</p>
@@ -103,7 +100,7 @@
 
                 <div class="platform-card">
                     <div class="card-icon">
-                        <span class="icon">💬</span>
+                        <span class="icon"><img src="assets/img/ui/emojiGatoForo.png" alt="emoji gato foro"></span>
                     </div>
                     <h5>Comunidad</h5>
                     <p class="text-muted">Foro para intercambiar consejos para tu peludo.</p>
@@ -120,7 +117,7 @@
 
                 <div class="platform-card">
                     <div class="card-icon">
-                        <span class="icon">📄</span>
+                        <span class="icon"><img src="assets/img/ui/emojiPerfiles.png" alt="emoji gato foro"></span>
                     </div>
                     <h5>Perfiles Pet</h5>
                     <p class="text-muted">Registra a todos tus peludos.</p>
@@ -193,51 +190,32 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <div class="footer-brand">
-                        <span class="footer-icon">⛅</span>
-                        <h5>MeteoPet</h5>
+                        <img src="assets/img/ui/Sin título.png" alt="Meteopet" class="footer-title">
                     </div>
                     <p class="text-light-gray">
                         Cuidando de tus mascotas inteligentemente.
                     </p>
                     <div class="social-links">
                         <a href="#" aria-label="Facebook">f</a>
-                        <a href="#" aria-label="Twitter">𝕏</a>
+                        <a href="#" aria-label="Equis">𝕏</a>
                         <a href="#" aria-label="Instagram">📷</a>
-                        <a href="#" aria-label="Email">✉</a>
-                        <a href="#" aria-label="Share">↗</a>
                     </div>
                 </div>
 
-                <div class="footer-col">
-                    <h6>Legal</h6>
-                    <ul class="footer-links">
-                        <li><a href="#">Términos</a></li>
-                        <li><a href="#">Privacidad</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h6>Comunidad</h6>
-                    <ul class="footer-links">
-                        <li><a href="#">Foro</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </div>
 
                 <div class="footer-col">
                     <h6>Contacto</h6>
                     <ul class="footer-links">
                         <li><span class="footer-icon-small">✉</span> info@meteopet.com</li>
-                        <li><span class="footer-icon-small">📞</span> +34 XXX XXX XXX</li>
-                        <li><span class="footer-icon-small">📍</span> Plasencia, Extremadura</li>
+
+                        <li><span class="footer-icon-small">📍</span> Zafra, Badajoz</li>
                     </ul>
                 </div>
             </div>
-
             <hr class="footer-divider">
 
             <div class="footer-bottom">
-                <p>© 2024 MeteoPet. Hecho con <span class="heart">❤️</span> para tus mascotas.</p>
+                <p>© 2026 MeteoPet. Hecho con <span class="heart">❤️</span> para tus mascotas.</p>
             </div>
         </div>
     </footer>
@@ -273,6 +251,16 @@
                 });
             }
         });
+    });
+
+    // Navbar transparency on scroll
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
     });
     </script>
 </body>
