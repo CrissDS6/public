@@ -178,7 +178,7 @@
             <div class="cta-box">
                 <h2>¡Únete a MeteoPet hoy!</h2>
                 <p>Miles de humanos ya cuidan mejor de sus peludos gracias a nuestros consejos
-                    climáticos</p>
+                    especializados</p>
                 <a href="#registro" class="btn-cta">Crear Cuenta Gratis</a>
             </div>
         </div>
@@ -188,6 +188,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
+                <!-- Columna 1: Información de MeteoPet -->
                 <div class="footer-col">
                     <div class="footer-brand">
                         <img src="assets/img/ui/titulo_logoGris.png" alt="Meteopet" class="footer-title">
@@ -195,6 +196,11 @@
                     <p class="text-light-gray">
                         Cuidando de tus mascotas inteligentemente.
                     </p>
+                </div>
+
+                <!-- Columna 2: Redes Sociales -->
+                <div class="footer-col footer-col-center">
+                    <h6>Síguenos</h6>
                     <div class="social-links">
                         <a href="#" aria-label="Facebook">f</a>
                         <a href="#" aria-label="Equis">𝕏</a>
@@ -202,13 +208,14 @@
                     </div>
                 </div>
 
-
+                <!-- Columna 3: Contacto -->
                 <div class="footer-col">
                     <h6>Contacto</h6>
                     <ul class="footer-links">
                         <li><span class="footer-icon-small">✉</span> info@meteopet.com</li>
-
                         <li><span class="footer-icon-small">📍</span> Zafra, Badajoz</li>
+                        <li><a href="#contacto"><span class="footer-icon-small">📝</span> Formulario de contacto</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -220,48 +227,50 @@
         </div>
     </footer>
 
+
+    <!-- SCRIPTS -->
     <script>
-    // Mobile menu toggle
-    const menuToggle = document.getElementById('menuToggle');
-    const navbarNav = document.getElementById('navbarNav');
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navbarNav = document.getElementById('navbarNav');
 
-    menuToggle.addEventListener('click', function() {
-        navbarNav.classList.toggle('active');
-        menuToggle.classList.toggle('active');
-    });
-
-    // Close menu when clicking on a link
-    const navLinks = document.querySelectorAll('.nav-link, .btn-register');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navbarNav.classList.remove('active');
-            menuToggle.classList.remove('active');
+        menuToggle.addEventListener('click', function() {
+            navbarNav.classList.toggle('active');
+            menuToggle.classList.toggle('active');
         });
-    });
 
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-link, .btn-register');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navbarNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar transparency on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
         });
-    });
-
-    // Navbar transparency on scroll
-    window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
     </script>
 </body>
 

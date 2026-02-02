@@ -65,18 +65,8 @@
                 <button type="submit" class="btn-login">Iniciar Sesión</button>
             </form>
 
-            <div class="divider">
-                <span>O continúa con</span>
-            </div>
-
-            <div class="social-login">
-                <button class="social-btn" title="Google">🔍</button>
-                <button class="social-btn" title="Facebook">f</button>
-                <button class="social-btn" title="Apple">🍎</button>
-            </div>
-
             <p class="register-link">
-                ¿No tienes una cuenta? <a href="registro.html">Regístrate gratis</a>
+                ¿No tienes una cuenta? <a href="#">Regístrate gratis</a>
             </p>
         </div>
     </div>
