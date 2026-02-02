@@ -23,12 +23,11 @@
         <div class="login-left">
             <div class="login-illustration">
                 <div class="pet-icons">
-                    <span>🐕</span>
-                    <span>🐱</span>
+                    <span><img src="assets/img/ui/iconoInicioSesion.png" alt=""></span>
                 </div>
             </div>
             <h2>¡Bienvenido de vuelta!</h2>
-            <p>Tus peludos te están esperando. Inicia sesión para recibir los mejores consejos según el clima de hoy.
+            <p>Tus peludos te están esperando. Inicia sesión para recibir los mejores consejos según el tiempo de hoy.
             </p>
         </div>
 

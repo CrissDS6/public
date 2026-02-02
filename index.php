@@ -57,8 +57,8 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <h1 class="hero-title">
-                        <span class="text-primary">Cuida a tus mascotas</span>
-                        <span class="text-dark">según el tiempo</span>
+                        <span class="text-dark">Cuida a tus mascotas</span>
+                        <span class="text-primary">según el tiempo</span>
                     </h1>
                     <p class="hero-subtitle">
                         Recomendaciones diarias para tus peludos según el tiempo real de tu ciudad.
@@ -172,7 +172,7 @@
         </div>
     </section>
 
-    <!-- CTA SECTION -->
+    <!-- CREAR CUENTA SECTION -->
     <section class="section-cta">
         <div class="container">
             <div class="cta-box">
@@ -190,7 +190,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <div class="footer-brand">
-                        <img src="assets/img/ui/Sin título.png" alt="Meteopet" class="footer-title">
+                        <img src="assets/img/ui/titulo_logoGris.png" alt="Meteopet" class="footer-title">
                     </div>
                     <p class="text-light-gray">
                         Cuidando de tus mascotas inteligentemente.
