@@ -55,7 +55,7 @@ body {
 }
 
 .navbar.scrolled {
-    background: linear-gradient(135deg, rgba(74, 159, 216, 0.80) 0%, rgba(30, 90, 125, 0.83) 100%);
+    background: linear-gradient(135deg, rgba(74, 159, 216, 0.95) 0%, rgba(30, 90, 125, 0.92) 100%);
     backdrop-filter: blur(15px);
     box-shadow: 0 4px 20px rgba(30, 90, 125, 0.25);
 }
@@ -94,7 +94,7 @@ body {
 }
 
 .logo-title img {
-    height: 120px;
+    height: 100px;
     width: auto;
     margin-left: 0.5rem;
 }
@@ -538,7 +538,7 @@ body {
 }
 
 /* ========================================
-    CREAR CUENTA SECTION
+    CTA SECTION
    ======================================== */
 .section-cta {
     background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
@@ -583,7 +583,9 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/********************* FOOTER   *********************/
+/* ========================================
+    FOOTER
+   ======================================== */
 .footer {
     background: var(--primary-blue);
     color: var(--white);
@@ -613,11 +615,7 @@ body {
 }
 
 .footer-title {
-<<<<<<< HEAD
     height: 55px;
-=======
-    height: 90px;
->>>>>>> 6addbf8e5cf1dedec993338151317390891e62c7
     width: auto;
     background: transparent;
 }
