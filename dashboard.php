@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Dashboard - MeteoPet</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+
+<body>
+    <!-- HEADER/NAVBAR -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <div class="logo-icon">
+                    <img src="assets/img/ui/logo.png" alt="logo_meteopet">
+                </div>
+                <div class="logo-title">
+                    <img src="assets/img/ui/titulo_logo.png" alt="titulo Meteopet">
+                </div>
+            </a>
+            <button class="navbar-toggler" id="menuToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mis-mascotas.html">Mis Mascotas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="consejos.html">Consejos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ciudades.html">Ciudades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="foro.html">Foro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil.html">Mi Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn-logout" href="php/logout.php">Cerrar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- DASHBOARD CONTENT -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <div class="welcome-message">
+                <h1>¡Bienvenido de vuelta, <span class="user-name">Usuario</span>! 🐾</h1>
+                <p>Aquí tienes un resumen del clima y consejos para tus mascotas hoy</p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Columna 1: Información de MeteoPet -->
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <img src="assets/img/ui/titulo_logoGris.png" alt="Meteopet" class="footer-title">
+                    </div>
+                    <p class="text-light-gray">
+                        Cuidando de tus mascotas inteligentemente.
+                    </p>
+                </div>
+
+                <!-- Columna 2: Redes Sociales -->
+                <div class="footer-col footer-col-center">
+                    <h6>Síguenos</h6>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook">f</a>
+                        <a href="#" aria-label="Equis">𝕏</a>
+                        <a href="#" aria-label="Instagram">📷</a>
+                    </div>
+                </div>
+
+                <!-- Columna 3: Contacto -->
+                <div class="footer-col">
+                    <h6>Contacto</h6>
+                    <ul class="footer-links">
+                        <li><span class="footer-icon-small">✉</span> info@meteopet.com</li>
+                        <li><span class="footer-icon-small">📍</span> Zafra, Badajoz</li>
+                        <li><a href="#contacto"><span class="footer-icon-small">📝</span> Formulario de contacto</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="footer-divider">
+
+            <div class="footer-bottom">
+                <p>© 2026 MeteoPet. Hecho con <span class="heart">❤️</span> para tus mascotas.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navbarNav = document.getElementById('navbarNav');
+
+        menuToggle.addEventListener('click', function() {
+            navbarNav.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-link, .btn-logout');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navbarNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar transparency on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Cargar nombre de usuario desde sesión/localStorage
+        // Este código se conectaría con tu PHP para obtener el nombre real
+        const userName = localStorage.getItem('user_nombre') || 'Usuario';
+        document.querySelector('.user-name').textContent = userName;
+    </script>
+</body>
+
+</html>
