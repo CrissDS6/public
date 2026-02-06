@@ -62,7 +62,9 @@
                     <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
                 </div>
 
-                <button type="submit" class="btn-login">Iniciar Sesión</button>
+                <button type="submit" class="btn-login">
+                    <span class="paw-icon">🐾</span> Iniciar Sesión
+                </button>
             </form>
 
             <p class="register-link">
