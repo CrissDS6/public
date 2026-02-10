@@ -37,7 +37,13 @@
                 <p>Accede a tu cuenta de MeteoPet</p>
             </div>
 
-            <form id="loginForm">
+            <?php if (isset($_GET["error"])): ?>
+            <p style="color: #c0392b; margin-bottom: 12px;">
+                Email o contraseña incorrectos.
+            </p>
+            <?php endif; ?>
+
+            <form id="loginForm" method="POST" action="auth/login_process.php">
                 <div class="form-group">
                     <label for="email">Correo electrónico</label>
                     <div class="input-wrapper">

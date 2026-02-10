@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+if (!isset($_SESSION["usuario_id"])) {
+    header("Location: login.php");
+    exit;
+}
+
+$nombreUsuario = $_SESSION["usuario_nombre"];
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -33,25 +45,25 @@
             <div class="navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="dashboard.html">Inicio</a>
+                        <a class="nav-link active" href="dashboard.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="mis-mascotas.html">Mis Mascotas</a>
+                        <a class="nav-link" href="#mis-mascotas">Mis Mascotas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="consejos.html">Consejos</a>
+                        <a class="nav-link" href="#consejos">Consejos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="ciudades.html">Ciudades</a>
+                        <a class="nav-link" href="#ciudades">Ciudades</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="foro.html">Foro</a>
+                        <a class="nav-link" href="#foro">Foro</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="perfil.html">Mi Perfil</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
-                        <a class="btn-logout" href="php/logout.php">Cerrar sesión</a>
+                        <a class="nav-link" href="auth/logout.php">Cerrar sesión</a>
                     </li>
                 </ul>
             </div>
@@ -62,13 +74,12 @@
     <section class="dashboard-hero">
         <div class="container">
             <div class="welcome-message">
-                <h1>¡Bienvenido de vuelta, <span class="user-name">Usuario</span>! 🐾</h1>
+                <h1>¡Bienvenido de vuelta, <span
+                        class="user-name"><?php echo htmlspecialchars($nombreUsuario); ?></span>! 🐾</h1>
                 <p>Aquí tienes un resumen del clima y consejos para tus mascotas hoy</p>
             </div>
         </div>
     </section>
-
-
 
     <!-- FOOTER -->
     <footer class="footer">
@@ -115,52 +126,47 @@
 
     <!-- SCRIPTS -->
     <script>
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navbarNav = document.getElementById('navbarNav');
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navbarNav = document.getElementById('navbarNav');
 
-        menuToggle.addEventListener('click', function() {
-            navbarNav.classList.toggle('active');
-            menuToggle.classList.toggle('active');
+    menuToggle.addEventListener('click', function() {
+        navbarNav.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+    });
+
+    // Close menu when clicking on a link
+    const navLinks = document.querySelectorAll('.nav-link, .btn-logout');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navbarNav.classList.remove('active');
+            menuToggle.classList.remove('active');
         });
+    });
 
-        // Close menu when clicking on a link
-        const navLinks = document.querySelectorAll('.nav-link, .btn-logout');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navbarNav.classList.remove('active');
-                menuToggle.classList.remove('active');
-            });
-        });
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Navbar transparency on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             }
         });
+    });
 
-        // Cargar nombre de usuario desde sesión/localStorage
-        // Este código se conectaría con tu PHP para obtener el nombre real
-        const userName = localStorage.getItem('user_nombre') || 'Usuario';
-        document.querySelector('.user-name').textContent = userName;
+    // Navbar transparency on scroll
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
     </script>
 </body>
 

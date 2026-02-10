@@ -1,6 +1,4 @@
-/* ========================================
-    VARIABLES Y CONFIGURACIÓN GENERAL
-   ======================================== */
+/****************    VARIABLES Y CONFIGURACIÓN GENERAL   ****************/
 :root {
     /* Colores principales del logo */
     --primary-blue: #1E5A7D;
@@ -33,6 +31,9 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     background: var(--light-gray);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
@@ -41,9 +42,7 @@ body {
     padding: 0 2rem;
 }
 
-/* ========================================
-    NAVBAR (IGUAL QUE INDEX)
-   ======================================== */
+/****************    NAVBAR   ****************/
 .navbar {
     background: linear-gradient(135deg, rgba(74, 159, 216, 0.85) 0%, rgba(30, 90, 125, 0.80) 100%);
     backdrop-filter: blur(10px);
@@ -162,32 +161,13 @@ body {
     background-color: rgba(255, 255, 255, 0.15);
 }
 
-.btn-logout {
-    background: rgba(255, 107, 107, 0.9);
-    color: var(--white);
-    padding: 0.6rem 1.5rem;
-    border-radius: 25px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btn-logout:hover {
-    background: #ff4444;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 68, 68, 0.4);
-}
-
-/* ========================================
-    DASHBOARD HERO
-   ======================================== */
+/****************   DASHBOARD HERO   ****************/
 .dashboard-hero {
     background: linear-gradient(135deg, var(--light-blue) 0%, #F0F8FF 100%);
     padding: 3rem 0;
     position: relative;
     overflow: hidden;
+    flex: 1;
 }
 
 .dashboard-hero::before {
@@ -223,210 +203,12 @@ body {
     color: var(--descriptions);
 }
 
-/* ========================================
-    DASHBOARD MAIN
-   ======================================== */
-.dashboard-main {
-    padding: 3rem 0;
-    min-height: 60vh;
-}
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.dashboard-card {
-    background: var(--white);
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-}
-
-.dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.card-header h3 {
-    color: var(--primary-blue);
-    font-size: 1.3rem;
-    margin: 0;
-}
-
-.card-link {
-    color: var(--secondary-blue);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.card-link:hover {
-    color: var(--primary-blue);
-}
-
-/* Card 1: Clima */
-.weather-card {
-    background: linear-gradient(135deg, var(--light-blue) 0%, #F0F8FF 100%);
-    border: 2px solid var(--secondary-blue);
-}
-
-.location {
-    font-size: 0.9rem;
-    color: var(--descriptions);
-}
-
-.weather-display {
-    text-align: center;
-    margin: 2rem 0;
-}
-
-.temp-main {
-    font-size: 4rem;
-    font-weight: 700;
-    color: var(--secondary-blue);
-}
-
-.weather-desc {
-    font-size: 1.3rem;
-    color: var(--primary-blue);
-    margin-top: 0.5rem;
-}
-
-.weather-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-.detail-item {
-    background: var(--white);
-    padding: 1rem;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.detail-item span {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--descriptions);
-    margin-bottom: 0.5rem;
-}
-
-.detail-item strong {
-    font-size: 1.2rem;
-    color: var(--primary-blue);
-}
-
-/* Card 2: Mascotas */
-.pets-summary {
-    text-align: center;
-}
-
-.pet-count {
-    margin-bottom: 1.5rem;
-}
-
-.count-number {
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--secondary-blue);
-}
-
-.count-label {
-    color: var(--descriptions);
-    font-size: 0.95rem;
-}
-
-.btn-add-pet {
-    display: inline-block;
-    background: var(--accent-yellow);
-    color: var(--primary-blue);
-    padding: 0.8rem 2rem;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-add-pet:hover {
-    background: var(--accent-orange);
-    color: var(--white);
-    transform: translateY(-2px);
-}
-
-/* Card 3: Consejo del Día */
-.tip-card {
-    background: linear-gradient(135deg, #FFF9E6 0%, #FFF4CC 100%);
-    border-left: 4px solid var(--accent-yellow);
-}
-
-.tip-content p {
-    color: var(--dark-gray);
-    line-height: 1.8;
-    font-size: 1rem;
-}
-
-/* Card 4: Foro */
-.forum-activity {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.activity-item {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    padding: 1rem;
-    background: var(--light-gray);
-    border-radius: 12px;
-    transition: all 0.3s ease;
-}
-
-.activity-item:hover {
-    background: var(--light-blue);
-}
-
-.activity-icon {
-    font-size: 2rem;
-    flex-shrink: 0;
-}
-
-.activity-text {
-    flex: 1;
-}
-
-.activity-text strong {
-    color: var(--primary-blue);
-}
-
-.activity-text small {
-    display: block;
-    color: var(--medium-gray);
-    font-size: 0.85rem;
-    margin-top: 0.3rem;
-}
-
-/* ========================================
-    FOOTER (IGUAL QUE INDEX)
-   ======================================== */
+/****************    FOOTER   ****************/
 .footer {
     background: var(--primary-blue);
     color: var(--white);
     padding: 3rem 0 1rem;
-    margin-top: 4rem;
+    margin-top: auto;
 }
 
 .footer-grid {
@@ -445,14 +227,14 @@ body {
 }
 
 .footer-brand {
-    margin-bottom: 1rem;
-    height: 35px;
+    margin-bottom: 0.5rem;
+    height: 80px;
     display: flex;
     align-items: center;
 }
 
 .footer-title {
-    height: 35px;
+    height: 80px;
     width: auto;
     background: transparent;
 }
@@ -461,6 +243,7 @@ body {
     color: var(--medium-gray);
     margin-bottom: 1.5rem;
     max-width: 250px;
+    margin-top: 0;
 }
 
 .footer-col h6 {
@@ -468,7 +251,7 @@ body {
     margin-bottom: 1rem;
     font-size: 1.1rem;
     font-weight: 600;
-    height: 35px;
+    height: 80px;
     display: flex;
     align-items: center;
 }
@@ -557,20 +340,7 @@ body {
     color: #ff6b6b;
 }
 
-/* ========================================
-    RESPONSIVE
-   ======================================== */
-@media (max-width: 992px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-    }
-}
-
+/****************    RESPONSIVE   ****************/
 @media (max-width: 768px) {
     .navbar-toggler {
         display: flex;
@@ -609,10 +379,6 @@ body {
         padding: 1rem;
     }
 
-    .btn-logout {
-        margin: 1rem;
-    }
-
     .logo-icon img {
         height: 60px;
     }
@@ -629,11 +395,8 @@ body {
         font-size: 1rem;
     }
 
-    .temp-main {
-        font-size: 3rem;
-    }
-
     .footer-grid {
+        grid-template-columns: 1fr;
         gap: 2rem;
     }
 

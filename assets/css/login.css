@@ -107,7 +107,7 @@ body::after {
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: float 3s ease-in-out infinite;
+
 }
 
 .pet-icons span {
@@ -125,18 +125,6 @@ body::after {
     /* Límite máximo */
     max-height: 180px;
     /* Límite máximo */
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-20px);
-    }
 }
 
 .login-left h2 {
@@ -285,25 +273,12 @@ input[type="password"]:focus {
 .paw-icon {
     font-size: 1.3rem;
     display: inline-block;
-    animation: pawBounce 2s ease-in-out infinite;
 }
 
-@keyframes pawBounce {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.2);
-    }
-}
 
 .btn-login:hover {
     background: var(--accent-orange);
     color: var(--white);
-    font-size: 1.3rem;
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(255, 167, 38, 0.4);
 }

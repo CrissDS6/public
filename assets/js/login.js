@@ -1,24 +1,4 @@
-// Manejo del formulario de login
-document.getElementById('loginForm').addEventListener('submit', function (e) {
-    e.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const remember = document.getElementById('remember').checked;
-
-    // Aquí iría la lógica de autenticación con tu backend
-    console.log('Login attempt:', {
-        email,
-        password: '***', // No mostrar la contraseña en consola
-        remember
-    });
-
-    // Simulación de login exitoso
-    alert('¡Bienvenido a MeteoPet! 🐾');
-
-    // Redirigir al dashboard (descomentar cuando esté listo)
-    // window.location.href = 'dashboard.html';
-});
 
 // Animación de iconos en los inputs cuando reciben foco
 const inputs = document.querySelectorAll('input[type="email"], input[type="password"]');
