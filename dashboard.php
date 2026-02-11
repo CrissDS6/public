@@ -101,7 +101,8 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
                     <div class="social-links">
                         <a href="#" aria-label="Facebook">f</a>
                         <a href="#" aria-label="Equis">𝕏</a>
-                        <a href="#" aria-label="Instagram">📷</a>
+                        <a href="#" aria-label="Instagram"><img src="assets/img/ui/instagram.png"
+                                alt="logo instagram"></a>
                     </div>
                 </div>
 
@@ -126,47 +127,47 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
 
     <!-- SCRIPTS -->
     <script>
-    // Mobile menu toggle
-    const menuToggle = document.getElementById('menuToggle');
-    const navbarNav = document.getElementById('navbarNav');
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navbarNav = document.getElementById('navbarNav');
 
-    menuToggle.addEventListener('click', function() {
-        navbarNav.classList.toggle('active');
-        menuToggle.classList.toggle('active');
-    });
-
-    // Close menu when clicking on a link
-    const navLinks = document.querySelectorAll('.nav-link, .btn-logout');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navbarNav.classList.remove('active');
-            menuToggle.classList.remove('active');
+        menuToggle.addEventListener('click', function() {
+            navbarNav.classList.toggle('active');
+            menuToggle.classList.toggle('active');
         });
-    });
 
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-link, .btn-logout');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navbarNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar transparency on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
         });
-    });
-
-    // Navbar transparency on scroll
-    window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
     </script>
 </body>
 

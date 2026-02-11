@@ -266,6 +266,12 @@ body {
     justify-content: center;
 }
 
+.social-links a img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
 .social-links a {
     width: 40px;
     height: 40px;
@@ -285,6 +291,10 @@ body {
     color: var(--primary-blue);
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(255, 217, 61, 0.3);
+}
+
+.social-links a:hover img {
+    filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(180deg) brightness(94%) contrast(97%);
 }
 
 .footer-links {
@@ -339,6 +349,7 @@ body {
 .heart {
     color: #ff6b6b;
 }
+
 
 /****************    RESPONSIVE   ****************/
 @media (max-width: 768px) {
