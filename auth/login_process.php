@@ -14,7 +14,7 @@ $password = $_POST['password'] ?? '';
 
 // 2) Validación mínima
 if ($email === '' || $password === '') {
-    header('Location: ../login.php?error=1');
+    header('Location: ../index.html?error=1');
     exit;
 }
 
@@ -32,7 +32,7 @@ $stmt->close();
 // 4) Comprobar contraseña
 if (!$usuario || !password_verify($password, $usuario['password_hash'])) {
     $conn->close();
-    header('Location: ../login.php?error=1');
+    header('Location: ../index.html?error=1');
     exit;
 }
 
