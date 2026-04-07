@@ -18,11 +18,14 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Dashboard - MeteoPet</title>
 
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <!-- Script  -->
+    <script defer src="assets/js/dashboard.js"></script>
 </head>
 
 <body>
@@ -45,23 +48,17 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
             <div class="navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="dashboard.php">Inicio</a>
+                        <a class="nav-link" data-vista="mis-mascotas" href="#">Mis Mascotas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#mis-mascotas">Mis Mascotas</a>
+                        <a class="nav-link" data-vista="consejos" href="#">Consejos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#consejos">Consejos</a>
+                        <a class="nav-link" data-vista="ciudades" href="#">Ciudades</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#ciudades">Ciudades</a>
+                        <a class="nav-link" data-vista="foro" href="#">Foro</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#foro">Foro</a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="perfil.html">Mi Perfil</a>
-                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="auth/logout.php">Cerrar sesión</a>
                     </li>
@@ -71,15 +68,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
     </nav>
 
     <!-- DASHBOARD CONTENT -->
-    <section class="dashboard-hero">
-        <div class="container">
-            <div class="welcome-message">
-                <h1>¡Bienvenido de vuelta, <span
-                        class="user-name"><?php echo htmlspecialchars($nombreUsuario); ?></span>! 🐾</h1>
-                <p>Aquí tienes un resumen del clima y consejos para tus mascotas hoy</p>
-            </div>
-        </div>
-    </section>
+    <main id="contenido-principal"></main>
 
     <!-- FOOTER -->
     <footer class="footer">
@@ -125,50 +114,6 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
-    <script>
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navbarNav = document.getElementById('navbarNav');
-
-        menuToggle.addEventListener('click', function() {
-            navbarNav.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-        });
-
-        // Close menu when clicking on a link
-        const navLinks = document.querySelectorAll('.nav-link, .btn-logout');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navbarNav.classList.remove('active');
-                menuToggle.classList.remove('active');
-            });
-        });
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Navbar transparency on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-    </script>
 </body>
 
 </html>
