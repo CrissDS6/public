@@ -1,5 +1,6 @@
 ////////////////////////// VARIABLES //////////////////////////
 const rutas = {
+    'inicio': 'vistas/inicio.html',
     'mis-mascotas': 'vistas/mis-mascotas.html',
     'consejos': 'vistas/consejos.html',
     'ciudades': 'vistas/ciudades.html',
@@ -9,6 +10,8 @@ const rutas = {
 const menuToggle = document.querySelector('#menuToggle');
 const navbarNav = document.querySelector('#navbarNav');
 
+const btnPerfil = document.querySelector('#btn-perfil');
+const dropdownPerfil = document.querySelector('#dropdown-perfil');
 
 ////////////////////////// FUNCIONES //////////////////////////
 async function cargarVista(nombre) {
@@ -28,10 +31,14 @@ async function cargarVista(nombre) {
         link.classList.toggle('activo', link.dataset.vista == nombre);
     });
 
-    if (nombre == 'mis-mascotas') initMisMascotas();
+    if (nombre == 'inicio') initInicio();
+    else if (nombre == 'mis-mascotas') initMisMascotas();
     else if (nombre == 'consejos') initConsejos();
     else if (nombre == 'ciudades') initCiudades();
     else if (nombre == 'foro') initForo();
+}
+function initInicio() {
+    // por ahora vacío
 }
 
 function initMisMascotas() {
@@ -69,7 +76,7 @@ window.addEventListener('scroll', function () {
 });
 
 ////////////////////////// LLAMADAS //////////////////////////
-cargarVista('mis-mascotas');
+cargarVista('inicio');
 
 ////////////////////////// ESCUCHADORES //////////////////////////
 document.querySelector('.navbar').addEventListener('click', function (e) {
@@ -80,4 +87,14 @@ document.querySelector('.navbar').addEventListener('click', function (e) {
 menuToggle.addEventListener('click', function () {
     navbarNav.classList.toggle('active');
     menuToggle.classList.toggle('active');
+});
+
+btnPerfil.addEventListener('click', function (e) {
+    e.stopPropagation();
+    dropdownPerfil.classList.toggle('visible');
+});
+
+// Cerrar dropdown al hacer click fuera
+document.addEventListener('click', function () {
+    dropdownPerfil.classList.remove('visible');
 });

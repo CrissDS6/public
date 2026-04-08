@@ -48,6 +48,9 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
             <div class="navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <a class="nav-link" data-vista="inicio" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" data-vista="mis-mascotas" href="#">Mis Mascotas</a>
                     </li>
                     <li class="nav-item">
@@ -59,8 +62,17 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
                     <li class="nav-item">
                         <a class="nav-link" data-vista="foro" href="#">Foro</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="auth/logout.php">Cerrar sesión</a>
+                    <li class="nav-item nav-item-perfil">
+                        <button class="nav-link nav-dropdown-btn" id="btn-perfil">
+                            <?php
+                            $primerNombre = explode(' ', $nombreUsuario)[0];
+                            echo htmlspecialchars($primerNombre);
+                            ?> ▼
+                        </button>
+                        <div class="nav-dropdown" id="dropdown-perfil">
+                            <a href="#" data-vista="perfil" class="dropdown-item">👤 Mi Perfil</a>
+                            <a href="auth/logout.php" class="dropdown-item">🚪 Cerrar sesión</a>
+                        </div>
                     </li>
                 </ul>
             </div>
