@@ -463,3 +463,161 @@ body {
         max-width: 100%;
     }
 }
+
+/* ===== VISTA INICIO ===== */
+#inicio-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.inicio-saludo {
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+    border-radius: 20px;
+    padding: 2rem 2.5rem;
+    color: var(--white);
+}
+
+.inicio-saludo h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.saludo-nombre {
+    color: var(--accent-yellow);
+}
+
+.inicio-saludo p {
+    opacity: 0.85;
+    font-size: 1rem;
+}
+
+.inicio-clima-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.5rem 2.5rem;
+    box-shadow: 0 4px 16px rgba(30, 90, 125, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    border: 2px solid var(--secondary-blue);
+}
+
+.clima-ciudad {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: 1;
+}
+
+.clima-datos {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.clima-temp {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.clima-icono {
+    font-size: 2.5rem;
+}
+
+.clima-desc {
+    font-size: 1rem;
+    color: var(--descriptions);
+    font-weight: 500;
+}
+
+.accesos-titulo {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+}
+
+.accesos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+}
+
+.acceso-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.8rem;
+    box-shadow: 0 4px 16px rgba(30, 90, 125, 0.08);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid var(--secondary-blue);
+    text-align: center;
+}
+
+.acceso-card:hover {
+    border-color: var(--accent-yellow);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(74, 159, 216, 0.15);
+}
+
+.acceso-icono {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+}
+
+.acceso-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 0.4rem;
+}
+
+.acceso-card p {
+    font-size: 0.85rem;
+    color: var(--descriptions);
+    line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+    .accesos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .inicio-clima-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+.saludo-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 3px solid var(--accent-yellow);
+    background-color: rgba(255, 255, 255, 0.35);
+    flex-shrink: 0;
+}
+
+.inicio-saludo {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.inicio-saludo h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
