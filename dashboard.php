@@ -24,8 +24,18 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/vistas/inicio.css">
+    <link rel="stylesheet" href="assets/css/vistas/mascotas.css">
+    <link rel="stylesheet" href="assets/css/vistas/consejos.css">
+    <link rel="stylesheet" href="assets/css/vistas/ciudades.css">
+    <link rel="stylesheet" href="assets/css/vistas/foro.css">
     <!-- Script  -->
     <script defer src="assets/js/dashboard.js"></script>
+    <script defer src="assets/js/vistas/inicio.js"></script>
+    <script defer src="assets/js/vistas/mascotas.js"></script>
+    <script defer src="assets/js/vistas/consejos.js"></script>
+    <script defer src="assets/js/vistas/ciudades.js"></script>
+    <script defer src="assets/js/vistas/foro.js"></script>
 </head>
 
 <body>

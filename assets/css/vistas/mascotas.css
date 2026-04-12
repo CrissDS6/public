@@ -1,0 +1,151 @@
+/* ===== VISTA MIS MASCOTAS ===== */
+#mascotas-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.vista-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.vista-titulo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.btn-añadir {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: 25px;
+    padding: 0.7rem 1.5rem;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-añadir:hover {
+    background: var(--accent-orange);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+#galeria-mascotas {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.mascota-card {
+    background: var(--white);
+    border-radius: 20px;
+    border: 2px solid var(--secondary-blue);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.mascota-card:hover {
+    border-color: var(--accent-yellow);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(255, 217, 61, 0.35);
+}
+
+.mascota-foto {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    display: block;
+}
+
+.mascota-foto-placeholder {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: var(--light-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+}
+
+.mascota-info {
+    padding: 1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.mascota-nombre {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-align: center;
+}
+
+.mascota-detalle {
+    font-size: 0.88rem;
+    color: var(--descriptions);
+}
+
+.mascota-acciones {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0 1.2rem 1.2rem;
+    justify-content: center;
+}
+
+.btn-editar {
+    background: var(--light-blue);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-editar:hover {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+.btn-eliminar {
+    background: #fde8eb;
+    color: #b00020;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-eliminar:hover {
+    background: #b00020;
+    color: var(--white);
+}
+
+.mascotas-vacio {
+    text-align: center;
+    color: var(--medium-gray);
+    padding: 3rem 0;
+    font-size: 1rem;
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 600px) {
+    #galeria-mascotas {
+        grid-template-columns: 1fr;
+    }
+}
