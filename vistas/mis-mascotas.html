@@ -5,8 +5,25 @@
         <button class="btn-añadir" id="btn-añadir-mascota">+ Añadir mascota</button>
     </div>
 
-    <div id="galeria-mascotas">
-        <!-- Las tarjetas se generan con JS -->
-    </div>
+    <div id="galeria-mascotas"></div>
 
+</div>
+
+<!-- MODAL MASCOTA -->
+<div id="modal-mascota" class="modal-overlay">
+    <div class="modal-mascota-contenido">
+        <img id="modal-mascota-foto" src="" alt="" class="modal-mascota-img">
+        <div class="modal-mascota-info">
+            <h2 id="modal-mascota-nombre"></h2>
+            <p class="modal-mascota-detalle"><strong>Especie:</strong> <span id="modal-mascota-especie"></span></p>
+            <p class="modal-mascota-detalle"><strong>Raza:</strong> <span id="modal-mascota-raza"></span></p>
+            <p class="modal-mascota-detalle"><strong>Edad:</strong> <span id="modal-mascota-edad"></span></p>
+            <p class="modal-mascota-detalle"><strong>Sexo:</strong> <span id="modal-mascota-sexo"></span></p>
+            <div class="modal-mascota-acciones">
+                <button class="btn-editar" id="modal-btn-editar" title="Editar">✏️</button>
+                <button class="btn-eliminar" id="modal-btn-eliminar" title="Eliminar">🗑️</button>
+                <button class="btn-cerrar-modal" id="modal-mascota-cerrar2" title="Cerrar">✕</button>
+            </div>
+        </div>
+    </div>
 </div>

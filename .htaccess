@@ -1,0 +1,4 @@
+# Denegar acceso directo al archivo .env
+<Files ".env">
+    Require all denied
+</Files>
