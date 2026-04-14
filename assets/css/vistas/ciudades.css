@@ -1,0 +1,178 @@
+/* ===== VISTA CIUDADES ===== */
+#ciudades-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.ciudades-buscador {
+    position: relative;
+}
+
+.ciudades-buscador input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--secondary-blue);
+    border-radius: 15px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    background: var(--white);
+}
+
+.ciudades-buscador input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+}
+
+.resultados-busqueda {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border: 2px solid var(--secondary-blue);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    display: none;
+    overflow: hidden;
+}
+
+.resultados-busqueda.visible {
+    display: block;
+}
+
+.resultado-item {
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.resultado-item:hover {
+    background-color: var(--light-blue);
+}
+
+.resultado-item span {
+    color: var(--medium-gray);
+    font-size: 0.85rem;
+}
+
+.resultado-item .btn-añadir-ciudad {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 0.3rem 0.8rem;
+    font-family: var(--font-primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.resultado-item .btn-añadir-ciudad:hover {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+.ciudad-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 2px solid var(--secondary-blue);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.ciudad-card.principal {
+    border-color: var(--accent-yellow);
+    box-shadow: 0 4px 16px rgba(255, 217, 61, 0.3);
+}
+
+.ciudad-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30, 90, 125, 0.1);
+}
+
+.ciudad-info {
+    flex: 1;
+}
+
+.ciudad-nombre {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.ciudad-provincia {
+    font-size: 0.85rem;
+    color: var(--descriptions);
+}
+
+.ciudad-badge-principal {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+}
+
+.ciudad-acciones {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-hacer-principal {
+    background: var(--light-blue);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 0.8rem;
+    font-family: var(--font-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-hacer-principal:hover {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+.btn-eliminar-ciudad {
+    background: #fde8eb;
+    color: #b00020;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 0.8rem;
+    font-family: var(--font-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-eliminar-ciudad:hover {
+    background: #b00020;
+    color: var(--white);
+}
+
+.ciudades-vacio {
+    text-align: center;
+    color: var(--medium-gray);
+    padding: 3rem 0;
+    font-size: 1rem;
+}
