@@ -1,5 +1,6 @@
 ////////////////////////// VARIABLES //////////////////////////
 let mascotasData = [];
+let consejosUsados = {};
 
 ////////////////////////// FUNCIONES //////////////////////////
 function abrirModalMascota(mascota) {
@@ -19,6 +20,9 @@ function abrirModalMascota(mascota) {
     document.querySelector('#modal-btn-eliminar').dataset.id = mascota.id_mascota;
 
     document.querySelector('#modal-mascota').classList.add('visible');
+    //Reseteamos consejo cada vez que se abre el modal
+    document.querySelector('#modal-consejo-resultado').classList.add('oculto');
+    document.querySelector('#btn-ver-consejo').textContent = '🐾 Ver consejo';
 }
 
 function cerrarModalMascota() {
@@ -60,7 +64,7 @@ async function guardarMascota() {
         mensaje.className = 'exito';
         // Recargamos la galería
         setTimeout(function () {
-            document.querySelector('#modal-añadir').classList.remove('visible');
+            document.querySelector('#modal-anadir').classList.remove('visible');
             recargarGaleria();
         }, 1500);
     } else {
@@ -82,27 +86,7 @@ async function recargarGaleria() {
     mascotasData = datos;
 
     datos.forEach(function (mascota) {
-        const card = document.createElement('div');
-        card.classList.add('mascota-card');
-        card.dataset.id = mascota.id_mascota;
-
-        const fotoHTML = mascota.foto
-            ? '<img src="' + mascota.foto + '" alt="' + mascota.nombre + '" class="mascota-foto">'
-            : '<div class="mascota-foto-placeholder">' + (mascota.nombre_especie == 'Perro' ? '🐶' : '🐱') + '</div>';
-
-        card.innerHTML = fotoHTML + `
-            <p class="mascota-nombre">${mascota.nombre}</p>
-            <button class="btn-ver-info">Ver info</button>
-        `;
-
-        card.addEventListener('click', function () {
-            const mascotaSeleccionada = mascotasData.find(function (m) {
-                return m.id_mascota == card.dataset.id;
-            });
-            abrirModalMascota(mascotaSeleccionada);
-        });
-
-        galeria.appendChild(card);
+        galeria.appendChild(crearTarjetaMascota(mascota));
     });
 }
 
@@ -198,16 +182,16 @@ function initEscuchadoresAnadir() {
         document.querySelector('#input-sexo').value = 'macho';
         document.querySelector('#form-mascota-mensaje').className = '';
         document.querySelector('#form-mascota-mensaje').textContent = '';
-        document.querySelector('#modal-añadir').classList.add('visible');
+        document.querySelector('#modal-anadir').classList.add('visible');
     });
 
-    document.querySelector('#modal-añadir-cerrar').addEventListener('click', function () {
-        document.querySelector('#modal-añadir').classList.remove('visible');
+    document.querySelector('#modal-anadir-cerrar').addEventListener('click', function () {
+        document.querySelector('#modal-anadir').classList.remove('visible');
     });
 
-    document.querySelector('#modal-añadir').addEventListener('click', function (e) {
-        if (e.target == document.querySelector('#modal-añadir')) {
-            document.querySelector('#modal-añadir').classList.remove('visible');
+    document.querySelector('#modal-anadir').addEventListener('click', function (e) {
+        if (e.target == document.querySelector('#modal-anadir')) {
+            document.querySelector('#modal-anadir').classList.remove('visible');
         }
     });
 
@@ -276,8 +260,130 @@ function initEscuchadoresModalInfo() {
     document.querySelector('#modal-btn-eliminar').addEventListener('click', function () {
         eliminarMascota(this.dataset.id);
     });
+
+    document.querySelector('#btn-ver-consejo').addEventListener('click', function () {
+        const id = document.querySelector('#modal-btn-editar').dataset.id;
+        const mascota = mascotasData.find(function (m) {
+            return m.id_mascota == id;
+        });
+        cargarConsejoMascota(mascota);
+    });
 }
 
+async function cargarConsejoMascota(mascota) {
+    const btnConsejo = document.querySelector('#btn-ver-consejo');
+    const resultado = document.querySelector('#modal-consejo-resultado');
+
+    btnConsejo.textContent = '⏳ Cargando...';
+    btnConsejo.disabled = true;
+
+    try {
+        const resSesion = await fetch('api/sesion.php');
+        const datosSession = await resSesion.json();
+
+        if (!datosSession.latitud) {
+            resultado.innerHTML = '<p>No tienes ciudad principal configurada.</p>';
+            resultado.classList.remove('oculto');
+            return;
+        }
+
+        const urlTiempo = 'https://api.openweathermap.org/data/2.5/weather?lat=' + datosSession.latitud +
+            '&lon=' + datosSession.longitud +
+            '&appid=' + API_KEY_TIEMPO +
+            '&units=metric&lang=es&t=' + Date.now();
+
+        const resTiempo = await fetch(urlTiempo);
+        const datosTiempo = await resTiempo.json();
+
+        const codigo = datosTiempo.weather[0].id;
+        const temp = Math.round(datosTiempo.main.temp);
+        const humedad = datosTiempo.main.humidity;
+        const tipeTiempo = convertirCodigoATipo(codigo, temp, humedad);
+
+        const resConsejos = await fetch('api/consejos.php?tipo_tiempo=' + tipeTiempo);
+        const datosConsejos = await resConsejos.json();
+
+        const bloqueEspecie = datosConsejos.consejos.find(function (c) {
+            return c.nombre_mascota == mascota.nombre;
+        });
+
+        const emojiTiempo = EMOJIS_TIEMPO[tipeTiempo] || '🌡️';
+        let texto = 'Hoy no tengo consejos especiales. ¡Disfruta del día!';
+
+        if (bloqueEspecie && bloqueEspecie.textos.length > 0) {
+            const clave = mascota.id_especie + '_' + tipeTiempo;
+
+            // Inicializamos el array de usados para esta especie+tiempo si no existe
+            if (!consejosUsados[clave]) {
+                consejosUsados[clave] = [];
+            }
+
+            // Filtramos los que no se han usado aún
+            let disponibles = bloqueEspecie.textos.filter(function (t) {
+                return !consejosUsados[clave].includes(t);
+            });
+
+            // Si no quedan disponibles, reseteamos y volvemos a usar todos
+            if (disponibles.length == 0) {
+                consejosUsados[clave] = [];
+                disponibles = bloqueEspecie.textos;
+            }
+
+            // Elegimos uno aleatorio de los disponibles
+            const indice = Math.floor(Math.random() * disponibles.length);
+            texto = disponibles[indice];
+
+            // Lo marcamos como usado
+            consejosUsados[clave].push(texto);
+        }
+
+        resultado.innerHTML = `
+            <div class="consejo-header">
+                <span class="consejo-tiempo-emoji">${emojiTiempo}</span>
+                <span>${mascota.nombre} te aconseja:</span>
+            </div>
+            <p>${texto}</p>
+        `;
+        resultado.classList.remove('oculto');
+
+    } catch {
+        resultado.innerHTML = '<p>No se pudo cargar el consejo.</p>';
+        resultado.classList.remove('oculto');
+    } finally {
+        btnConsejo.textContent = '🐾 Ver consejo';
+        btnConsejo.disabled = false;
+    }
+}
+function crearTarjetaMascota(mascota) {
+    const template = document.querySelector('#template-mascota');
+    const clon = template.content.cloneNode(true);
+
+    const card = clon.querySelector('.mascota-card');
+    card.dataset.id = mascota.id_mascota;
+
+    // Foto o placeholder
+    const placeholder = clon.querySelector('.mascota-foto-placeholder');
+    if (mascota.foto) {
+        const img = document.createElement('img');
+        img.src = mascota.foto;
+        img.alt = mascota.nombre;
+        img.classList.add('mascota-foto');
+        placeholder.replaceWith(img);
+    } else {
+        placeholder.textContent = mascota.nombre_especie == 'Perro' ? '🐶' : '🐱';
+    }
+
+    clon.querySelector('.mascota-nombre').textContent = mascota.nombre;
+
+    card.addEventListener('click', function () {
+        const mascotaSeleccionada = mascotasData.find(function (m) {
+            return m.id_mascota == card.dataset.id;
+        });
+        abrirModalMascota(mascotaSeleccionada);
+    });
+
+    return clon;
+}
 async function initMisMascotas() {
     initEscuchadoresModalInfo();
     initEscuchadoresAnadir();
@@ -300,27 +406,7 @@ async function initMisMascotas() {
     }
 
     datos.forEach(function (mascota) {
-        const card = document.createElement('div');
-        card.classList.add('mascota-card');
-        card.dataset.id = mascota.id_mascota;
-
-        const fotoHTML = mascota.foto
-            ? '<img src="' + mascota.foto + '" alt="' + mascota.nombre + '" class="mascota-foto">'
-            : '<div class="mascota-foto-placeholder">' + (mascota.nombre_especie == 'Perro' ? '🐶' : '🐱') + '</div>';
-
-        card.innerHTML = fotoHTML + `
-            <p class="mascota-nombre">${mascota.nombre}</p>
-            <button class="btn-ver-info">Ver info</button>
-        `;
-
-        card.addEventListener('click', function () {
-            const mascotaSeleccionada = mascotasData.find(function (m) {
-                return m.id_mascota == card.dataset.id;
-            });
-            abrirModalMascota(mascotaSeleccionada);
-        });
-
-        galeria.appendChild(card);
+        galeria.appendChild(crearTarjetaMascota(mascota));
     });
 }
 

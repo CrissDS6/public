@@ -30,35 +30,18 @@ const EMOJIS_TIEMPO = {
     'estable': '😊'
 };
 
+let consejosUsadosVista = {};
+
 ////////////////////////// FUNCIONES //////////////////////////
-function construirFrase(nombres_mascotas, nombre_especie) {
-    const nombres = nombres_mascotas.split(',');
-    const emoji = nombre_especie == 'Perro' ? '🐶' : '🐱';
-
-    if (nombres.length == 1) {
-        return emoji + ' ' + nombres[0] + ' te aconseja...';
-    }
-
-    const ultimo = nombres.pop();
-    return emoji + ' ' + nombres.join(', ') + ' y ' + ultimo + ' te aconsejan...';
-}
-
 function convertirCodigoATipo(codigo, temp, humedad) {
-    // Condiciones meteorológicas específicas primero
     if (codigo >= 200 && codigo < 300) return 'tormenta';
     if (codigo >= 300 && codigo < 600) return 'lluvia';
     if (codigo >= 600 && codigo < 700) return 'nieve';
     if (codigo >= 700 && codigo < 760) return 'niebla';
     if (codigo == 761 || codigo == 771 || codigo == 781) return 'viento';
-
-    // Temperatura extrema
     if (temp >= 28) return 'calor';
     if (temp <= 8) return 'frio';
-
-    // Humedad alta con temperatura normal
     if (humedad >= 70) return 'humedad';
-
-    // Resto → día estable
     return 'estable';
 }
 
@@ -74,7 +57,8 @@ function obtenerEmojiConsejos(codigo) {
 }
 
 async function initConsejos() {
-    // Cargamos el tiempo de la ciudad principal
+    consejosUsadosVista = {};
+    // Cargamos datos de sesión
     const resSesion = await fetch('api/sesion.php');
     const datosSession = await resSesion.json();
 
@@ -97,8 +81,7 @@ async function initConsejos() {
     const temp = Math.round(datosTiempo.main.temp);
     const humedad = datosTiempo.main.humidity;
     const descripcion = datosTiempo.weather[0].description;
-    const tipeTiempo = convertirCodigoATipo(codigo);
-
+    const tipeTiempo = convertirCodigoATipo(codigo, temp, humedad);
 
     // Pintamos la tarjeta del clima
     document.querySelector('#consejos-ciudad').textContent = datosSession.ciudad;
@@ -118,28 +101,39 @@ async function initConsejos() {
         return;
     }
 
-    datosConsejos.consejos.forEach(function (bloque) {
-        const div = document.createElement('div');
-        div.classList.add('consejos-bloque');
+    datosConsejos.consejos.forEach(function (consejo, indice) {
+        const template = document.querySelector('#template-consejo');
+        const clon = template.content.cloneNode(true);
 
-        const frase = construirFrase(bloque.nombres_mascotas, bloque.nombre_especie);
+        const color = indice % 2 == 0 ? 'azul' : 'amarillo';
+        clon.querySelector('.consejo-card').classList.add(color);
+
+        const emoji = consejo.nombre_especie == 'Perro' ? '🐶' : '🐱';
         const emojiTiempo = EMOJIS_TIEMPO[tipeTiempo] || '🌡️';
 
-        let consejosHTML = '';
-        bloque.textos.forEach(function (texto) {
-            consejosHTML += '<div class="consejo-item">' + texto + '</div>';
+        // Elegimos consejo no repetido
+        const clave = consejo.nombre_especie + '_' + tipeTiempo;
+        if (!consejosUsadosVista[clave]) {
+            consejosUsadosVista[clave] = [];
+        }
+
+        let disponibles = consejo.textos.filter(function (t) {
+            return !consejosUsadosVista[clave].includes(t);
         });
 
-        div.innerHTML = `
-            <div class="consejos-bloque-header">
-                <span class="tiempo-icono">${emojiTiempo}</span>
-                <h3>${frase}</h3>
-            </div>
-            <div class="consejos-bloque-body">
-                ${consejosHTML}
-            </div>
-        `;
+        if (disponibles.length == 0) {
+            consejosUsadosVista[clave] = [];
+            disponibles = consejo.textos;
+        }
 
-        lista.appendChild(div);
+        const indiceAleatorio = Math.floor(Math.random() * disponibles.length);
+        const texto = disponibles[indiceAleatorio];
+        consejosUsadosVista[clave].push(texto);
+
+        clon.querySelector('.consejo-emoji-mascota').textContent = emoji;
+        clon.querySelector('.consejo-titulo').textContent = consejo.nombre_mascota + ' te aconseja... ' + emojiTiempo;
+        clon.querySelector('.consejo-texto').textContent = texto;
+
+        lista.appendChild(clon);
     });
 }

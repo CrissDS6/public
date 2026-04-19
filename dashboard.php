@@ -29,6 +29,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
     <link rel="stylesheet" href="assets/css/vistas/consejos.css">
     <link rel="stylesheet" href="assets/css/vistas/ciudades.css">
     <link rel="stylesheet" href="assets/css/vistas/foro.css">
+    <link rel="stylesheet" href="assets/css/vistas/perfil.css">
     <!-- Script  -->
     <script defer src="assets/js/dashboard.js"></script>
     <script defer src="assets/js/vistas/inicio.js"></script>
@@ -36,6 +37,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
     <script defer src="assets/js/vistas/consejos.js"></script>
     <script defer src="assets/js/vistas/ciudades.js"></script>
     <script defer src="assets/js/vistas/foro.js"></script>
+    <script defer src="assets/js/vistas/perfil.js"></script>
 </head>
 
 <body>
@@ -135,6 +137,68 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
             </div>
         </div>
     </footer>
+
+    <!-- Templates globales -->
+    <template id="template-ciudad">
+        <div class="ciudad-card">
+            <div class="ciudad-info">
+                <p class="ciudad-nombre"></p>
+                <p class="ciudad-provincia"></p>
+            </div>
+            <div class="ciudad-acciones"></div>
+        </div>
+    </template>
+
+    <template id="template-resultado">
+        <div class="resultado-item">
+            <div>
+                <strong class="resultado-nombre"></strong>
+                <span class="resultado-provincia"></span>
+            </div>
+            <button class="btn-añadir-ciudad">+ Añadir</button>
+        </div>
+    </template>
+
+    <template id="template-mascota">
+        <div class="mascota-card">
+            <div class="mascota-foto-placeholder"></div>
+            <p class="mascota-nombre"></p>
+            <button class="btn-ver-info">Ver info</button>
+        </div>
+    </template>
+
+    <template id="template-publicacion">
+        <div class="publicacion-card">
+            <div class="publicacion-header">
+                <img src="" alt="avatar" class="foro-avatar">
+                <div class="publicacion-autor">
+                    <span class="publicacion-nombre"></span>
+                    <div class="publicacion-meta">
+                        <span class="publicacion-fecha"></span>
+                        <span class="publicacion-especie-badge"></span>
+                    </div>
+                </div>
+            </div>
+            <p class="publicacion-titulo"></p>
+            <p class="publicacion-contenido"></p>
+            <div class="publicacion-footer">
+                <span class="publicacion-ubicacion"></span>
+                <button class="btn-like">❤️ <span class="like-count"></span></button>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-consejo">
+        <div class="consejo-card">
+            <div class="consejo-card-header">
+                <span class="consejo-emoji-mascota" style="font-size:1.5rem"></span>
+                <h3 class="consejo-titulo"></h3>
+            </div>
+            <div class="consejo-card-body">
+                <p class="consejo-texto"></p>
+            </div>
+        </div>
+    </template>
 
 </body>
 

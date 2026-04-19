@@ -130,3 +130,145 @@ if (window.location.search.includes('error=1')) {
     abrirModalLogin();
     document.querySelector('#modal-error').style.display = 'block';
 }
+
+// ===== MODAL REGISTRO =====
+const modalRegistro = document.querySelector('#modal-registro');
+const btnRegistrarse = document.querySelector('#btn-registrarse');
+
+// Generar avatares
+async function generarSelectorAvatares() {
+    const selector = document.querySelector('#avatar-selector');
+    selector.innerHTML = '';
+
+    const response = await fetch('api/avatares.php');
+    const { success, avatares } = await response.json();
+
+    if (!success) return;
+
+    avatares.forEach(function (nombreAvatar) {
+        const div = document.createElement('div');
+        div.classList.add('avatar-opcion');
+        div.dataset.avatar = nombreAvatar;
+
+        const img = document.createElement('img');
+        img.src = 'assets/img/avatares/' + nombreAvatar;
+        img.alt = nombreAvatar;
+        div.appendChild(img);
+
+        div.addEventListener('click', function () {
+            document.querySelectorAll('.avatar-opcion').forEach(function (a) {
+                a.classList.remove('seleccionado');
+            });
+            this.classList.add('seleccionado');
+            document.querySelector('#reg-avatar').value = this.dataset.avatar;
+        });
+
+        selector.appendChild(div);
+    });
+}
+
+// Cargar ciudades en el selector
+async function cargarCiudadesRegistro() {
+    const response = await fetch('api/ciudades_catalogo.php');
+    const { success, datos } = await response.json();
+    if (!success) return;
+
+    const select = document.querySelector('#reg-ciudad');
+    datos.forEach(function (ciudad) {
+        const option = document.createElement('option');
+        option.value = ciudad.id_ciudad;
+        option.textContent = ciudad.nombre_ciudad + ' (' + ciudad.provincia + ')';
+        select.appendChild(option);
+    });
+}
+
+// Abrir modal registro
+document.querySelectorAll('a[href="#registro"], .btn-cta, .btn-register').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        generarSelectorAvatares();
+        cargarCiudadesRegistro();
+        document.querySelector('#reg-nombre').value = '';
+        document.querySelector('#reg-email').value = '';
+        document.querySelector('#reg-password').value = '';
+        document.querySelector('#reg-password2').value = '';
+        document.querySelector('#reg-avatar').value = 'avatar_default.png';
+        document.querySelector('#reg-mensaje').textContent = '';
+        document.querySelector('#reg-mensaje').className = '';
+        modalRegistro.classList.add('visible');
+    });
+});
+
+// Cerrar modal registro
+document.querySelector('#modal-registro-cerrar').addEventListener('click', function () {
+    modalRegistro.classList.remove('visible');
+});
+
+modalRegistro.addEventListener('click', function (e) {
+    if (e.target == modalRegistro) {
+        modalRegistro.classList.remove('visible');
+    }
+});
+
+// Ir al login desde registro
+document.querySelector('#btn-ir-login').addEventListener('click', function (e) {
+    e.preventDefault();
+    modalRegistro.classList.remove('visible');
+    abrirModalLogin();
+});
+
+// Registrarse
+btnRegistrarse.addEventListener('click', async function () {
+    const nombre = document.querySelector('#reg-nombre').value.trim();
+    const email = document.querySelector('#reg-email').value.trim();
+    const password = document.querySelector('#reg-password').value;
+    const password2 = document.querySelector('#reg-password2').value;
+    const idCiudad = document.querySelector('#reg-ciudad').value;
+    const avatar = document.querySelector('#reg-avatar').value;
+    const mensaje = document.querySelector('#reg-mensaje');
+
+    // Validaciones frontend
+    if (nombre === '' || email === '' || password === '' || password2 === '') {
+        mensaje.textContent = 'Todos los campos son obligatorios';
+        mensaje.className = 'error';
+        return;
+    }
+
+    if (password !== password2) {
+        mensaje.textContent = 'Las contraseñas no coinciden';
+        mensaje.className = 'error';
+        return;
+    }
+
+    if (password.length < 6) {
+        mensaje.textContent = 'La contraseña debe tener al menos 6 caracteres';
+        mensaje.className = 'error';
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('id_ciudad', idCiudad);
+    formData.append('avatar', avatar);
+
+    const response = await fetch('api/registro.php', {
+        method: 'POST',
+        body: formData
+    });
+
+    const { success, error } = await response.json();
+
+    if (success) {
+        mensaje.textContent = '¡Cuenta creada correctamente! Ya puedes iniciar sesión.';
+        mensaje.className = 'exito';
+        setTimeout(function () {
+            modalRegistro.classList.remove('visible');
+            abrirModalLogin();
+        }, 2000);
+    } else {
+        mensaje.textContent = error || 'Error al crear la cuenta';
+        mensaje.className = 'error';
+    }
+});

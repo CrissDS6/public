@@ -68,3 +68,82 @@
     padding: 3rem 0;
     font-size: 1rem;
 }
+
+.consejo-card {
+    border-radius: 20px;
+    border: 2px solid var(--secondary-blue);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.consejo-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(30, 90, 125, 0.12);
+}
+
+.consejo-card.azul {
+    background: var(--white);
+    border-color: var(--secondary-blue);
+}
+
+.consejo-card.amarillo {
+    background: #FFFDE7;
+    border-color: #FFD93D;
+}
+
+.consejo-card-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.consejo-card.azul .consejo-card-header {
+    background: linear-gradient(135deg, #7AB8D4 0%, #4A8BA8 100%);
+}
+
+.consejo-card.amarillo .consejo-card-header {
+    background: linear-gradient(135deg, #FFE878 0%, #FFD93D 100%);
+}
+
+.consejo-card-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.consejo-card.azul .consejo-card-header h3 {
+    color: var(--white);
+}
+
+.consejo-card.amarillo .consejo-card-header h3 {
+    color: var(--primary-blue);
+}
+
+.consejo-card-body {
+    padding: 1.2rem 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.consejo-card.azul .consejo-card-body {
+    color: var(--text-dark);
+}
+
+.consejo-card.amarillo .consejo-card-body {
+    color: var(--text-dark);
+}
+
+#consejos-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.consejo-card.azul:hover .consejo-card-header {
+    background: linear-gradient(135deg, #5A9ABD 0%, #2D6A8A 100%);
+}
+
+.consejo-card.amarillo:hover .consejo-card-header {
+    background: linear-gradient(135deg, #FFD93D 0%, #E6A800 100%);
+}

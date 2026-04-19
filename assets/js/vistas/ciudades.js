@@ -14,33 +14,43 @@ function pintarCiudades(ciudades) {
         return;
     }
 
+    const template = document.querySelector('#template-ciudad');
+
     ciudades.forEach(function (ciudad) {
-        const card = document.createElement('div');
-        card.classList.add('ciudad-card');
+        const clon = template.content.cloneNode(true);
+        const card = clon.querySelector('.ciudad-card');
+
         if (ciudad.principal == 1) card.classList.add('principal');
 
         const badgePrincipal = ciudad.principal == 1
-            ? '<span class="ciudad-badge-principal">⭐ Principal</span>'
+            ? ' <span class="ciudad-badge-principal">⭐ Principal</span>'
             : '';
 
-        const btnPrincipal = ciudad.principal == 0
-            ? '<button class="btn-hacer-principal" title="Hacer principal" data-id="' + ciudad.id_ciudad + '">⭐</button>'
-            : '';
+        clon.querySelector('.ciudad-nombre').innerHTML = '📍 ' + ciudad.nombre_ciudad + badgePrincipal;
+        clon.querySelector('.ciudad-provincia').textContent = ciudad.provincia;
 
-        card.innerHTML = `
-            <div class="ciudad-info">
-                <p class="ciudad-nombre">📍 ${ciudad.nombre_ciudad} ${badgePrincipal}</p>
-                <p class="ciudad-provincia">${ciudad.provincia}</p>
-            </div>
-            <div class="ciudad-acciones">
-                ${btnPrincipal}
-                <button class="btn-eliminar-ciudad" title="Eliminar" data-id="${ciudad.id_ciudad}">🗑️</button>
-            </div>
-        `;
+        const acciones = clon.querySelector('.ciudad-acciones');
 
-        lista.appendChild(card);
+        if (ciudad.principal == 0) {
+            const btnPrincipal = document.createElement('button');
+            btnPrincipal.classList.add('btn-hacer-principal');
+            btnPrincipal.title = 'Hacer principal';
+            btnPrincipal.dataset.id = ciudad.id_ciudad;
+            btnPrincipal.textContent = '⭐';
+            acciones.appendChild(btnPrincipal);
+        }
+
+        const btnEliminar = document.createElement('button');
+        btnEliminar.classList.add('btn-eliminar-ciudad');
+        btnEliminar.title = 'Eliminar';
+        btnEliminar.dataset.id = ciudad.id_ciudad;
+        btnEliminar.textContent = '🗑️';
+        acciones.appendChild(btnEliminar);
+
+        lista.appendChild(clon);
     });
 }
+
 
 async function cargarCiudadesFavoritas() {
     const response = await fetch('api/ciudades.php');
@@ -61,22 +71,24 @@ async function buscarCiudades(texto) {
     resultados.innerHTML = '';
 
     if (!success || datos.length == 0) {
-        resultados.innerHTML = '<div class="resultado-item">No se encontraron ciudades</div>';
+        const item = document.createElement('div');
+        item.classList.add('resultado-item');
+        item.textContent = 'No se encontraron ciudades';
+        resultados.appendChild(item);
         resultados.classList.add('visible');
         return;
     }
 
+    const template = document.querySelector('#template-resultado');
+
     datos.forEach(function (ciudad) {
-        const item = document.createElement('div');
-        item.classList.add('resultado-item');
-        item.innerHTML = `
-            <div>
-                <strong>${ciudad.nombre_ciudad}</strong>
-                <span>${ciudad.provincia}</span>
-            </div>
-            <button class="btn-añadir-ciudad" data-id="${ciudad.id_ciudad}">+ Añadir</button>
-        `;
-        resultados.appendChild(item);
+        const clon = template.content.cloneNode(true);
+
+        clon.querySelector('.resultado-nombre').textContent = ciudad.nombre_ciudad;
+        clon.querySelector('.resultado-provincia').textContent = ciudad.provincia;
+        clon.querySelector('.btn-añadir-ciudad').dataset.id = ciudad.id_ciudad;
+
+        resultados.appendChild(clon);
     });
 
     resultados.classList.add('visible');

@@ -1,3 +1,63 @@
 <div id="foro-container">
-    <h2>Foro</h2>
+    <div class="vista-header">
+        <h2 class="vista-titulo">Foro de la Comunidad</h2>
+        <button class="btn-añadir" id="btn-nueva-publicacion">+ Publicar</button>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="foro-filtros">
+        <button class="btn-filtro activo" data-especie="0">Todos</button>
+        <button class="btn-filtro" data-especie="1">🐶 Perros</button>
+        <button class="btn-filtro" data-especie="2">🐱 Gatos</button>
+        <select id="filtro-provincia" class="select-provincia">
+            <option value="">Todas las provincias</option>
+        </select>
+        <button class="btn-orden" data-orden="fecha">Más recientes</button>
+        <button class="btn-orden activo-orden" data-orden="likes">Más valorados</button>
+    </div>
+
+    <!-- LISTA DE PUBLICACIONES -->
+    <div id="lista-publicaciones"></div>
+</div>
+
+<!-- MODAL NUEVA PUBLICACION -->
+<div id="modal-publicacion" class="modal-overlay">
+    <div class="modal-form-contenido">
+        <div class="modal-form-header">
+            <h2>Nuevo Aviso</h2>
+            <button id="modal-publicacion-cerrar" class="modal-cerrar">&times;</button>
+        </div>
+        <div class="modal-form-body">
+            <div class="form-group">
+                <label for="pub-titulo">Título</label>
+                <input type="text" id="pub-titulo" placeholder="Título del aviso" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pub-especie">Especie</label>
+                <select id="pub-especie">
+                    <option value="1">🐶 Perro</option>
+                    <option value="2">🐱 Gato</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pub-ciudad">Ciudad</label>
+                <input type="text" id="pub-ciudad" placeholder="Tu ciudad">
+            </div>
+
+            <div class="form-group">
+                <label for="pub-provincia">Provincia</label>
+                <input type="text" id="pub-provincia" placeholder="Tu provincia">
+            </div>
+
+            <div class="form-group">
+                <label for="pub-contenido">Contenido</label>
+                <textarea id="pub-contenido" rows="4" placeholder="Describe el aviso..."></textarea>
+            </div>
+
+            <div id="pub-mensaje"></div>
+            <button id="btn-enviar-publicacion" class="btn-guardar">Enviar aviso</button>
+        </div>
+    </div>
 </div>

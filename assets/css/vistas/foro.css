@@ -1,0 +1,242 @@
+/* ===== VISTA FORO ===== */
+#foro-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.foro-filtros {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-filtro {
+    background: var(--white);
+    color: var(--primary-blue);
+    border: 2px solid var(--secondary-blue);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-filtro:hover,
+.btn-filtro.activo {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+.btn-orden {
+    background: var(--white);
+    color: var(--descriptions);
+    border: 2px solid var(--medium-gray);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.btn-orden:hover,
+.btn-orden.activo-orden {
+    background: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+.publicacion-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 2px solid var(--secondary-blue);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    margin-bottom: 1.2rem;
+}
+
+.publicacion-card:hover {
+    border-color: var(--accent-yellow);
+    box-shadow: 0 8px 24px rgba(255, 217, 61, 0.2);
+    transform: translateY(-2px);
+}
+
+.publicacion-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.publicacion-autor {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.publicacion-nombre {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary-blue);
+}
+
+.publicacion-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.8rem;
+    color: var(--medium-gray);
+}
+
+.publicacion-especie-badge {
+    background: var(--light-blue);
+    color: var(--primary-blue);
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.publicacion-titulo {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.publicacion-contenido {
+    font-size: 0.92rem;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.publicacion-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.publicacion-ubicacion {
+    font-size: 0.82rem;
+    color: var(--medium-gray);
+}
+
+.btn-like {
+    background: none;
+    border: 2px solid var(--medium-gray);
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--medium-gray);
+}
+
+.btn-like:hover,
+.btn-like.liked {
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+    background: #fff0f0;
+}
+
+.foro-vacio {
+    text-align: center;
+    color: var(--medium-gray);
+    padding: 3rem 0;
+    font-size: 1rem;
+}
+
+.pub-pendiente-msg {
+    background: #FFF9E6;
+    border: 1px solid var(--accent-yellow);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    text-align: center;
+}
+
+#pub-mensaje.exito {
+    color: #2d7a2d;
+    background-color: #e6f4e6;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+#pub-mensaje.error {
+    color: #b00020;
+    background-color: #fde8eb;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+#pub-contenido {
+    border: 2px solid var(--light-gray);
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    width: 100%;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+#pub-contenido:focus {
+    outline: none;
+    border-color: var(--secondary-blue);
+}
+
+.foro-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 2px solid var(--secondary-blue);
+    flex-shrink: 0;
+}
+
+.publicacion-autor {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.select-provincia {
+    border: 2px solid var(--secondary-blue);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.select-provincia:focus {
+    border-color: var(--primary-blue);
+}

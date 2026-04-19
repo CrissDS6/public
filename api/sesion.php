@@ -23,13 +23,20 @@ $resultado = $stmt->get_result();
 $ciudad = $resultado->fetch_assoc();
 $stmt->close();
 
+// Obtenemos el avatar del usuario
+$sql = "SELECT avatar FROM usuarios WHERE id_usuario = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('i', $id_usuario);
+$stmt->execute();
+$usuario = $stmt->get_result()->fetch_assoc();
+$stmt->close();
 $nombreUsuario = $_SESSION['usuario_nombre'];
 $primerNombre = explode(' ', $nombreUsuario)[0];
 
 enviarRespuesta($conn, [
     'success'   => true,
     'nombre'    => $primerNombre,
-    'avatar'    => $_SESSION['usuario_avatar'] ?? 'avatar1.png',
+    'avatar' => $usuario['avatar'] ?? 'avatar_default.png',
     'ciudad'    => $ciudad ? $ciudad['nombre_ciudad'] : null,
     'latitud'   => $ciudad ? $ciudad['latitud'] : null,
     'longitud'  => $ciudad ? $ciudad['longitud'] : null

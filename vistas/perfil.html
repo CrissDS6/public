@@ -1,0 +1,52 @@
+<div id="perfil-container">
+
+    <div class="vista-header">
+        <h2 class="vista-titulo">Mi Perfil</h2>
+    </div>
+
+    <!-- AVATAR -->
+    <div class="perfil-card">
+        <h3 class="perfil-seccion-titulo">Mi avatar</h3>
+        <div class="perfil-avatar-section">
+            <img id="perfil-avatar-actual" src="" alt="avatar" class="perfil-avatar-img">
+            <div class="avatar-selector" id="perfil-avatar-selector"></div>
+        </div>
+        <button class="btn-guardar-perfil" id="btn-guardar-avatar">Guardar</button>
+        <div id="msg-avatar"></div>
+    </div>
+
+    <!-- DATOS PERSONALES -->
+    <div class="perfil-card">
+        <h3 class="perfil-seccion-titulo">Datos personales</h3>
+        <div class="form-group">
+            <label for="perfil-nombre">Nombre completo</label>
+            <input type="text" id="perfil-nombre" placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+            <label for="perfil-email">Correo electrónico</label>
+            <input type="email" id="perfil-email" disabled>
+        </div>
+        <button class="btn-guardar-perfil" id="btn-guardar-datos">Guardar</button>
+        <div id="msg-datos"></div>
+    </div>
+
+    <!-- CAMBIAR CONTRASEÑA -->
+    <div class="perfil-card">
+        <h3 class="perfil-seccion-titulo">Cambiar contraseña</h3>
+        <div class="form-group">
+            <label for="perfil-pass-actual">Contraseña actual</label>
+            <input type="password" id="perfil-pass-actual" placeholder="Tu contraseña actual">
+        </div>
+        <div class="form-group">
+            <label for="perfil-pass-nueva">Nueva contraseña</label>
+            <input type="password" id="perfil-pass-nueva" placeholder="Mínimo 6 caracteres">
+        </div>
+        <div class="form-group">
+            <label for="perfil-pass-confirmar">Confirmar nueva contraseña</label>
+            <input type="password" id="perfil-pass-confirmar" placeholder="Repite la nueva contraseña">
+        </div>
+        <button class="btn-guardar-perfil" id="btn-guardar-password">Cambiar</button>
+        <div id="msg-password"></div>
+    </div>
+
+</div>

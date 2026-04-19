@@ -9,46 +9,45 @@ if (!isset($_SESSION['usuario_id'])) {
 $id_usuario = $_SESSION['usuario_id'];
 $conn = obtenerConexion();
 
-// Obtenemos las especies del usuario con los nombres de sus mascotas
-$sql = "SELECT e.id_especie, e.nombre_especie, GROUP_CONCAT(m.nombre ORDER BY m.nombre SEPARATOR ',') AS nombres
+// Obtenemos el tipo_tiempo solicitado por GET
+$tipo_tiempo = isset($_GET['tipo_tiempo']) ? $_GET['tipo_tiempo'] : 'estable';
+
+// Tipos válidos según el ENUM de la tabla
+$tipos_validos = ['calor', 'frio', 'lluvia', 'viento', 'nieve', 'tormenta', 'humedad', 'niebla', 'estable'];
+if (!in_array($tipo_tiempo, $tipos_validos)) {
+    $tipo_tiempo = 'estable';
+}
+
+// Obtenemos las mascotas del usuario con su especie
+$sql = "SELECT m.id_mascota, m.nombre, e.id_especie, e.nombre_especie
         FROM mascotas m
         JOIN especies e ON m.id_especie = e.id_especie
         WHERE m.id_usuario = ?
-        GROUP BY e.id_especie, e.nombre_especie";
+        ORDER BY m.nombre ASC";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $id_usuario);
 $stmt->execute();
 $resultado = $stmt->get_result();
 
-$especies = [];
+$mascotas = [];
 while ($fila = $resultado->fetch_assoc()) {
-    $especies[] = $fila;
+    $mascotas[] = $fila;
 }
 $stmt->close();
 
-if (empty($especies)) {
-    enviarRespuesta($conn, ['success' => true, 'especies' => [], 'consejos' => []]);
+if (empty($mascotas)) {
+    enviarRespuesta($conn, ['success' => true, 'consejos' => []]);
 }
 
-// Obtenemos el tipo_tiempo solicitado por GET
-$tipo_tiempo = isset($_GET['tipo_tiempo']) ? $_GET['tipo_tiempo'] : 'calor';
-
-// Tipos válidos según el ENUM de la tabla
-$tipos_validos = ['calor', 'frio', 'lluvia', 'viento', 'nieve', 'tormenta', 'humedad', 'niebla', 'estable'];
-if (!in_array($tipo_tiempo, $tipos_validos)) {
-    $tipo_tiempo = 'calor';
-}
-
-// Obtenemos los consejos para cada especie del usuario
+// Para cada mascota obtenemos un consejo aleatorio de su especie
 $consejos = [];
-foreach ($especies as $especie) {
+foreach ($mascotas as $mascota) {
     $sql = "SELECT texto_consejo FROM consejos_especificos
             WHERE id_especie = ? AND tipo_tiempo = ?
-            ORDER BY RAND()
-            LIMIT 2";
+            ORDER BY RAND()";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('is', $especie['id_especie'], $tipo_tiempo);
+    $stmt->bind_param('is', $mascota['id_especie'], $tipo_tiempo);
     $stmt->execute();
     $resultado = $stmt->get_result();
 
@@ -59,15 +58,14 @@ foreach ($especies as $especie) {
     $stmt->close();
 
     $consejos[] = [
-        'id_especie'    => $especie['id_especie'],
-        'nombre_especie' => $especie['nombre_especie'],
-        'nombres_mascotas' => $especie['nombres'],
-        'textos'        => $textos
+        'nombre_mascota'  => $mascota['nombre'],
+        'nombre_especie'  => $mascota['nombre_especie'],
+        'textos'          => $textos
     ];
 }
 
 enviarRespuesta($conn, [
-    'success'    => true,
+    'success'     => true,
     'tipo_tiempo' => $tipo_tiempo,
-    'consejos'   => $consejos
+    'consejos'    => $consejos
 ]);
