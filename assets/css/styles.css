@@ -1181,6 +1181,22 @@ button.nav-link {
     text-align: center;
 }
 
+.forum-avatar-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 2px solid var(--secondary-blue);
+    background-color: var(--light-gray);
+}
+
+.forum-especie {
+    color: var(--medium-gray);
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    display: block;
+}
+
 @media (max-width: 600px) {
     .registro-grid {
         grid-template-columns: 1fr;

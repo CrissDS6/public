@@ -73,7 +73,7 @@
                 </div>
                 <div class="hero-image-wrapper">
                     <div class="hero-image-container">
-                        <img src="assets/img/ui/imagen-hero.png" alt="Perro y gato" class="hero-image">
+                        <img src="assets/img/ui/imagen-hero.jpg" alt="Perro y gato" class="hero-image">
 
                     </div>
                 </div>
@@ -141,35 +141,22 @@
                 <p class="section-subtitle">Participa en las conversaciones de nuestra comunidad</p>
             </div>
 
-            <div class="forum-grid">
+            <div class="forum-grid" id="foro-landing"></div>
+            <template id="template-foro-landing">
                 <div class="forum-card">
                     <div class="forum-avatar">
-                        <span class="avatar-icon">👤</span>
+                        <img src="" alt="avatar" class="forum-avatar-img">
                     </div>
                     <div class="forum-content">
                         <div class="forum-header">
-                            <h6>@LUNADOGS</h6>
-                            <small class="text-muted">Hace 2h</small>
+                            <h6 class="forum-nombre"></h6>
+                            <small class="text-muted forum-fecha"></small>
                         </div>
-                        <p>¿Alguien sabe si es seguro pasear con esta temperatura? Mi Golden se
-                            cansa rápido.</p>
+                        <p class="forum-texto"></p>
+                        <small class="forum-especie"></small>
                     </div>
                 </div>
-
-                <div class="forum-card forum-card-highlight">
-                    <div class="forum-avatar">
-                        <span class="avatar-icon">👤</span>
-                    </div>
-                    <div class="forum-content">
-                        <div class="forum-header">
-                            <h6>@PETCARE_MOM</h6>
-                            <small class="text-muted">Hace 5h</small>
-                        </div>
-                        <p>"Con humedad alta es mejor reducir el tiempo de paseo. Revisa la sección de
-                            Alertas para más detalles."</p>
-                    </div>
-                </div>
-            </div>
+            </template>
 
             <div class="text-center">
                 <a href="#foro" class="btn-outline-primary">

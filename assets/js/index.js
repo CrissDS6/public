@@ -272,3 +272,41 @@ btnRegistrarse.addEventListener('click', async function () {
         mensaje.className = 'error';
     }
 });
+
+// ===== FORO LANDING =====
+function formatearFechaLanding(fechaStr) {
+    const fecha = new Date(fechaStr);
+    const ahora = new Date();
+    const diff = Math.floor((ahora - fecha) / 1000);
+
+    if (diff < 60) return 'Hace un momento';
+    if (diff < 3600) return 'Hace ' + Math.floor(diff / 60) + 'm';
+    if (diff < 86400) return 'Hace ' + Math.floor(diff / 3600) + 'h';
+    if (diff < 604800) return 'Hace ' + Math.floor(diff / 86400) + 'd';
+    return fecha.toLocaleDateString('es-ES');
+}
+
+async function cargarForoLanding() {
+    const response = await fetch('api/foro_publico.php');
+    const { success, datos } = await response.json();
+
+    if (!success || datos.length == 0) return;
+
+    const contenedor = document.querySelector('#foro-landing');
+    const template = document.querySelector('#template-foro-landing');
+
+    datos.forEach(function (pub) {
+        const clon = template.content.cloneNode(true);
+
+        clon.querySelector('.forum-avatar-img').src = 'assets/img/avatares/' + (pub.avatar || 'avatar_default.png');
+        clon.querySelector('.forum-avatar-img').alt = pub.nombre_usuario;
+        clon.querySelector('.forum-nombre').textContent = pub.nombre_usuario;
+        clon.querySelector('.forum-fecha').textContent = formatearFechaLanding(pub.fecha_envio);
+        clon.querySelector('.forum-texto').textContent = pub.contenido;
+        clon.querySelector('.forum-especie').textContent = (pub.nombre_especie == 'Perro' ? '🐶' : '🐱') + ' ' + pub.nombre_especie + ' · ❤️ ' + pub.likes;
+
+        contenedor.appendChild(clon);
+    });
+}
+
+cargarForoLanding();
