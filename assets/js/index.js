@@ -310,3 +310,9 @@ async function cargarForoLanding() {
 }
 
 cargarForoLanding();
+
+if (window.location.search.includes('registro=1')) {
+    generarSelectorAvatares();
+    cargarCiudadesRegistro();
+    document.querySelector('#modal-registro').classList.add('visible');
+}

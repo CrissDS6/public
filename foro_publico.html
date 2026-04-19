@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro - MeteoPet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/foro_publico.css">
+    <script defer src="assets/js/foro_publico.js"></script>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo-icon">
+                    <img src="assets/img/ui/logo.png" alt="logo_meteopet">
+                </div>
+                <div class="logo-title">
+                    <img src="assets/img/ui/titulo_logo.png" alt="titulo Meteopet">
+                </div>
+            </a>
+            <button class="navbar-toggler" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="foro_publico.html">Foro</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="btn-abrir-login">Iniciar sesión</button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn-register" href="index.html?registro=1">Regístrate</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BANNER REGISTRO -->
+    <div class="foro-publico-banner">
+        <div class="container">
+            <p>🐾 <strong>¿Quieres participar?</strong> Regístrate gratis para publicar avisos y dar likes.</p>
+            <a href="index.html?registro=1" class="btn-banner">Crear cuenta gratis</a>
+        </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <main class="foro-publico-main">
+        <div class="container">
+            <div class="vista-header">
+                <h2 class="section-title">Foro de la Comunidad</h2>
+            </div>
+
+            <!-- FILTROS -->
+            <div class="foro-filtros">
+                <button class="btn-filtro activo" data-especie="0">Todos</button>
+                <button class="btn-filtro" data-especie="1">🐶 Perros</button>
+                <button class="btn-filtro" data-especie="2">🐱 Gatos</button>
+                <select id="filtro-provincia" class="select-provincia">
+                    <option value="">Todas las provincias</option>
+                </select>
+                <button class="btn-orden" data-orden="fecha">Más recientes</button>
+                <button class="btn-orden activo-orden" data-orden="likes">Más valorados</button>
+            </div>
+
+            <div id="lista-publicaciones-publico"></div>
+        </div>
+    </main>
+
+    <!-- TEMPLATE -->
+    <template id="template-pub-publico">
+        <div class="publicacion-card">
+            <div class="publicacion-header">
+                <img src="" alt="avatar" class="foro-avatar">
+                <div class="publicacion-autor">
+                    <span class="publicacion-nombre"></span>
+                    <div class="publicacion-meta">
+                        <span class="publicacion-fecha"></span>
+                        <span class="publicacion-especie-badge"></span>
+                    </div>
+                </div>
+            </div>
+            <p class="publicacion-titulo"></p>
+            <p class="publicacion-contenido"></p>
+            <div class="publicacion-footer">
+                <span class="publicacion-ubicacion"></span>
+                <span class="pub-likes">❤️ <span class="like-count"></span></span>
+            </div>
+        </div>
+    </template>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <img src="assets/img/ui/titulo_logoGris.png" alt="Meteopet" class="footer-title">
+                    </div>
+                    <p class="text-light-gray">Cuidando de tus mascotas inteligentemente.</p>
+                </div>
+                <div class="footer-col footer-col-center">
+                    <h6>Síguenos</h6>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook">f</a>
+                        <a href="#" aria-label="Equis">𝕏</a>
+                        <a href="#" aria-label="Instagram"><img src="assets/img/ui/instagram.png" alt="instagram"></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h6>Contacto</h6>
+                    <ul class="footer-links">
+                        <li><span class="footer-icon-small">✉</span> info@meteopet.com</li>
+                        <li><span class="footer-icon-small">📍</span> Zafra, Badajoz</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="footer-bottom">
+                <p>© 2026 MeteoPet. Hecho con <span class="heart">❤️</span> para tus mascotas.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL LOGIN -->
+    <div id="modal-login" class="modal-overlay">
+        <div class="modal-login-contenido">
+            <button id="modal-login-cerrar" class="modal-cerrar">&times;</button>
+            <div class="modal-login-left">
+                <div class="modal-pet-icon">
+                    <img src="assets/img/ui/iconoInicioSesion.png" alt="">
+                </div>
+                <h2>¡Bienvenido de vuelta!</h2>
+                <p>Tus peludos te están esperando.</p>
+            </div>
+            <div class="modal-login-right">
+                <h1>Iniciar Sesión</h1>
+                <p class="modal-subtitulo">Accede a tu cuenta de MeteoPet</p>
+                <div id="modal-error" class="modal-error-msg" style="display:none;">
+                    Email o contraseña incorrectos.
+                </div>
+                <form method="POST" action="auth/login_process.php">
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">✉️</span>
+                            <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="password" name="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-login">
+                        <span>🐾</span> Iniciar Sesión
+                    </button>
+                </form>
+                <p class="register-link">
+                    ¿No tienes cuenta? <a href="index.html#registro">Regístrate gratis</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

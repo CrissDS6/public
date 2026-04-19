@@ -1,0 +1,194 @@
+.foro-publico-banner {
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+    padding: 1rem 0;
+}
+
+.foro-publico-banner .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.foro-publico-banner p {
+    color: var(--white);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.btn-banner {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-banner:hover {
+    background: var(--accent-orange);
+    color: var(--white);
+}
+
+.foro-publico-main {
+    padding: 2rem 0;
+    min-height: 60vh;
+    background: var(--light-gray);
+}
+
+.foro-publico-main .foro-filtros {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.pub-likes {
+    font-size: 0.85rem;
+    color: var(--medium-gray);
+    font-weight: 600;
+}
+
+.publicacion-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 2px solid var(--secondary-blue);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    margin-bottom: 1.2rem;
+}
+
+.publicacion-card:hover {
+    border-color: var(--accent-yellow);
+    box-shadow: 0 8px 24px rgba(255, 217, 61, 0.2);
+    transform: translateY(-2px);
+}
+
+.publicacion-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.foro-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 2px solid var(--secondary-blue);
+    flex-shrink: 0;
+    background-color: var(--light-gray);
+}
+
+.publicacion-autor {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.publicacion-nombre {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary-blue);
+}
+
+.publicacion-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.8rem;
+    color: var(--medium-gray);
+}
+
+.publicacion-especie-badge {
+    background: var(--light-blue);
+    color: var(--primary-blue);
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.publicacion-titulo {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.publicacion-contenido {
+    font-size: 0.92rem;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.publicacion-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.publicacion-ubicacion {
+    font-size: 0.82rem;
+    color: var(--medium-gray);
+}
+
+.btn-filtro {
+    background: var(--white);
+    color: var(--primary-blue);
+    border: 2px solid var(--secondary-blue);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-filtro:hover,
+.btn-filtro.activo {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+.btn-orden {
+    background: var(--white);
+    color: var(--descriptions);
+    border: 2px solid var(--medium-gray);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.btn-orden:hover,
+.btn-orden.activo-orden {
+    background: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+.select-provincia {
+    border: 2px solid var(--secondary-blue);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    background: var(--white);
+    cursor: pointer;
+    outline: none;
+}
