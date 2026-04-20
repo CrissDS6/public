@@ -1,6 +1,6 @@
 /* ===== VISTA PERFIL ===== */
 #perfil-container {
-    max-width: 700px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 2rem 1rem;
     display: flex;
@@ -146,6 +146,12 @@
 #perfil-avatar-selector .avatar-opcion.seleccionado {
     border-color: var(--accent-yellow);
     box-shadow: 0 0 0 2px var(--accent-yellow);
+}
+
+.password-requisitos {
+    color: var(--medium-gray);
+    font-size: 0.78rem;
+    margin-top: 0.2rem;
 }
 
 @media (max-width: 600px) {

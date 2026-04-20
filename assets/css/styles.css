@@ -33,7 +33,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -606,20 +606,22 @@ body {
 }
 
 .text-light-gray {
-    color: var(--medium-gray);
+    color: var(--white);
     margin-bottom: 1.5rem;
     max-width: 250px;
     margin-top: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .footer-col h6 {
-    color: var(--medium-gray);
+    color: var(--white);
     margin-bottom: 1rem;
     font-size: 1.1rem;
     font-weight: 600;
     height: 80px;
     display: flex;
     align-items: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .footer-col-center {
@@ -650,6 +652,7 @@ body {
     font-size: 1.2rem;
     text-decoration: none;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .social-links a:hover {
@@ -671,7 +674,7 @@ body {
 
 .footer-links li {
     margin-bottom: 0.8rem;
-    color: var(--medium-gray);
+    color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -679,7 +682,7 @@ body {
 }
 
 .footer-links a {
-    color: var(--medium-gray);
+    color: var(--white);
     text-decoration: none;
     transition: all 0.3s ease;
     display: flex;
@@ -891,7 +894,7 @@ body {
 }
 
 .modal-subtitulo {
-    color: var(--medium-gray);
+    color: #78909C;
     font-size: 0.9rem;
     margin-bottom: 1rem;
 }
@@ -951,7 +954,7 @@ body {
 
 .register-link {
     text-align: center;
-    color: var(--medium-gray);
+    color: #78909C;
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }
@@ -1197,6 +1200,12 @@ button.nav-link {
     display: block;
 }
 
+.password-requisitos {
+    color: #78909C;
+    font-size: 0.78rem;
+    margin-top: 0.2rem;
+}
+
 @media (max-width: 600px) {
     .registro-grid {
         grid-template-columns: 1fr;
@@ -1207,6 +1216,121 @@ button.nav-link {
     }
 
     .modal-registro-body {
+        padding: 1.5rem;
+    }
+}
+
+/* ===== MODAL CONTACTO ===== */
+.modal-contacto-contenido {
+    background: var(--white);
+    border-radius: 24px;
+    overflow: hidden;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-contacto-header {
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+    padding: 2rem 2.5rem 1.5rem;
+    text-align: center;
+}
+
+.modal-contacto-header h2 {
+    color: var(--white);
+    font-size: 1.6rem;
+    margin-bottom: 0.3rem;
+}
+
+.modal-contacto-header p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+}
+
+.modal-contacto-body {
+    padding: 2rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contacto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.contacto-full {
+    grid-column: 1 / -1;
+}
+
+.modal-contacto-body .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.modal-contacto-body label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.modal-contacto-body input[type="text"],
+.modal-contacto-body input[type="email"],
+.modal-contacto-body select,
+.modal-contacto-body textarea {
+    border: 2px solid var(--light-gray);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    background: var(--light-gray);
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.modal-contacto-body input:focus,
+.modal-contacto-body select:focus,
+.modal-contacto-body textarea:focus {
+    outline: none;
+    border-color: var(--secondary-blue);
+    background: var(--white);
+}
+
+.modal-contacto-body textarea {
+    resize: vertical;
+}
+
+#contacto-msg.exito {
+    color: #2d7a2d;
+    background-color: #e6f4e6;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+#contacto-msg.error {
+    color: #b00020;
+    background-color: #fde8eb;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .contacto-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-contacto-body {
         padding: 1.5rem;
     }
 }

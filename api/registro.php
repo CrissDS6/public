@@ -28,8 +28,17 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     enviarError(400, 'El email no tiene un formato válido');
 }
 
-if (strlen($password) < 6) {
-    enviarError(400, 'La contraseña debe tener al menos 6 caracteres');
+if (strlen($password) < 8) {
+    enviarError(400, 'La contraseña debe tener al menos 8 caracteres');
+}
+if (!preg_match('/[A-Z]/', $password)) {
+    enviarError(400, 'La contraseña debe contener al menos una mayúscula');
+}
+if (!preg_match('/[0-9]/', $password)) {
+    enviarError(400, 'La contraseña debe contener al menos un número');
+}
+if (!preg_match('/[!@#$%^&*()_+\-=\[\]{};\':"\\|,.<>\/?]/', $password)) {
+    enviarError(400, 'La contraseña debe contener al menos un carácter especial');
 }
 
 $conn = obtenerConexion();

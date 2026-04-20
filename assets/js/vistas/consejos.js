@@ -27,7 +27,8 @@ const EMOJIS_TIEMPO = {
     'calor': '🌡️',
     'humedad': '💧',
     'frio': '🥶',
-    'estable': '😊'
+    'estable': '😊',
+    'calima': '🟡'
 };
 
 let consejosUsadosVista = {};
@@ -37,8 +38,10 @@ function convertirCodigoATipo(codigo, temp, humedad) {
     if (codigo >= 200 && codigo < 300) return 'tormenta';
     if (codigo >= 300 && codigo < 600) return 'lluvia';
     if (codigo >= 600 && codigo < 700) return 'nieve';
-    if (codigo >= 700 && codigo < 760) return 'niebla';
-    if (codigo == 761 || codigo == 771 || codigo == 781) return 'viento';
+    if (codigo >= 700 && codigo < 730) return 'niebla';
+    if (codigo == 731 || codigo == 751 || codigo == 761) return 'calima';
+    if (codigo >= 732 && codigo < 800) return 'niebla';
+    if (codigo == 771 || codigo == 781) return 'viento';
     if (temp >= 28) return 'calor';
     if (temp <= 8) return 'frio';
     if (humedad >= 70) return 'humedad';

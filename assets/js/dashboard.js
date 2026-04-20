@@ -5,7 +5,8 @@ const rutas = {
     'consejos': 'vistas/consejos.html',
     'ciudades': 'vistas/ciudades.html',
     'foro': 'vistas/foro.html',
-    'perfil': 'vistas/perfil.html'
+    'perfil': 'vistas/perfil.html',
+    'admin': 'vistas/admin.html'
 };
 
 const API_KEY_TIEMPO = '6503d50520029d03c68708a566d29cbe';
@@ -45,6 +46,7 @@ async function cargarVista(nombre) {
     else if (nombre == 'ciudades') initCiudades();
     else if (nombre == 'foro') initForo();
     else if (nombre == 'perfil') initPerfil();
+    else if (nombre == 'admin') initAdmin();
 }
 
 ////////////////////////// LLAMADAS //////////////////////////

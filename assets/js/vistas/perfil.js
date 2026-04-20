@@ -2,6 +2,15 @@
 let avatarSeleccionado = '';
 
 ////////////////////////// FUNCIONES //////////////////////////
+function validarPassword(password) {
+    const errores = [];
+    if (password.length < 8) errores.push('al menos 8 caracteres');
+    if (!/[A-Z]/.test(password)) errores.push('una mayúscula');
+    if (!/[0-9]/.test(password)) errores.push('un número');
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) errores.push('un carácter especial');
+    return errores;
+}
+
 function mostrarMensaje(idElemento, texto, tipo) {
     const el = document.querySelector(idElemento);
     el.textContent = texto;
@@ -97,6 +106,7 @@ async function guardarPassword() {
     const passActual = document.querySelector('#perfil-pass-actual').value;
     const passNueva = document.querySelector('#perfil-pass-nueva').value;
     const passConfirmar = document.querySelector('#perfil-pass-confirmar').value;
+    const erroresPass = validarPassword(passNueva);
 
     if (passActual === '' || passNueva === '' || passConfirmar === '') {
         mostrarMensaje('#msg-password', 'Todos los campos son obligatorios', 'error');
@@ -108,8 +118,8 @@ async function guardarPassword() {
         return;
     }
 
-    if (passNueva.length < 6) {
-        mostrarMensaje('#msg-password', 'La contraseña debe tener al menos 6 caracteres', 'error');
+    if (erroresPass.length > 0) {
+        mostrarMensaje('#msg-password', 'La contraseña debe tener ' + erroresPass.join(', '), 'error');
         return;
     }
 

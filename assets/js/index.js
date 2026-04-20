@@ -1,25 +1,24 @@
+////////////////////////// CONSTANTES //////////////////////////
 const API_KEY = '6503d50520029d03c68708a566d29cbe';
 const URL_API = 'https://api.openweathermap.org/data/2.5/weather';
-const modalLogin = document.querySelector('#modal-login');
-const btnAbrirLogin = document.querySelector('#btn-abrir-login');
-const btnCerrarLogin = document.querySelector('#modal-login-cerrar');
 
-// Emojis según el código de condición de OpenWeatherMap
+////////////////////////// FUNCIONES //////////////////////////
 function obtenerEmoji(codigo) {
-    if (codigo >= 200 && codigo < 300) return '⛈️';// Tormenta eléctrica
-    if (codigo >= 300 && codigo < 400) return '🌦️';// Llovizna
-    if (codigo >= 500 && codigo < 600) return '🌧️';// Lluvia
-    if (codigo >= 600 && codigo < 700) return '❄️';// Nieve
-    if (codigo >= 700 && codigo < 800) return '🌫️';// Atmósfera (niebla, bruma, polvo...)
-    if (codigo === 800) return '☀️'; // Cielo despejado
-    if (codigo === 801) return '🌤️'; // Pocas nubes (11-25%)
-    if (codigo >= 802) return '☁️'; // Nublado (802=25-50%, 803=50-84%, 804=+85%)
+    if (codigo >= 200 && codigo < 300) return '⛈️'; // Tormenta eléctrica
+    if (codigo >= 300 && codigo < 400) return '🌦️'; // Llovizna
+    if (codigo >= 500 && codigo < 600) return '🌧️'; // Lluvia
+    if (codigo >= 600 && codigo < 700) return '❄️';  // Nieve
+    if (codigo == 731 || codigo == 751 || codigo == 761) return '🟤'; // Calima
+    if (codigo >= 700 && codigo < 800) return '🌫️'; // Atmósfera (niebla, bruma, polvo...)
+    if (codigo === 800) return '☀️';                 // Cielo despejado
+    if (codigo === 801) return '🌤️';                // Pocas nubes (11-25%)
+    if (codigo >= 802) return '☁️';                 // Nublado (802=25-50%, 803=50-84%, 804=+85%)
     return '🌡️';
 }
 
 async function cargarTiempo(lat, lon, nombreCiudad) {
     try {
-        const url = URL_API + '?lat=' + lat + '&lon=' + lon + '&appid=' + API_KEY + '&units=metric&lang=es';
+        const url = URL_API + '?lat=' + lat + '&lon=' + lon + '&appid=' + API_KEY + '&units=metric&lang=es&t=' + Date.now();
         const res = await fetch(url);
         const datos = await res.json();
 
@@ -39,103 +38,28 @@ async function cargarTiempo(lat, lon, nombreCiudad) {
 }
 
 function iniciarWidget() {
-    // Intentamos geolocalización
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function (position) {
-                // Si acepta, usamos sus coordenadas
                 cargarTiempo(position.coords.latitude, position.coords.longitude, null);
             },
             function () {
-                // Si rechaza, usamos Zafra por defecto
                 cargarTiempo(38.4226, -6.4175, 'Zafra');
             }
         );
     } else {
-        // Si el navegador no soporta geolocalización
         cargarTiempo(38.4226, -6.4175, 'Zafra');
     }
 }
 
-iniciarWidget();
-
-// ===== MENÚ MÓVIL =====
-const menuToggle = document.querySelector('#menuToggle');
-const navbarNav = document.querySelector('#navbarNav');
-
-menuToggle.addEventListener('click', function () {
-    navbarNav.classList.toggle('active');
-    menuToggle.classList.toggle('active');
-});
-
-document.querySelectorAll('.nav-link:not(#btn-abrir-login), .btn-register').forEach(function (link) {
-    link.addEventListener('click', function () {
-        navbarNav.classList.remove('active');
-        menuToggle.classList.remove('active');
-    });
-});
-
-// ===== SMOOTH SCROLL =====
-document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href === '#') return;
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    });
-});
-
-// ===== NAVBAR SCROLL =====
-window.addEventListener('scroll', function () {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-});
-
-// ===== MODAL LOGIN =====
-
-
 function abrirModalLogin() {
-    modalLogin.classList.add('visible');
+    document.querySelector('#modal-login').classList.add('visible');
 }
 
 function cerrarModalLogin() {
-    modalLogin.classList.remove('visible');
+    document.querySelector('#modal-login').classList.remove('visible');
 }
 
-btnAbrirLogin.addEventListener('click', function (e) {
-    e.preventDefault();
-    abrirModalLogin();
-});
-
-btnCerrarLogin.addEventListener('click', function () {
-    cerrarModalLogin();
-});
-
-// Cerrar al hacer click fuera del modal
-modalLogin.addEventListener('click', function (e) {
-    if (e.target == modalLogin) {
-        cerrarModalLogin();
-    }
-});
-
-// Si hay error de login, abrir el modal con el mensaje
-if (window.location.search.includes('error=1')) {
-    abrirModalLogin();
-    document.querySelector('#modal-error').style.display = 'block';
-}
-
-// ===== MODAL REGISTRO =====
-const modalRegistro = document.querySelector('#modal-registro');
-const btnRegistrarse = document.querySelector('#btn-registrarse');
-
-// Generar avatares
 async function generarSelectorAvatares() {
     const selector = document.querySelector('#avatar-selector');
     selector.innerHTML = '';
@@ -167,58 +91,66 @@ async function generarSelectorAvatares() {
     });
 }
 
-// Cargar ciudades en el selector
-async function cargarCiudadesRegistro() {
+async function cargarProvinciasRegistro() {
     const response = await fetch('api/ciudades_catalogo.php');
     const { success, datos } = await response.json();
     if (!success) return;
 
-    const select = document.querySelector('#reg-ciudad');
-    datos.forEach(function (ciudad) {
+    const select = document.querySelector('#reg-provincia');
+    select.innerHTML = '<option value="">Selecciona una provincia...</option>';
+
+    datos.forEach(function (item) {
         const option = document.createElement('option');
-        option.value = ciudad.id_ciudad;
-        option.textContent = ciudad.nombre_ciudad + ' (' + ciudad.provincia + ')';
+        option.value = item.provincia;
+        option.textContent = item.provincia;
         select.appendChild(option);
     });
 }
 
-// Abrir modal registro
-document.querySelectorAll('a[href="#registro"], .btn-cta, .btn-register').forEach(function (btn) {
-    btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        generarSelectorAvatares();
-        cargarCiudadesRegistro();
-        document.querySelector('#reg-nombre').value = '';
-        document.querySelector('#reg-email').value = '';
-        document.querySelector('#reg-password').value = '';
-        document.querySelector('#reg-password2').value = '';
-        document.querySelector('#reg-avatar').value = 'avatar_default.png';
-        document.querySelector('#reg-mensaje').textContent = '';
-        document.querySelector('#reg-mensaje').className = '';
-        modalRegistro.classList.add('visible');
-    });
-});
+async function cargarCiudadesPorProvincia(provincia) {
+    const selectCiudad = document.querySelector('#reg-ciudad');
+    selectCiudad.innerHTML = '<option value="">Cargando...</option>';
+    selectCiudad.disabled = true;
 
-// Cerrar modal registro
-document.querySelector('#modal-registro-cerrar').addEventListener('click', function () {
-    modalRegistro.classList.remove('visible');
-});
+    const response = await fetch('api/ciudades_catalogo.php?provincia=' + encodeURIComponent(provincia));
+    const { success, datos } = await response.json();
 
-modalRegistro.addEventListener('click', function (e) {
-    if (e.target == modalRegistro) {
-        modalRegistro.classList.remove('visible');
+    if (!success || datos.length == 0) {
+        selectCiudad.innerHTML = '<option value="">No hay ciudades disponibles</option>';
+        document.querySelector('#ciudad-no-encontrada').style.display = 'block';
+        return;
     }
-});
 
-// Ir al login desde registro
-document.querySelector('#btn-ir-login').addEventListener('click', function (e) {
-    e.preventDefault();
-    modalRegistro.classList.remove('visible');
-    abrirModalLogin();
-});
+    selectCiudad.innerHTML = '<option value="">Selecciona una ciudad...</option>';
+    datos.forEach(function (ciudad) {
+        const option = document.createElement('option');
+        option.value = ciudad.id_ciudad;
+        option.textContent = ciudad.nombre_ciudad;
+        selectCiudad.appendChild(option);
+    });
 
-// Registrarse
-btnRegistrarse.addEventListener('click', async function () {
+    selectCiudad.disabled = false;
+    document.querySelector('#ciudad-no-encontrada').style.display = 'block';
+}
+
+function abrirModalRegistro() {
+    generarSelectorAvatares();
+    cargarProvinciasRegistro();
+    document.querySelector('#reg-nombre').value = '';
+    document.querySelector('#reg-email').value = '';
+    document.querySelector('#reg-password').value = '';
+    document.querySelector('#reg-password2').value = '';
+    document.querySelector('#reg-avatar').value = 'avatar_default.png';
+    document.querySelector('#reg-mensaje').textContent = '';
+    document.querySelector('#reg-mensaje').className = '';
+    document.querySelector('#reg-provincia').value = '';
+    document.querySelector('#reg-ciudad').innerHTML = '<option value="">Primero selecciona una provincia</option>';
+    document.querySelector('#reg-ciudad').disabled = true;
+    document.querySelector('#ciudad-no-encontrada').style.display = 'none';
+    document.querySelector('#modal-registro').classList.add('visible');
+}
+
+async function registrarUsuario() {
     const nombre = document.querySelector('#reg-nombre').value.trim();
     const email = document.querySelector('#reg-email').value.trim();
     const password = document.querySelector('#reg-password').value;
@@ -226,10 +158,16 @@ btnRegistrarse.addEventListener('click', async function () {
     const idCiudad = document.querySelector('#reg-ciudad').value;
     const avatar = document.querySelector('#reg-avatar').value;
     const mensaje = document.querySelector('#reg-mensaje');
+    const erroresPass = validarPassword(password);
 
-    // Validaciones frontend
     if (nombre === '' || email === '' || password === '' || password2 === '') {
         mensaje.textContent = 'Todos los campos son obligatorios';
+        mensaje.className = 'error';
+        return;
+    }
+
+    if (!idCiudad || idCiudad === '') {
+        mensaje.textContent = 'Selecciona una ciudad principal';
         mensaje.className = 'error';
         return;
     }
@@ -240,8 +178,8 @@ btnRegistrarse.addEventListener('click', async function () {
         return;
     }
 
-    if (password.length < 6) {
-        mensaje.textContent = 'La contraseña debe tener al menos 6 caracteres';
+    if (erroresPass.length > 0) {
+        mensaje.textContent = 'La contraseña debe tener ' + erroresPass.join(', ');
         mensaje.className = 'error';
         return;
     }
@@ -264,16 +202,15 @@ btnRegistrarse.addEventListener('click', async function () {
         mensaje.textContent = '¡Cuenta creada correctamente! Ya puedes iniciar sesión.';
         mensaje.className = 'exito';
         setTimeout(function () {
-            modalRegistro.classList.remove('visible');
+            document.querySelector('#modal-registro').classList.remove('visible');
             abrirModalLogin();
         }, 2000);
     } else {
         mensaje.textContent = error || 'Error al crear la cuenta';
         mensaje.className = 'error';
     }
-});
+}
 
-// ===== FORO LANDING =====
 function formatearFechaLanding(fechaStr) {
     const fecha = new Date(fechaStr);
     const ahora = new Date();
@@ -309,10 +246,214 @@ async function cargarForoLanding() {
     });
 }
 
+function validarPassword(password) {
+    const errores = [];
+    if (password.length < 8) errores.push('al menos 8 caracteres');
+    if (!/[A-Z]/.test(password)) errores.push('una mayúscula');
+    if (!/[0-9]/.test(password)) errores.push('un número');
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) errores.push('un carácter especial');
+    return errores;
+}
+
+function abrirModalContacto() {
+    document.querySelector('#contacto-nombre').value = '';
+    document.querySelector('#contacto-email').value = '';
+    document.querySelector('#contacto-asunto').value = '';
+    document.querySelector('#contacto-mensaje').value = '';
+    document.querySelector('#contacto-tipo').value = 'consulta';
+    document.querySelector('#contacto-msg').textContent = '';
+    document.querySelector('#contacto-msg').className = '';
+    document.querySelector('#modal-contacto').classList.add('visible');
+}
+
+async function enviarContacto() {
+    const nombre = document.querySelector('#contacto-nombre').value.trim();
+    const email = document.querySelector('#contacto-email').value.trim();
+    const tipo = document.querySelector('#contacto-tipo').value;
+    const asunto = document.querySelector('#contacto-asunto').value.trim();
+    const texto = document.querySelector('#contacto-mensaje').value.trim();
+    const mensaje = document.querySelector('#contacto-msg');
+
+    if (nombre === '' || email === '' || asunto === '' || texto === '') {
+        mensaje.textContent = 'Todos los campos son obligatorios';
+        mensaje.className = 'error';
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('email', email);
+    formData.append('tipo', tipo);
+    formData.append('asunto', asunto);
+    formData.append('texto', texto);
+
+    const response = await fetch('api/contacto.php', {
+        method: 'POST',
+        body: formData
+    });
+
+    const { success, error } = await response.json();
+
+    if (success) {
+        mensaje.textContent = '¡Mensaje enviado correctamente! Te responderemos lo antes posible.';
+        mensaje.className = 'exito';
+        document.querySelector('#contacto-nombre').value = '';
+        document.querySelector('#contacto-email').value = '';
+        document.querySelector('#contacto-asunto').value = '';
+        document.querySelector('#contacto-mensaje').value = '';
+        document.querySelector('#contacto-tipo').value = 'consulta';
+    } else {
+        mensaje.textContent = error || 'Error al enviar el mensaje';
+        mensaje.className = 'error';
+    }
+}
+
+////////////////////////// LLAMADAS //////////////////////////
+iniciarWidget();
 cargarForoLanding();
 
-if (window.location.search.includes('registro=1')) {
-    generarSelectorAvatares();
-    cargarCiudadesRegistro();
-    document.querySelector('#modal-registro').classList.add('visible');
+if (window.location.search.includes('error=1')) {
+    abrirModalLogin();
+    document.querySelector('#modal-error').style.display = 'block';
 }
+
+if (window.location.search.includes('registro=1')) {
+    abrirModalRegistro();
+}
+
+////////////////////////// ESCUCHADORES //////////////////////////
+
+// Menú móvil
+const menuToggle = document.querySelector('#menuToggle');
+const navbarNav = document.querySelector('#navbarNav');
+
+menuToggle.addEventListener('click', function () {
+    navbarNav.classList.toggle('active');
+    menuToggle.classList.toggle('active');
+});
+
+document.querySelectorAll('.nav-link:not(#btn-abrir-login), .btn-register').forEach(function (link) {
+    link.addEventListener('click', function () {
+        navbarNav.classList.remove('active');
+        menuToggle.classList.remove('active');
+    });
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        if (href === '#contacto') return; // dejamos que lo maneje el modal
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+// Navbar scroll
+window.addEventListener('scroll', function () {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+// Modal login
+document.querySelector('#btn-abrir-login').addEventListener('click', function (e) {
+    e.preventDefault();
+    abrirModalLogin();
+});
+
+document.querySelector('#modal-login-cerrar').addEventListener('click', function () {
+    cerrarModalLogin();
+});
+
+document.querySelector('#modal-login').addEventListener('click', function (e) {
+    if (e.target == document.querySelector('#modal-login')) {
+        cerrarModalLogin();
+    }
+});
+
+// Modal registro - abrir
+document.querySelectorAll('a[href="index.html?registro=1"], .btn-cta, .btn-register').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        abrirModalRegistro();
+    });
+});
+
+// Modal registro - cerrar
+document.querySelector('#modal-registro-cerrar').addEventListener('click', function () {
+    document.querySelector('#modal-registro').classList.remove('visible');
+});
+
+document.querySelector('#modal-registro').addEventListener('click', function (e) {
+    if (e.target == document.querySelector('#modal-registro')) {
+        document.querySelector('#modal-registro').classList.remove('visible');
+    }
+});
+
+// Ir al login desde registro
+document.querySelector('#btn-ir-login').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector('#modal-registro').classList.remove('visible');
+    abrirModalLogin();
+});
+
+// Selector de provincia
+document.querySelector('#reg-provincia').addEventListener('change', function () {
+    if (this.value !== '') {
+        cargarCiudadesPorProvincia(this.value);
+    } else {
+        const selectCiudad = document.querySelector('#reg-ciudad');
+        selectCiudad.innerHTML = '<option value="">Primero selecciona una provincia</option>';
+        selectCiudad.disabled = true;
+        document.querySelector('#ciudad-no-encontrada').style.display = 'none';
+    }
+});
+
+// Sugerir ciudad
+document.querySelector('#btn-sugerir-ciudad').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector('#modal-registro').classList.remove('visible');
+    alert('Para sugerir una ciudad, usa el formulario de contacto indicando el nombre de tu ciudad y provincia.');
+});
+
+// Botón registrarse
+document.querySelector('#btn-registrarse').addEventListener('click', function () {
+    registrarUsuario();
+});
+
+document.querySelector('#btn-abrir-registro').addEventListener('click', function (e) {
+    e.preventDefault();
+    cerrarModalLogin();
+    abrirModalRegistro();
+});
+
+// Modal contacto
+document.querySelector('#modal-contacto-cerrar').addEventListener('click', function () {
+    document.querySelector('#modal-contacto').classList.remove('visible');
+});
+
+document.querySelector('#modal-contacto').addEventListener('click', function (e) {
+    if (e.target == document.querySelector('#modal-contacto')) {
+        document.querySelector('#modal-contacto').classList.remove('visible');
+    }
+});
+
+document.querySelector('#btn-enviar-contacto').addEventListener('click', function () {
+    enviarContacto();
+});
+
+// Enlace del footer
+document.querySelectorAll('a[href="#contacto"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        abrirModalContacto();
+    });
+});

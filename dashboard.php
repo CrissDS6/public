@@ -30,6 +30,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
     <link rel="stylesheet" href="assets/css/vistas/ciudades.css">
     <link rel="stylesheet" href="assets/css/vistas/foro.css">
     <link rel="stylesheet" href="assets/css/vistas/perfil.css">
+    <link rel="stylesheet" href="assets/css/vistas/admin.css">
     <!-- Script  -->
     <script defer src="assets/js/dashboard.js"></script>
     <script defer src="assets/js/vistas/inicio.js"></script>
@@ -38,6 +39,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
     <script defer src="assets/js/vistas/ciudades.js"></script>
     <script defer src="assets/js/vistas/foro.js"></script>
     <script defer src="assets/js/vistas/perfil.js"></script>
+    <script defer src="assets/js/vistas/admin.js"></script>
 </head>
 
 <body>
@@ -82,10 +84,12 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
                             ?> ▼
                         </button>
                         <div class="nav-dropdown" id="dropdown-perfil">
+                            <?php if ($_SESSION['usuario_rol'] == 'administrador'): ?>
+                            <a href="#" data-vista="admin" class="dropdown-item">⚙️ Panel Admin</a>
+                            <?php endif; ?>
                             <a href="#" data-vista="perfil" class="dropdown-item">👤 Mi Perfil</a>
                             <a href="auth/logout.php" class="dropdown-item">🚪 Cerrar sesión</a>
                         </div>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -196,6 +200,109 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
             </div>
             <div class="consejo-card-body">
                 <p class="consejo-texto"></p>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-pendiente">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <div class="admin-card-info">
+                    <span class="admin-card-autor"></span>
+                    <span class="admin-card-fecha"></span>
+                    <span class="admin-card-especie"></span>
+                    <span class="admin-card-ubicacion"></span>
+                </div>
+                <div class="admin-card-acciones">
+                    <button class="btn-aprobar">✅ Aprobar</button>
+                    <button class="btn-rechazar">❌ Rechazar</button>
+                </div>
+            </div>
+            <h3 class="admin-card-titulo"></h3>
+            <p class="admin-card-contenido"></p>
+        </div>
+    </template>
+
+    <template id="template-mensaje">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <div class="admin-card-info">
+                    <span class="admin-card-autor"></span>
+                    <span class="admin-card-email"></span>
+                    <span class="admin-card-tipo-badge"></span>
+                    <span class="admin-card-fecha"></span>
+                </div>
+                <div class="admin-card-acciones">
+                    <select class="select-estado">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en_proceso">En proceso</option>
+                        <option value="resuelto">Resuelto</option>
+                    </select>
+                </div>
+            </div>
+            <h3 class="admin-card-titulo"></h3>
+            <p class="admin-card-contenido"></p>
+        </div>
+    </template>
+
+    <template id="template-pendiente">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <div class="admin-card-info">
+                    <span class="admin-card-autor"></span>
+                    <span class="admin-card-fecha"></span>
+                    <span class="admin-card-especie"></span>
+                    <span class="admin-card-ubicacion"></span>
+                </div>
+                <div class="admin-card-acciones">
+                    <button class="btn-aprobar">✅ Aprobar</button>
+                    <button class="btn-rechazar">❌ Rechazar</button>
+                </div>
+            </div>
+            <h3 class="admin-card-titulo"></h3>
+            <p class="admin-card-contenido"></p>
+        </div>
+    </template>
+
+    <template id="template-mensaje">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <div class="admin-card-info">
+                    <span class="admin-card-autor"></span>
+                    <span class="admin-card-email"></span>
+                    <span class="admin-card-tipo-badge"></span>
+                    <span class="admin-card-fecha"></span>
+                </div>
+                <div class="admin-card-acciones">
+                    <select class="select-estado">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en_proceso">En proceso</option>
+                        <option value="resuelto">Resuelto</option>
+                    </select>
+                </div>
+            </div>
+            <h3 class="admin-card-titulo"></h3>
+            <p class="admin-card-contenido"></p>
+        </div>
+    </template>
+
+    <template id="template-usuario-admin">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <div class="admin-card-info">
+                    <img src="" alt="avatar" class="admin-usuario-avatar">
+                    <span class="admin-card-autor"></span>
+                    <span class="admin-card-email"></span>
+                    <span class="admin-card-fecha"></span>
+                    <span class="admin-usuario-rol"></span>
+                </div>
+                <div class="admin-card-acciones">
+                    <button class="btn-resetear-pass">🔑 Resetear contraseña</button>
+                </div>
+            </div>
+            <div class="admin-pass-resultado" style="display:none">
+                <p>Contraseña temporal: <strong class="pass-temporal"></strong></p>
+                <small>Comunícasela al usuario para que pueda acceder y cambiarla desde su perfil.</small>
             </div>
         </div>
     </template>
