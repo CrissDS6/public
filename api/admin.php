@@ -32,10 +32,20 @@ if ($metodo == 'GET') {
 
         enviarRespuesta($conn, ['success' => true, 'datos' => $publicaciones]);
     } elseif ($tipo == 'mensajes') {
-        $sql = "SELECT m.id_mensaje, m.nombre, m.email, m.asunto, m.texto,
+        $filtro_estado = isset($_GET['estado']) ? $_GET['estado'] : '';
+
+        if ($filtro_estado !== '') {
+            $sql = "SELECT m.id_mensaje, m.nombre, m.email, m.asunto, m.texto,
+                    m.fecha_envio, m.tipo, m.estado
+                FROM mensajes m
+                WHERE m.estado = '$filtro_estado'
+                ORDER BY m.fecha_envio DESC";
+        } else {
+            $sql = "SELECT m.id_mensaje, m.nombre, m.email, m.asunto, m.texto,
                     m.fecha_envio, m.tipo, m.estado
                 FROM mensajes m
                 ORDER BY m.fecha_envio DESC";
+        }
 
         $resultado = $conn->query($sql);
         $mensajes = [];
@@ -43,7 +53,16 @@ if ($metodo == 'GET') {
             $mensajes[] = $fila;
         }
 
-        enviarRespuesta($conn, ['success' => true, 'datos' => $mensajes]);
+        // Contamos mensajes pendientes para el badge
+        $sqlPendientes = "SELECT COUNT(*) AS total FROM mensajes WHERE estado = 'pendiente'";
+        $resPendientes = $conn->query($sqlPendientes);
+        $totalPendientes = $resPendientes->fetch_assoc()['total'];
+
+        enviarRespuesta($conn, [
+            'success'   => true,
+            'datos'     => $mensajes,
+            'pendientes' => intval($totalPendientes)
+        ]);
     } elseif ($tipo == 'ciudades') {
         // Mensajes de tipo sugerencia_ciudad
         $sql = "SELECT m.id_mensaje, m.nombre, m.email, m.asunto, m.texto, m.fecha_envio, m.estado
@@ -70,6 +89,49 @@ if ($metodo == 'GET') {
         }
 
         enviarRespuesta($conn, ['success' => true, 'datos' => $usuarios]);
+    } elseif ($tipo == 'badge') {
+        // Mensajes pendientes
+        $sqlMensajes = "SELECT COUNT(*) AS total FROM mensajes WHERE estado = 'pendiente'";
+        $resMensajes = $conn->query($sqlMensajes);
+        $totalMensajes = intval($resMensajes->fetch_assoc()['total']);
+
+        // Publicaciones foro pendientes
+        $sqlForo = "SELECT COUNT(*) AS total FROM foro_consejos WHERE estado = 'pendiente'";
+        $resForo = $conn->query($sqlForo);
+        $totalForo = intval($resForo->fetch_assoc()['total']);
+
+        $total = $totalMensajes + $totalForo;
+
+        enviarRespuesta($conn, [
+            'success'    => true,
+            'pendientes' => $total,
+            'mensajes'   => $totalMensajes,
+            'foro'       => $totalForo
+        ]);
+    } elseif ($tipo == 'mascotas_usuario') {
+        $id_usuario_consulta = intval($_GET['id_usuario'] ?? 0);
+        if ($id_usuario_consulta == 0) {
+            enviarError(400, 'Falta el id del usuario');
+        }
+
+        $sql = "SELECT m.nombre, m.edad, m.sexo, m.foto, m.raza, e.nombre_especie
+            FROM mascotas m
+            JOIN especies e ON m.id_especie = e.id_especie
+            WHERE m.id_usuario = ?
+            ORDER BY m.nombre ASC";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $id_usuario_consulta);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $mascotas = [];
+        while ($fila = $resultado->fetch_assoc()) {
+            $mascotas[] = $fila;
+        }
+        $stmt->close();
+
+        enviarRespuesta($conn, ['success' => true, 'datos' => $mascotas]);
     }
 } elseif ($metodo == 'PUT') {
     parse_str(file_get_contents('php://input'), $datos);

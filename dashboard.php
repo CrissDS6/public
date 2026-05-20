@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION["usuario_id"])) {
-    header("Location: login.php");
+    header("Location: index.html");
     exit;
 }
 
@@ -85,7 +85,10 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
                         </button>
                         <div class="nav-dropdown" id="dropdown-perfil">
                             <?php if ($_SESSION['usuario_rol'] == 'administrador'): ?>
-                            <a href="#" data-vista="admin" class="dropdown-item">⚙️ Panel Admin</a>
+                            <a href="#" data-vista="admin" class="dropdown-item">
+                                ⚙️ Panel Admin
+                                <span id="badge-mensajes" class="badge-nuevo" style="display:none">0</span>
+                            </a>
                             <?php endif; ?>
                             <a href="#" data-vista="perfil" class="dropdown-item">👤 Mi Perfil</a>
                             <a href="auth/logout.php" class="dropdown-item">🚪 Cerrar sesión</a>
@@ -306,6 +309,14 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
             </div>
         </div>
     </template>
+
+    <!-- FILTROS MENSAJES -->
+    <div id="filtros-mensajes" style="display:none" class="admin-filtros">
+        <button class="btn-filtro-msg activo" data-estado="">Todos</button>
+        <button class="btn-filtro-msg" data-estado="pendiente">🔴 Pendiente</button>
+        <button class="btn-filtro-msg" data-estado="en_proceso">🔵 En proceso</button>
+        <button class="btn-filtro-msg" data-estado="resuelto">🟢 Resuelto</button>
+    </div>
 
 </body>
 

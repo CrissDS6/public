@@ -64,7 +64,7 @@
 
 .consejos-vacio {
     text-align: center;
-    color: var(--medium-gray);
+    color: var(--dark-gray);
     padding: 3rem 0;
     font-size: 1rem;
 }

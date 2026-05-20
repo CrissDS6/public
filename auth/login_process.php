@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/db.php';
 
 // 1) Solo aceptamos POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../login.php');
+    header('Location: ../index.html');
     exit;
 }
 

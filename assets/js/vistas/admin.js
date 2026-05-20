@@ -1,5 +1,6 @@
 ////////////////////////// VARIABLES //////////////////////////
 let tabActiva = 'foro';
+let filtroEstadoMensajes = '';
 
 ////////////////////////// FUNCIONES //////////////////////////
 function formatearFecha(fechaStr) {
@@ -54,8 +55,12 @@ async function cargarPendientes() {
 }
 
 async function cargarMensajes() {
-    const response = await fetch('api/admin.php?tipo=mensajes');
-    const { success, datos } = await response.json();
+    const url = 'api/admin.php?tipo=mensajes' + (filtroEstadoMensajes ? '&estado=' + filtroEstadoMensajes : '');
+    const response = await fetch(url);
+    const { success, datos, pendientes } = await response.json();
+
+    // Actualizamos el badge
+    actualizarBadge(pendientes);
 
     const lista = document.querySelector('#lista-mensajes');
     lista.innerHTML = '';
@@ -84,7 +89,6 @@ async function cargarMensajes() {
         select.value = msg.estado;
         select.dataset.id = msg.id_mensaje;
 
-        // Badge de estado
         const badge = document.createElement('span');
         badge.classList.add('admin-estado-badge', 'admin-estado-' + msg.estado);
         badge.textContent = msg.estado.replace('_', ' ');
@@ -92,6 +96,17 @@ async function cargarMensajes() {
 
         lista.appendChild(clon);
     });
+}
+
+function actualizarBadge(total) {
+    const badge = document.querySelector('#badge-mensajes');
+    if (!badge) return;
+    if (total > 0) {
+        badge.textContent = total;
+        badge.style.display = 'inline-flex';
+    } else {
+        badge.style.display = 'none';
+    }
 }
 
 async function moderarPublicacion(id, estado) {
@@ -240,6 +255,23 @@ async function cargarUsuariosAdmin() {
             btnResetear.title = 'No se puede resetear la contraseña del administrador';
         }
 
+        // Añadimos botón ver mascotas
+        const btnVerMascotas = document.createElement('button');
+        btnVerMascotas.classList.add('btn-ver-mascotas-admin');
+        btnVerMascotas.textContent = '🐾 Ver mascotas';
+        btnVerMascotas.dataset.id = usuario.id_usuario;
+        clon.querySelector('.admin-card-acciones').appendChild(btnVerMascotas);
+
+        // Contenedor expandible
+        const contenedorMascotas = document.createElement('div');
+        contenedorMascotas.classList.add('admin-mascotas-contenedor');
+        contenedorMascotas.style.display = 'none';
+        card.appendChild(contenedorMascotas);
+
+        btnVerMascotas.addEventListener('click', function () {
+            verMascotasUsuario(this.dataset.id, contenedorMascotas);
+        });
+
         lista.appendChild(clon);
     });
 }
@@ -280,11 +312,27 @@ async function initAdmin() {
             document.querySelector('#admin-tab-mensajes').style.display = tabActiva == 'mensajes' ? 'block' : 'none';
             document.querySelector('#admin-tab-ciudades').style.display = tabActiva == 'ciudades' ? 'block' : 'none';
             document.querySelector('#admin-tab-usuarios').style.display = tabActiva == 'usuarios' ? 'block' : 'none';
+            const filtrosMensajes = document.querySelector('#filtros-mensajes');
+            if (filtrosMensajes) {
+                filtrosMensajes.style.display = tabActiva == 'mensajes' ? 'flex' : 'none';
+            }
 
-            if (tabActiva == 'foro') cargarPendientes();
-            else if (tabActiva == 'mensajes') cargarMensajes();
-            else if (tabActiva == 'ciudades') cargarSugerenciasCiudad();
-            else if (tabActiva == 'usuarios') cargarUsuariosAdmin();
+            if (tabActiva == 'foro') {
+                document.querySelector('#filtros-mensajes').style.display = 'none';
+                cargarPendientes();
+            } else if (tabActiva == 'mensajes') {
+                const filtros = document.querySelector('#filtros-mensajes');
+                const tabMensajes = document.querySelector('#admin-tab-mensajes');
+                filtros.style.display = 'flex';
+                tabMensajes.insertBefore(filtros, tabMensajes.firstChild);
+                cargarMensajes();
+            } else if (tabActiva == 'ciudades') {
+                document.querySelector('#filtros-mensajes').style.display = 'none';
+                cargarSugerenciasCiudad();
+            } else if (tabActiva == 'usuarios') {
+                document.querySelector('#filtros-mensajes').style.display = 'none';
+                cargarUsuariosAdmin();
+            }
         });
     });
 
@@ -317,4 +365,57 @@ async function initAdmin() {
             resetearPassword(e.target.dataset.id, card);
         }
     });
+
+    // Filtros mensajes
+    const btnsFiltroMsg = document.querySelectorAll('.btn-filtro-msg');
+    if (btnsFiltroMsg.length > 0) {
+        btnsFiltroMsg.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.btn-filtro-msg').forEach(function (b) {
+                    b.classList.remove('activo');
+                });
+                this.classList.add('activo');
+                filtroEstadoMensajes = this.dataset.estado;
+                cargarMensajes();
+            });
+        });
+    }
+}
+
+async function verMascotasUsuario(id, contenedor) {
+    if (contenedor.style.display == 'block') {
+        contenedor.style.display = 'none';
+        return;
+    }
+
+    contenedor.innerHTML = '<p style="color:var(--descriptions);font-size:0.85rem">Cargando...</p>';
+    contenedor.style.display = 'block';
+
+    const response = await fetch('api/admin.php?tipo=mascotas_usuario&id_usuario=' + id);
+    const { success, datos } = await response.json();
+
+    if (!success || datos.length == 0) {
+        contenedor.innerHTML = '<p style="color:var(--medium-gray);font-size:0.85rem">Este usuario no tiene mascotas registradas.</p>';
+        return;
+    }
+
+    let html = '<div class="admin-mascotas-lista">';
+    datos.forEach(function (mascota) {
+        const fotoSrc = mascota.foto
+            ? mascota.foto
+            : (mascota.nombre_especie == 'Perro' ? 'assets/img/ui/emojiPerro.png' : 'assets/img/ui/emojiGatoForo.png');
+
+        html += `
+            <div class="admin-mascota-item">
+                <img src="${fotoSrc}" alt="${mascota.nombre}" class="admin-mascota-foto">
+                <div class="admin-mascota-info">
+                    <span class="admin-mascota-nombre">${mascota.nombre}</span>
+                    <span class="admin-mascota-detalle">${mascota.nombre_especie} · ${mascota.raza || 'Sin raza'}</span>
+                    <span class="admin-mascota-detalle">${mascota.edad ? mascota.edad + ' años' : 'Edad desconocida'} · ${mascota.sexo}</span>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    contenedor.innerHTML = html;
 }

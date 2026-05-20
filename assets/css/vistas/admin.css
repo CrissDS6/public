@@ -337,3 +337,95 @@
     color: var(--descriptions);
     font-size: 0.8rem;
 }
+
+.admin-filtros {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.btn-filtro-msg {
+    background: var(--white);
+    color: var(--primary-blue);
+    border: 2px solid var(--secondary-blue);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-filtro-msg:hover,
+.btn-filtro-msg.activo {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+.btn-ver-mascotas-admin {
+    background: var(--light-blue);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-ver-mascotas-admin:hover {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+.admin-mascotas-contenedor {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--light-gray);
+}
+
+.admin-mascotas-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-mascota-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--light-gray);
+    border-radius: 12px;
+    padding: 0.8rem;
+    min-width: 200px;
+}
+
+.admin-mascota-foto {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--secondary-blue);
+    flex-shrink: 0;
+}
+
+.admin-mascota-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.admin-mascota-nombre {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--primary-blue);
+}
+
+.admin-mascota-detalle {
+    font-size: 0.78rem;
+    color: var(--descriptions);
+}

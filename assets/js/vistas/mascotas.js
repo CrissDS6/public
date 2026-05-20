@@ -135,6 +135,7 @@ async function actualizarMascota() {
     const raza = document.querySelector('#edit-raza').value.trim();
     const edad = document.querySelector('#edit-edad').value;
     const sexo = document.querySelector('#edit-sexo').value;
+    const foto = document.querySelector('#edit-foto').files[0];
     const mensaje = document.querySelector('#edit-mascota-mensaje');
 
     if (nombre === '') {
@@ -143,17 +144,19 @@ async function actualizarMascota() {
         return;
     }
 
-    const body = 'id_mascota=' + id +
-        '&nombre=' + encodeURIComponent(nombre) +
-        '&id_especie=' + especie +
-        '&raza=' + encodeURIComponent(raza) +
-        '&edad=' + edad +
-        '&sexo=' + sexo;
+    const formData = new FormData();
+    formData.append('_method', 'PUT');
+    formData.append('id_mascota', id);
+    formData.append('nombre', nombre);
+    formData.append('id_especie', especie);
+    formData.append('raza', raza);
+    formData.append('edad', edad);
+    formData.append('sexo', sexo);
+    if (foto) formData.append('foto', foto);
 
     const response = await fetch('api/mascotas.php', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body
+        method: 'POST',
+        body: formData
     });
 
     const { success, error } = await response.json();

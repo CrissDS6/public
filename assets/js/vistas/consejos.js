@@ -100,7 +100,7 @@ async function initConsejos() {
     const lista = document.querySelector('#consejos-lista');
 
     if (!datosConsejos.success || datosConsejos.consejos.length == 0) {
-        lista.innerHTML = '<p class="consejos-vacio">No hay consejos disponibles.</p>';
+        lista.innerHTML = '<p class="consejos-vacio">Aún no tienes mascotas registradas. ¡Añade tu primera mascota para recibir consejos personalizados! 🐾</p>';
         return;
     }
 

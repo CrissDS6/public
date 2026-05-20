@@ -393,7 +393,9 @@ body {
 }
 
 .dropdown-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 0.8rem 1.2rem;
     color: var(--text-dark);
     text-decoration: none;
@@ -468,4 +470,19 @@ body {
         margin-top: 0;
         text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
+}
+
+.badge-nuevo {
+    background: #ff4b4b;
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    margin-left: 6px;
 }

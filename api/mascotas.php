@@ -12,7 +12,7 @@ $id_usuario = $_SESSION['usuario_id'];
 if ($metodo == 'GET') {
     $conn = obtenerConexion();
 
-    $sql = "SELECT m.id_mascota, m.nombre, m.edad, m.sexo, m.foto, m.raza,
+    $sql = "SELECT m.id_mascota, m.nombre, m.edad, m.sexo, m.foto, m.raza, m.id_especie,
                 e.nombre_especie
             FROM mascotas m
             JOIN especies e ON m.id_especie = e.id_especie
@@ -34,16 +34,16 @@ if ($metodo == 'GET') {
         'success' => true,
         'datos'   => $mascotas
     ]);
-} elseif ($metodo == 'POST') {
+} elseif ($metodo == 'POST' && (!isset($_POST['_method']) || $_POST['_method'] !== 'PUT')) {
     if (!isset($_POST['nombre']) || !isset($_POST['id_especie']) || !isset($_POST['sexo'])) {
         enviarError(400, 'Faltan parámetros obligatorios');
     }
 
     $nombre     = $_POST['nombre'];
-    $id_especie = $_POST['id_especie'];
+    $id_especie = intval($_POST['id_especie']);
     $sexo       = $_POST['sexo'];
-    $raza       = $_POST['raza'] ?? null;
-    $edad       = $_POST['edad'] ?? null;
+    $raza       = isset($_POST['raza']) && $_POST['raza'] !== '' ? $_POST['raza'] : null;
+    $edad       = isset($_POST['edad']) && $_POST['edad'] !== '' ? intval($_POST['edad']) : null;
 
     $conn = obtenerConexion();
 
@@ -71,6 +71,56 @@ if ($metodo == 'GET') {
     } else {
         enviarError(500, 'Error al guardar la mascota', $conn);
     }
+} elseif ($metodo == 'POST' && isset($_POST['_method']) && $_POST['_method'] == 'PUT') {
+    if (!isset($_POST['id_mascota']) || !isset($_POST['nombre']) || !isset($_POST['sexo'])) {
+        enviarError(400, 'Faltan parámetros obligatorios');
+    }
+
+    $id_mascota = intval($_POST['id_mascota']);
+    $nombre     = $_POST['nombre'];
+    $id_especie = intval($_POST['id_especie']);
+    $raza       = isset($_POST['raza']) && $_POST['raza'] !== '' ? $_POST['raza'] : null;
+    $edad       = isset($_POST['edad']) && $_POST['edad'] !== '' ? intval($_POST['edad']) : null;
+    $sexo       = $_POST['sexo'];
+
+    $conn = obtenerConexion();
+
+    // Verificamos que la mascota pertenece al usuario
+    $sql = "SELECT foto FROM mascotas WHERE id_mascota = ? AND id_usuario = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ii', $id_mascota, $id_usuario);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $mascotaActual = $resultado->fetch_assoc();
+
+    if (!$mascotaActual) {
+        enviarError(404, 'Mascota no encontrada', $conn);
+    }
+    $stmt->close();
+
+    // Gestionar foto si viene nueva
+    $nombreFoto = $mascotaActual['foto'];
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+        $extension  = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
+        $nombreFoto = uniqid('mascota_') . '.' . $extension;
+        $rutaDest   = __DIR__ . '/../uploads/mascotas/' . $nombreFoto;
+
+        if (!move_uploaded_file($_FILES['foto']['tmp_name'], $rutaDest)) {
+            enviarError(500, 'Error al guardar la imagen', $conn);
+        }
+        $nombreFoto = 'uploads/mascotas/' . $nombreFoto;
+    }
+
+    $sql = "UPDATE mascotas SET nombre = ?, id_especie = ?, raza = ?, edad = ?, sexo = ?, foto = ?
+            WHERE id_mascota = ? AND id_usuario = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('sissssii', $nombre, $id_especie, $raza, $edad, $sexo, $nombreFoto, $id_mascota, $id_usuario);
+
+    if ($stmt->execute()) {
+        enviarRespuesta($conn, ['success' => true]);
+    } else {
+        enviarError(500, 'Error al actualizar la mascota', $conn);
+    }
 } elseif ($metodo == 'DELETE') {
     parse_str(file_get_contents('php://input'), $datos);
 
@@ -78,7 +128,7 @@ if ($metodo == 'GET') {
         enviarError(400, 'Falta el id de la mascota');
     }
 
-    $id_mascota = $datos['id_mascota'];
+    $id_mascota = intval($datos['id_mascota']);
     $conn = obtenerConexion();
 
     // Verificamos que la mascota pertenece al usuario
@@ -111,42 +161,5 @@ if ($metodo == 'GET') {
         enviarRespuesta($conn, ['success' => true]);
     } else {
         enviarError(500, 'Error al eliminar la mascota', $conn);
-    }
-} elseif ($metodo == 'PUT') {
-    parse_str(file_get_contents('php://input'), $datos);
-
-    if (!isset($datos['id_mascota']) || !isset($datos['nombre']) || !isset($datos['sexo'])) {
-        enviarError(400, 'Faltan parámetros obligatorios');
-    }
-
-    $id_mascota = intval($datos['id_mascota']);
-    $nombre     = $datos['nombre'];
-    $id_especie = intval($datos['id_especie']);
-    $raza       = isset($datos['raza']) && $datos['raza'] !== '' ? $datos['raza'] : null;
-    $edad       = isset($datos['edad']) && $datos['edad'] !== '' ? intval($datos['edad']) : null;
-    $sexo       = $datos['sexo'];
-
-    $conn = obtenerConexion();
-
-    // Verificamos que la mascota pertenece al usuario
-    $sql = "SELECT id_mascota FROM mascotas WHERE id_mascota = ? AND id_usuario = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ii', $id_mascota, $id_usuario);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-
-    if ($resultado->num_rows == 0) {
-        enviarError(404, 'Mascota no encontrada', $conn);
-    }
-    $stmt->close();
-
-    $sql = "UPDATE mascotas SET nombre = ?, id_especie = ?, raza = ?, edad = ?, sexo = ? WHERE id_mascota = ? AND id_usuario = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('sisssii', $nombre, $id_especie, $raza, $edad, $sexo, $id_mascota, $id_usuario);
-
-    if ($stmt->execute()) {
-        enviarRespuesta($conn, ['success' => true]);
-    } else {
-        enviarError(500, 'Error al actualizar la mascota', $conn);
     }
 }

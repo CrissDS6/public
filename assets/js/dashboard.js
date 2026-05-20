@@ -49,8 +49,22 @@ async function cargarVista(nombre) {
     else if (nombre == 'admin') initAdmin();
 }
 
+async function cargarBadgeAdmin() {
+    const badge = document.querySelector('#badge-mensajes');
+    if (!badge) return;
+
+    const response = await fetch('api/admin.php?tipo=badge');
+    const { success, pendientes } = await response.json();
+
+    if (success && pendientes > 0) {
+        badge.textContent = pendientes;
+        badge.style.display = 'inline-flex';
+    }
+}
+
 ////////////////////////// LLAMADAS //////////////////////////
 cargarVista('inicio');
+cargarBadgeAdmin();
 
 ////////////////////////// ESCUCHADORES //////////////////////////
 document.querySelector('.navbar').addEventListener('click', function (e) {
