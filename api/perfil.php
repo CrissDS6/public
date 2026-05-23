@@ -97,4 +97,20 @@ if ($metodo == 'GET') {
             enviarError(500, 'Error al cambiar la contraseña', $conn);
         }
     }
+} elseif ($metodo == 'DELETE') {
+    $conn = obtenerConexion();
+
+    // Eliminamos el usuario (el CASCADE borra mascotas, ciudades, likes y foro)
+    $sql = "DELETE FROM usuarios WHERE id_usuario = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $id_usuario);
+
+    if ($stmt->execute()) {
+        // Destruimos la sesión
+        session_unset();
+        session_destroy();
+        enviarRespuesta($conn, ['success' => true]);
+    } else {
+        enviarError(500, 'Error al eliminar la cuenta', $conn);
+    }
 }

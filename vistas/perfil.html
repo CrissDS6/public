@@ -35,21 +35,38 @@
         <h3 class="perfil-seccion-titulo">Cambiar contraseña</h3>
         <div class="form-group">
             <label for="perfil-pass-actual">Contraseña actual</label>
-            <input type="password" id="perfil-pass-actual" placeholder="Tu contraseña actual">
+            <div class="perfil-input-wrapper">
+                <input type="password" id="perfil-pass-actual" placeholder="Tu contraseña actual">
+                <button type="button" class="btn-toggle-pass" data-target="perfil-pass-actual">👁️</button>
+            </div>
             <small class="password-requisitos">
                 Debe tener: 8+ caracteres, una mayúscula, un número y un carácter especial (!@#$...)
             </small>
         </div>
         <div class="form-group">
             <label for="perfil-pass-nueva">Nueva contraseña</label>
-            <input type="password" id="perfil-pass-nueva" placeholder="Mínimo 6 caracteres">
+            <div class="perfil-input-wrapper">
+                <input type="password" id="perfil-pass-nueva" placeholder="Mínimo 8 caracteres">
+                <button type="button" class="btn-toggle-pass" data-target="perfil-pass-nueva">👁️</button>
+            </div>
         </div>
         <div class="form-group">
             <label for="perfil-pass-confirmar">Confirmar nueva contraseña</label>
-            <input type="password" id="perfil-pass-confirmar" placeholder="Repite la nueva contraseña">
+            <div class="perfil-input-wrapper">
+                <input type="password" id="perfil-pass-confirmar" placeholder="Repite la nueva contraseña">
+                <button type="button" class="btn-toggle-pass" data-target="perfil-pass-confirmar">👁️</button>
+            </div>
         </div>
         <button class="btn-guardar-perfil" id="btn-guardar-password">Cambiar</button>
         <div id="msg-password"></div>
+    </div>
+
+    <!-- ELIMINAR CUENTA -->
+    <div class="perfil-card perfil-card-peligro">
+        <h3 class="perfil-seccion-titulo">¿Nos abandonas?</h3>
+        <p style="font-size:0.9rem;color:var(--dark-gray)">Si eliminas tu cuenta se borrarán todos tus datos, mascotas,
+            ciudades favoritas y publicaciones del foro. Esta acción no se puede deshacer.</p>
+        <button class="btn-eliminar-cuenta" id="btn-eliminar-cuenta">🗑️ Eliminar mi cuenta</button>
     </div>
 
 </div>

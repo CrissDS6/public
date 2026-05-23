@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=dev ice-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MeteoPet - Cuida a tus mascotas según el tiempo</title>
 
     <!-- Google Fonts -->
@@ -45,9 +45,8 @@
                     <li class="nav-item">
                         <button class="nav-link" id="btn-abrir-login">Iniciar sesión</button>
                     </li>
-
                     <li class="nav-item">
-                        <a class="btn-register" href="#registro">Regístrate</a>
+                        <a class="btn-register" href="index.html?registro=1">Regístrate</a>
                     </li>
                 </ul>
             </div>
@@ -67,14 +66,13 @@
                         Recomendaciones diarias para tus peludos según el tiempo real de tu ciudad.
                         ¡La plataforma más alegre para dueños responsables!
                     </p>
-                    <a href="#registro" class="btn-hero">
+                    <a href="index.html?registro=1" class="btn-hero">
                         Regístrate gratis <span class="arrow">→</span>
                     </a>
                 </div>
                 <div class="hero-image-wrapper">
                     <div class="hero-image-container">
                         <img src="assets/img/ui/imagen-hero.jpg" alt="Perro y gato" class="hero-image">
-
                     </div>
                 </div>
             </div>
@@ -124,7 +122,7 @@
 
                 <div class="platform-card">
                     <div class="card-icon">
-                        <span class="icon"><img src="assets/img/ui/emojiPerfiles.png" alt="emoji gato foro"></span>
+                        <span class="icon"><img src="assets/img/ui/emojiPerfiles.png" alt="emoji perfiles"></span>
                     </div>
                     <h5>Perfiles Pet</h5>
                     <p class="text-muted">Registra a todos tus peludos.</p>
@@ -171,9 +169,8 @@
         <div class="container">
             <div class="cta-box">
                 <h2>¡Únete a MeteoPet hoy!</h2>
-                <p>Miles de humanos ya cuidan mejor de sus peludos gracias a nuestros consejos
-                    especializados</p>
-                <a href="#registro" class="btn-cta">Crear Cuenta Gratis</a>
+                <p>Miles de humanos ya cuidan mejor de sus peludos gracias a nuestros consejos especializados</p>
+                <a href="index.html?registro=1" class="btn-cta">Crear Cuenta Gratis</a>
             </div>
         </div>
     </section>
@@ -182,7 +179,6 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <!-- Columna 1: Información de MeteoPet -->
                 <div class="footer-col">
                     <div class="footer-brand">
                         <img src="assets/img/ui/titulo_logoGris.png" alt="Meteopet" class="footer-title">
@@ -192,7 +188,6 @@
                     </p>
                 </div>
 
-                <!-- Columna 2: Redes Sociales -->
                 <div class="footer-col footer-col-center">
                     <h6>Síguenos</h6>
                     <div class="social-links">
@@ -203,26 +198,27 @@
                     </div>
                 </div>
 
-                <!-- Columna 3: Contacto -->
                 <div class="footer-col">
                     <h6>Contacto</h6>
                     <ul class="footer-links">
                         <li><span class="footer-icon-small">✉</span> info@meteopet.com</li>
                         <li><span class="footer-icon-small">📍</span> Zafra, Badajoz</li>
-                        <li><a href="#contacto"><span class="footer-icon-small">📝</span> Formulario de contacto</a>
+                        <li>
+                            <a href="#contacto">
+                                <span class="footer-icon-small">📝</span> Formulario de contacto
+                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
             <hr class="footer-divider">
-
             <div class="footer-bottom">
                 <p>© 2026 MeteoPet. Hecho con <span class="heart">❤️</span> para tus mascotas.</p>
             </div>
         </div>
     </footer>
 
-    <!-- MODAL QUE APARECE AL HACER LOGIN -->
+    <!-- MODAL LOGIN -->
     <div id="modal-login" class="modal-overlay">
         <div class="modal-login-contenido">
             <button id="modal-login-cerrar" class="modal-cerrar">&times;</button>
@@ -257,6 +253,7 @@
                         <div class="input-wrapper">
                             <span class="input-icon">🔒</span>
                             <input type="password" id="password" name="password" placeholder="••••••••" required>
+                            <button type="button" class="btn-toggle-pass" data-target="password">👁️</button>
                         </div>
                         <small class="password-requisitos">
                             Debe tener: 8+ caracteres, una mayúscula, un número y un carácter especial (!@#$...)
@@ -286,7 +283,6 @@
             </div>
 
             <div class="modal-registro-body">
-
                 <div class="registro-grid">
                     <div class="form-group">
                         <label for="reg-nombre">Nombre completo</label>
@@ -308,7 +304,8 @@
                         <label for="reg-password">Contraseña</label>
                         <div class="input-wrapper">
                             <span class="input-icon">🔒</span>
-                            <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" required>
+                            <input type="password" id="reg-password" placeholder="Mínimo 8 caracteres" required>
+                            <button type="button" class="btn-toggle-pass" data-target="reg-password">👁️</button>
                         </div>
                     </div>
 
@@ -317,6 +314,7 @@
                         <div class="input-wrapper">
                             <span class="input-icon">🔒</span>
                             <input type="password" id="reg-password2" placeholder="Repite la contraseña" required>
+                            <button type="button" class="btn-toggle-pass" data-target="reg-password2">👁️</button>
                         </div>
                     </div>
 
@@ -347,9 +345,7 @@
 
                 <div class="form-group">
                     <label>Elige tu avatar</label>
-                    <div class="avatar-selector" id="avatar-selector">
-                        <!-- Se genera con JS -->
-                    </div>
+                    <div class="avatar-selector" id="avatar-selector"></div>
                     <input type="hidden" id="reg-avatar" value="avatar_default.png">
                 </div>
 

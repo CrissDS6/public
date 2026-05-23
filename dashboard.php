@@ -46,7 +46,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
     <!-- HEADER/NAVBAR -->
     <nav class="navbar">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.html">
+            <a class="navbar-brand" href="dashboard.php">
                 <div class="logo-icon">
                     <img src="assets/img/ui/logo.png" alt="logo_meteopet">
                 </div>
@@ -78,6 +78,8 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
                     </li>
                     <li class="nav-item nav-item-perfil">
                         <button class="nav-link nav-dropdown-btn" id="btn-perfil">
+                            <img id="nav-avatar" src="assets/img/avatares/avatar_default.png" alt="avatar"
+                                class="nav-avatar-img">
                             <?php
                             $primerNombre = explode(' ', $nombreUsuario)[0];
                             echo htmlspecialchars($primerNombre);
@@ -93,6 +95,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
                             <a href="#" data-vista="perfil" class="dropdown-item">👤 Mi Perfil</a>
                             <a href="auth/logout.php" class="dropdown-item">🚪 Cerrar sesión</a>
                         </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -316,6 +319,51 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         <button class="btn-filtro-msg" data-estado="pendiente">🔴 Pendiente</button>
         <button class="btn-filtro-msg" data-estado="en_proceso">🔵 En proceso</button>
         <button class="btn-filtro-msg" data-estado="resuelto">🟢 Resuelto</button>
+    </div>
+
+    <!-- MODAL CONTACTO DASHBOARD -->
+    <div id="modal-contacto-dash" class="modal-overlay">
+        <div class="modal-contacto-contenido">
+            <button id="modal-contacto-dash-cerrar" class="modal-cerrar">&times;</button>
+            <div class="modal-contacto-header">
+                <h2>Contacta con nosotros</h2>
+                <p>¿Tienes alguna duda, problema o sugerencia?</p>
+            </div>
+            <div class="modal-contacto-body">
+                <div class="contacto-grid">
+                    <div class="form-group">
+                        <label for="dash-contacto-nombre">Nombre</label>
+                        <input type="text" id="dash-contacto-nombre" placeholder="Tu nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="dash-contacto-email">Email</label>
+                        <input type="email" id="dash-contacto-email" placeholder="tu@email.com">
+                    </div>
+                    <div class="form-group contacto-full">
+                        <label for="dash-contacto-tipo">Tipo de consulta</label>
+                        <select id="dash-contacto-tipo">
+                            <option value="consulta">💬 Consulta general</option>
+                            <option value="problema">🔴 Problema técnico</option>
+                            <option value="sugerencia_ciudad">🏙️ Sugerencia de ciudad</option>
+                            <option value="otro">⚪ Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group contacto-full">
+                        <label for="dash-contacto-asunto">Asunto</label>
+                        <input type="text" id="dash-contacto-asunto" placeholder="Asunto de tu mensaje">
+                    </div>
+                    <div class="form-group contacto-full">
+                        <label for="dash-contacto-mensaje">Mensaje</label>
+                        <textarea id="dash-contacto-mensaje" rows="4"
+                            placeholder="Escribe tu mensaje aquí..."></textarea>
+                    </div>
+                </div>
+                <div id="dash-contacto-msg"></div>
+                <button id="btn-dash-enviar-contacto" class="btn-login">
+                    <span>✉️</span> Enviar mensaje
+                </button>
+            </div>
+        </div>
     </div>
 
 </body>

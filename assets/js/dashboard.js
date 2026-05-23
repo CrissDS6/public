@@ -18,11 +18,26 @@ const btnPerfil = document.querySelector('#btn-perfil');
 const dropdownPerfil = document.querySelector('#dropdown-perfil');
 
 ////////////////////////// FUNCIONES //////////////////////////
+function añadirBotonVolver() {
+    const contenido = document.querySelector('#contenido-principal');
+    const container = contenido.querySelector('[id$="-container"]');
+    if (!container) return;
+
+    const btnVolver = document.createElement('button');
+    btnVolver.classList.add('btn-volver');
+    btnVolver.innerHTML = '← Inicio';
+    btnVolver.addEventListener('click', function () {
+        cargarVista('inicio');
+    });
+
+    container.insertBefore(btnVolver, container.firstChild);
+}
+
 async function cargarVista(nombre) {
     const contenido = document.querySelector('#contenido-principal');
 
     try {
-        const res = await fetch(rutas[nombre]);
+        const res = await fetch(rutas[nombre] + '?t=' + Date.now());
         if (!res.ok) throw new Error('Vista no encontrada');
         const html = await res.text();
         const parser = new DOMParser();
@@ -39,6 +54,8 @@ async function cargarVista(nombre) {
     document.querySelectorAll('.nav-link').forEach(function (link) {
         link.classList.toggle('activo', link.dataset.vista == nombre);
     });
+
+    if (nombre !== 'inicio') añadirBotonVolver();
 
     if (nombre == 'inicio') initInicio();
     else if (nombre == 'mis-mascotas') initMisMascotas();
@@ -62,15 +79,98 @@ async function cargarBadgeAdmin() {
     }
 }
 
+async function abrirModalContactoDash() {
+    const response = await fetch('api/sesion.php');
+    const sesion = await response.json();
+
+    const inputNombre = document.querySelector('#dash-contacto-nombre');
+    const inputEmail = document.querySelector('#dash-contacto-email');
+
+    if (sesion.success) {
+        inputNombre.value = sesion.nombre;
+        inputEmail.value = sesion.email;
+        inputNombre.disabled = true;
+        inputEmail.disabled = true;
+    } else {
+        inputNombre.value = '';
+        inputEmail.value = '';
+        inputNombre.disabled = false;
+        inputEmail.disabled = false;
+    }
+
+    document.querySelector('#dash-contacto-asunto').value = '';
+    document.querySelector('#dash-contacto-mensaje').value = '';
+    document.querySelector('#dash-contacto-tipo').value = 'consulta';
+    document.querySelector('#dash-contacto-msg').textContent = '';
+    document.querySelector('#dash-contacto-msg').className = '';
+    document.querySelector('#modal-contacto-dash').classList.add('visible');
+}
+
+async function enviarContactoDash() {
+    const nombre = document.querySelector('#dash-contacto-nombre').value.trim();
+    const email = document.querySelector('#dash-contacto-email').value.trim();
+    const tipo = document.querySelector('#dash-contacto-tipo').value;
+    const asunto = document.querySelector('#dash-contacto-asunto').value.trim();
+    const texto = document.querySelector('#dash-contacto-mensaje').value.trim();
+    const mensaje = document.querySelector('#dash-contacto-msg');
+
+    if (nombre === '' || email === '' || asunto === '' || texto === '') {
+        mensaje.textContent = 'Todos los campos son obligatorios';
+        mensaje.className = 'error';
+        return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        mensaje.textContent = 'El email no tiene un formato válido';
+        mensaje.className = 'error';
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('email', email);
+    formData.append('tipo', tipo);
+    formData.append('asunto', asunto);
+    formData.append('texto', texto);
+
+    const response = await fetch('api/contacto.php', {
+        method: 'POST',
+        body: formData
+    });
+
+    const { success, error } = await response.json();
+
+    if (success) {
+        mensaje.textContent = '¡Mensaje enviado correctamente!';
+        mensaje.className = 'exito';
+        setTimeout(function () {
+            document.querySelector('#modal-contacto-dash').classList.remove('visible');
+        }, 2000);
+    } else {
+        mensaje.textContent = error || 'Error al enviar el mensaje';
+        mensaje.className = 'error';
+    }
+}
+async function cargarAvatarNav() {
+    const response = await fetch('api/sesion.php');
+    const { success, avatar } = await response.json();
+    if (!success) return;
+    document.querySelector('#nav-avatar').src = 'assets/img/avatares/' + avatar;
+}
+
 ////////////////////////// LLAMADAS //////////////////////////
 cargarVista('inicio');
 cargarBadgeAdmin();
+cargarAvatarNav();
 
 ////////////////////////// ESCUCHADORES //////////////////////////
 document.querySelector('.navbar').addEventListener('click', function (e) {
     if (e.target.classList.contains('nav-link') || e.target.classList.contains('dropdown-item')) {
         if (e.target.dataset.vista) {
             cargarVista(e.target.dataset.vista);
+            // Cerramos el menú móvil al navegar
+            navbarNav.classList.remove('active');
+            menuToggle.classList.remove('active');
         }
     }
 });
@@ -80,20 +180,24 @@ menuToggle.addEventListener('click', function () {
     menuToggle.classList.toggle('active');
 });
 
-document.querySelectorAll('.nav-link:not(#btn-abrir-login), .btn-register').forEach(function (link) {
-    link.addEventListener('click', function () {
-        navbarNav.classList.remove('active');
-        menuToggle.classList.remove('active');
-    });
-});
-
 btnPerfil.addEventListener('click', function (e) {
     e.stopPropagation();
     dropdownPerfil.classList.toggle('visible');
+    // Evitamos que el click en el botón perfil cierre el menú móvil
+    navbarNav.classList.add('active');
+    menuToggle.classList.add('active');
 });
 
-document.addEventListener('click', function () {
-    dropdownPerfil.classList.remove('visible');
+document.addEventListener('click', function (e) {
+    // Cerramos el dropdown si se hace click fuera
+    if (!btnPerfil.contains(e.target) && !dropdownPerfil.contains(e.target)) {
+        dropdownPerfil.classList.remove('visible');
+    }
+    // Cerramos el menú móvil si se hace click fuera del navbar
+    if (!navbarNav.contains(e.target) && !menuToggle.contains(e.target)) {
+        navbarNav.classList.remove('active');
+        menuToggle.classList.remove('active');
+    }
 });
 
 window.addEventListener('scroll', function () {
@@ -103,4 +207,26 @@ window.addEventListener('scroll', function () {
     } else {
         navbar.classList.remove('scrolled');
     }
+});
+
+// Contacto dashboard
+document.querySelectorAll('a[href="#contacto"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        abrirModalContactoDash();
+    });
+});
+
+document.querySelector('#modal-contacto-dash-cerrar').addEventListener('click', function () {
+    document.querySelector('#modal-contacto-dash').classList.remove('visible');
+});
+
+document.querySelector('#modal-contacto-dash').addEventListener('click', function (e) {
+    if (e.target == document.querySelector('#modal-contacto-dash')) {
+        document.querySelector('#modal-contacto-dash').classList.remove('visible');
+    }
+});
+
+document.querySelector('#btn-dash-enviar-contacto').addEventListener('click', function () {
+    enviarContactoDash();
 });

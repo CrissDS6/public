@@ -240,3 +240,29 @@
 .select-provincia:focus {
     border-color: var(--primary-blue);
 }
+
+/* ===== RESPONSIVE FORO ===== */
+@media (max-width: 600px) {
+
+    .btn-añadir {
+        white-space: nowrap;
+        padding: 0.5rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+    .foro-filtros {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .select-provincia {
+        grid-column: 1 / -1;
+        /* ocupa las dos columnas */
+    }
+
+    .btn-orden {
+        margin-left: 0;
+        /* elimina el auto que lo desplazaba */
+    }
+}

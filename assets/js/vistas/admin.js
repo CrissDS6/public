@@ -59,7 +59,6 @@ async function cargarMensajes() {
     const response = await fetch(url);
     const { success, datos, pendientes } = await response.json();
 
-    // Actualizamos el badge
     actualizarBadge(pendientes);
 
     const lista = document.querySelector('#lista-mensajes');
@@ -95,6 +94,20 @@ async function cargarMensajes() {
         clon.querySelector('.admin-card-info').appendChild(badge);
 
         lista.appendChild(clon);
+    });
+}
+
+async function cargarProvinciasAdmin() {
+    const response = await fetch('api/ciudades_catalogo.php');
+    const { success, datos } = await response.json();
+    if (!success) return;
+
+    const select = document.querySelector('#nueva-provincia');
+    datos.forEach(function (item) {
+        const option = document.createElement('option');
+        option.value = item.provincia;
+        option.textContent = item.provincia;
+        select.appendChild(option);
     });
 }
 
@@ -169,8 +182,6 @@ async function cargarSugerenciasCiudad() {
 async function anadirCiudadAdmin() {
     const nombre = document.querySelector('#nueva-ciudad').value.trim();
     const provincia = document.querySelector('#nueva-provincia').value;
-    const latitud = document.querySelector('#nueva-latitud').value;
-    const longitud = document.querySelector('#nueva-longitud').value;
     const mensaje = document.querySelector('#msg-ciudad-admin');
 
     if (nombre === '') {
@@ -185,36 +196,52 @@ async function anadirCiudadAdmin() {
         return;
     }
 
-    if (latitud === '' || longitud === '') {
-        mensaje.textContent = 'Las coordenadas son obligatorias';
-        mensaje.className = 'error';
-        return;
-    }
+    // Obtenemos coordenadas desde OpenWeatherMap
+    mensaje.textContent = 'Buscando coordenadas...';
+    mensaje.className = '';
 
-    const response = await fetch('api/admin.php', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'tipo=ciudad&nombre=' + encodeURIComponent(nombre) +
-            '&provincia=' + encodeURIComponent(provincia) +
-            '&latitud=' + latitud +
-            '&longitud=' + longitud
-    });
+    try {
+        const urlTiempo = 'https://api.openweathermap.org/data/2.5/weather?q=' +
+            encodeURIComponent(nombre) + ',ES&appid=' + API_KEY_TIEMPO;
+        const resTiempo = await fetch(urlTiempo);
+        const datosTiempo = await resTiempo.json();
 
-    const { success, error } = await response.json();
+        if (datosTiempo.cod !== 200) {
+            mensaje.textContent = 'No se encontraron coordenadas para esa ciudad. Comprueba el nombre.';
+            mensaje.className = 'error';
+            return;
+        }
 
-    if (success) {
-        mensaje.textContent = '¡Ciudad añadida correctamente!';
-        mensaje.className = 'exito';
-        document.querySelector('#nueva-ciudad').value = '';
-        document.querySelector('#nueva-provincia').value = '';
-        document.querySelector('#nueva-latitud').value = '';
-        document.querySelector('#nueva-longitud').value = '';
-        setTimeout(function () {
-            mensaje.textContent = '';
-            mensaje.className = '';
-        }, 3000);
-    } else {
-        mensaje.textContent = error || 'Error al añadir la ciudad';
+        const latitud = datosTiempo.coord.lat;
+        const longitud = datosTiempo.coord.lon;
+
+        const response = await fetch('api/admin.php', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'tipo=ciudad&nombre=' + encodeURIComponent(nombre) +
+                '&provincia=' + encodeURIComponent(provincia) +
+                '&latitud=' + latitud +
+                '&longitud=' + longitud
+        });
+
+        const { success, error } = await response.json();
+
+        if (success) {
+            mensaje.textContent = '✅ Ciudad añadida correctamente (lat: ' + latitud + ', lon: ' + longitud + ')';
+            mensaje.className = 'exito';
+            document.querySelector('#nueva-ciudad').value = '';
+            document.querySelector('#nueva-provincia').value = '';
+            setTimeout(function () {
+                mensaje.textContent = '';
+                mensaje.className = '';
+            }, 4000);
+        } else {
+            mensaje.textContent = error || 'Error al añadir la ciudad';
+            mensaje.className = 'error';
+        }
+
+    } catch {
+        mensaje.textContent = 'Error al conectar con la API del tiempo';
         mensaje.className = 'error';
     }
 }
@@ -255,14 +282,12 @@ async function cargarUsuariosAdmin() {
             btnResetear.title = 'No se puede resetear la contraseña del administrador';
         }
 
-        // Añadimos botón ver mascotas
         const btnVerMascotas = document.createElement('button');
         btnVerMascotas.classList.add('btn-ver-mascotas-admin');
         btnVerMascotas.textContent = '🐾 Ver mascotas';
         btnVerMascotas.dataset.id = usuario.id_usuario;
         clon.querySelector('.admin-card-acciones').appendChild(btnVerMascotas);
 
-        // Contenedor expandible
         const contenedorMascotas = document.createElement('div');
         contenedorMascotas.classList.add('admin-mascotas-contenedor');
         contenedorMascotas.style.display = 'none';
@@ -297,6 +322,7 @@ async function resetearPassword(id, card) {
 }
 
 async function initAdmin() {
+    await cargarProvinciasAdmin();
     await cargarPendientes();
 
     // Pestañas
@@ -353,12 +379,12 @@ async function initAdmin() {
         }
     });
 
-    //Añadir ciudad
+    // Añadir ciudad
     document.querySelector('#btn-anadir-ciudad-admin').addEventListener('click', function () {
         anadirCiudadAdmin();
     });
 
-    //Resetear password usuario
+    // Resetear password usuario
     document.querySelector('#lista-usuarios-admin').addEventListener('click', function (e) {
         if (e.target.classList.contains('btn-resetear-pass')) {
             const card = e.target.closest('.admin-card');

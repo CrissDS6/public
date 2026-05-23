@@ -72,6 +72,7 @@ async function guardarAvatar() {
 
     if (success) {
         mostrarMensaje('#msg-avatar', '¡Avatar actualizado correctamente!', 'exito');
+        document.querySelector('#nav-avatar').src = 'assets/img/avatares/' + avatarSeleccionado;
     } else {
         mostrarMensaje('#msg-avatar', error || 'Error al actualizar el avatar', 'error');
     }
@@ -95,7 +96,6 @@ async function guardarDatos() {
 
     if (success) {
         mostrarMensaje('#msg-datos', '¡Datos actualizados correctamente!', 'exito');
-        // Actualizamos el nombre en el navbar
         document.querySelector('#btn-perfil').childNodes[0].textContent = nombre.split(' ')[0] + ' ';
     } else {
         mostrarMensaje('#msg-datos', error || 'Error al actualizar los datos', 'error');
@@ -144,7 +144,6 @@ async function guardarPassword() {
 }
 
 async function initPerfil() {
-    // Cargamos datos del usuario
     const response = await fetch('api/perfil.php');
     const { success, datos } = await response.json();
 
@@ -170,5 +169,36 @@ async function initPerfil() {
 
     document.querySelector('#btn-guardar-password').addEventListener('click', function () {
         guardarPassword();
+    });
+
+    // Ojo contraseña — los tres campos del perfil
+    document.querySelectorAll('.btn-toggle-pass').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var input = document.getElementById(btn.dataset.target);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁️';
+            }
+        });
+    });
+
+    document.querySelector('#btn-eliminar-cuenta').addEventListener('click', async function () {
+        if (!confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) return;
+        if (!confirm('¿Seguro seguro? Se borrarán todos tus datos, mascotas y publicaciones.')) return;
+
+        const response = await fetch('api/perfil.php', {
+            method: 'DELETE'
+        });
+
+        const { success, error } = await response.json();
+
+        if (success) {
+            window.location.href = 'index.html';
+        } else {
+            mostrarMensaje('#msg-password', error || 'Error al eliminar la cuenta', 'error');
+        }
     });
 }

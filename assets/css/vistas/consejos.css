@@ -17,6 +17,7 @@
     align-items: center;
     gap: 2rem;
     border: 2px solid var(--secondary-blue);
+    flex-wrap: wrap;
 }
 
 .consejos-bloque {
@@ -146,4 +147,27 @@
 
 .consejo-card.amarillo:hover .consejo-card-header {
     background: linear-gradient(135deg, #FFD93D 0%, #E6A800 100%);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .consejos-clima-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+
+    .clima-datos {
+        justify-content: center;
+    }
+
+    .clima-desc {
+        font-size: 0.85rem;
+        word-break: break-word;
+    }
+
+    #consejos-container {
+        padding: 1rem;
+    }
 }

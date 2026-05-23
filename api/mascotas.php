@@ -50,7 +50,13 @@ if ($metodo == 'GET') {
     // Gestionar foto si viene
     $nombreFoto = null;
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $extension  = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
+        $extension = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
+
+        $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (!in_array($extension, $extensionesPermitidas)) {
+            enviarError(400, 'Formato de imagen no permitido. Usa JPG, PNG, GIF o WEBP', $conn);
+        }
+
         $nombreFoto = uniqid('mascota_') . '.' . $extension;
         $rutaDest   = __DIR__ . '/../uploads/mascotas/' . $nombreFoto;
 
@@ -101,7 +107,13 @@ if ($metodo == 'GET') {
     // Gestionar foto si viene nueva
     $nombreFoto = $mascotaActual['foto'];
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $extension  = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
+        $extension = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
+
+        $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (!in_array($extension, $extensionesPermitidas)) {
+            enviarError(400, 'Formato de imagen no permitido. Usa JPG, PNG, GIF o WEBP', $conn);
+        }
+
         $nombreFoto = uniqid('mascota_') . '.' . $extension;
         $rutaDest   = __DIR__ . '/../uploads/mascotas/' . $nombreFoto;
 

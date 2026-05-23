@@ -457,3 +457,17 @@ document.querySelectorAll('a[href="#contacto"]').forEach(function (link) {
         abrirModalContacto();
     });
 });
+
+// Mostrar/ocultar contraseña
+document.querySelectorAll('.btn-toggle-pass').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        var input = document.getElementById(btn.dataset.target);
+        if (input.type === 'password') {
+            input.type = 'text';
+            btn.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            btn.textContent = '👁️';
+        }
+    });
+});

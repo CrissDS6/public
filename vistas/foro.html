@@ -9,11 +9,11 @@
         <button class="btn-filtro activo" data-especie="0">Todos</button>
         <button class="btn-filtro" data-especie="1">🐶 Perros</button>
         <button class="btn-filtro" data-especie="2">🐱 Gatos</button>
+        <button class="btn-orden" data-orden="fecha">Más recientes</button>
+        <button class="btn-orden activo-orden" data-orden="likes">Más valorados</button>
         <select id="filtro-provincia" class="select-provincia">
             <option value="">Todas las provincias</option>
         </select>
-        <button class="btn-orden" data-orden="fecha">Más recientes</button>
-        <button class="btn-orden activo-orden" data-orden="likes">Más valorados</button>
     </div>
 
     <!-- LISTA DE PUBLICACIONES -->
@@ -42,13 +42,17 @@
             </div>
 
             <div class="form-group">
-                <label for="pub-ciudad">Ciudad</label>
-                <input type="text" id="pub-ciudad" placeholder="Tu ciudad">
+                <label for="pub-provincia">Provincia</label>
+                <select id="pub-provincia">
+                    <option value="">Selecciona una provincia...</option>
+                </select>
             </div>
 
             <div class="form-group">
-                <label for="pub-provincia">Provincia</label>
-                <input type="text" id="pub-provincia" placeholder="Tu provincia">
+                <label for="pub-ciudad">Ciudad</label>
+                <select id="pub-ciudad" disabled>
+                    <option value="">Primero selecciona una provincia</option>
+                </select>
             </div>
 
             <div class="form-group">

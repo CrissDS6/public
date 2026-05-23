@@ -94,12 +94,24 @@ async function enviarPublicacion() {
     const titulo = document.querySelector('#pub-titulo').value.trim();
     const contenido = document.querySelector('#pub-contenido').value.trim();
     const idEspecie = document.querySelector('#pub-especie').value;
-    const ciudad = document.querySelector('#pub-ciudad').value.trim();
-    const provincia = document.querySelector('#pub-provincia').value.trim();
+    const ciudad = document.querySelector('#pub-ciudad').value;
+    const provincia = document.querySelector('#pub-provincia').value;
     const mensaje = document.querySelector('#pub-mensaje');
 
     if (titulo === '' || contenido === '') {
         mensaje.textContent = 'El título y el contenido son obligatorios';
+        mensaje.className = 'error';
+        return;
+    }
+
+    if (provincia === '') {
+        mensaje.textContent = 'Selecciona una provincia';
+        mensaje.className = 'error';
+        return;
+    }
+
+    if (ciudad === '') {
+        mensaje.textContent = 'Selecciona una ciudad';
         mensaje.className = 'error';
         return;
     }
@@ -128,6 +140,45 @@ async function enviarPublicacion() {
         mensaje.textContent = error || 'Error al enviar el aviso';
         mensaje.className = 'error';
     }
+}
+async function cargarProvinciasForo() {
+    const response = await fetch('api/ciudades_catalogo.php');
+    const { success, datos } = await response.json();
+    if (!success) return;
+
+    const select = document.querySelector('#pub-provincia');
+    select.innerHTML = '<option value="">Selecciona una provincia...</option>';
+
+    datos.forEach(function (item) {
+        const option = document.createElement('option');
+        option.value = item.provincia;
+        option.textContent = item.provincia;
+        select.appendChild(option);
+    });
+}
+
+async function cargarCiudadesForo(provincia) {
+    const selectCiudad = document.querySelector('#pub-ciudad');
+    selectCiudad.innerHTML = '<option value="">Cargando...</option>';
+    selectCiudad.disabled = true;
+
+    const response = await fetch('api/ciudades_catalogo.php?provincia=' + encodeURIComponent(provincia));
+    const { success, datos } = await response.json();
+
+    if (!success || datos.length == 0) {
+        selectCiudad.innerHTML = '<option value="">No hay ciudades disponibles</option>';
+        return;
+    }
+
+    selectCiudad.innerHTML = '<option value="">Selecciona una ciudad...</option>';
+    datos.forEach(function (ciudad) {
+        const option = document.createElement('option');
+        option.value = ciudad.nombre_ciudad;
+        option.textContent = ciudad.nombre_ciudad;
+        selectCiudad.appendChild(option);
+    });
+
+    selectCiudad.disabled = false;
 }
 
 async function initForo() {
@@ -174,12 +225,22 @@ async function initForo() {
     document.querySelector('#btn-nueva-publicacion').addEventListener('click', function () {
         document.querySelector('#pub-titulo').value = '';
         document.querySelector('#pub-contenido').value = '';
-        document.querySelector('#pub-ciudad').value = '';
-        document.querySelector('#pub-provincia').value = '';
+        document.querySelector('#pub-ciudad').innerHTML = '<option value="">Primero selecciona una provincia</option>';
+        document.querySelector('#pub-ciudad').disabled = true;
         document.querySelector('#pub-especie').value = '1';
         document.querySelector('#pub-mensaje').textContent = '';
         document.querySelector('#pub-mensaje').className = '';
+        cargarProvinciasForo();
         document.querySelector('#modal-publicacion').classList.add('visible');
+    });
+
+    document.querySelector('#pub-provincia').addEventListener('change', function () {
+        if (this.value !== '') {
+            cargarCiudadesForo(this.value);
+        } else {
+            document.querySelector('#pub-ciudad').innerHTML = '<option value="">Primero selecciona una provincia</option>';
+            document.querySelector('#pub-ciudad').disabled = true;
+        }
     });
 
     document.querySelector('#modal-publicacion-cerrar').addEventListener('click', function () {

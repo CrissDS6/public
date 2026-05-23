@@ -73,7 +73,7 @@ async function buscarCiudades(texto) {
     if (!success || datos.length == 0) {
         const item = document.createElement('div');
         item.classList.add('resultado-item');
-        item.textContent = 'No se encontraron ciudades';
+        item.textContent = 'No se encontraron ciudades o ya las tienes en favoritas';
         resultados.appendChild(item);
         resultados.classList.add('visible');
         return;

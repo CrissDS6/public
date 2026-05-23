@@ -36,7 +36,8 @@ $primerNombre = explode(' ', $nombreUsuario)[0];
 enviarRespuesta($conn, [
     'success'   => true,
     'nombre'    => $primerNombre,
-    'avatar' => $usuario['avatar'] ?? 'avatar_default.png',
+    'email'     => $_SESSION['usuario_email'],
+    'avatar'    => $usuario['avatar'] ?? 'avatar_default.png',
     'ciudad'    => $ciudad ? $ciudad['nombre_ciudad'] : null,
     'latitud'   => $ciudad ? $ciudad['latitud'] : null,
     'longitud'  => $ciudad ? $ciudad['longitud'] : null

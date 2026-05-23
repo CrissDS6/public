@@ -133,6 +133,19 @@ if ($metodo == 'GET') {
     $id_ciudad = intval($datos['id_ciudad']);
     $conn = obtenerConexion();
 
+    // Verificamos que no sea la ciudad principal
+    $sql = "SELECT principal FROM ciudades_favoritas WHERE id_usuario = ? AND id_ciudad = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ii', $id_usuario, $id_ciudad);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $ciudadFav = $resultado->fetch_assoc();
+    $stmt->close();
+
+    if ($ciudadFav && $ciudadFav['principal'] == 1) {
+        enviarError(400, 'No puedes eliminar la ciudad principal. Primero establece otra ciudad como principal.', $conn);
+    }
+
     // No permitimos eliminar la ciudad principal si es la única
     $sql = "SELECT principal FROM ciudades_favoritas WHERE id_usuario = ? AND id_ciudad = ?";
     $stmt = $conn->prepare($sql);

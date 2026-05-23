@@ -23,6 +23,7 @@
     font-weight: 700;
     color: var(--primary-blue);
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .perfil-avatar-section {
@@ -60,16 +61,25 @@
     color: var(--text-dark);
 }
 
+/* ===== OJO CONTRASEÑA — wrapper relativo para los inputs del perfil ===== */
+.perfil-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
 .perfil-card input[type="text"],
 .perfil-card input[type="email"],
-.perfil-card input[type="password"] {
+.perfil-card input[type="password"],
+.perfil-card input[type="text"].perfil-input-wrapper input {
     border: 2px solid var(--light-gray);
     border-radius: 10px;
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 3rem 0.8rem 1rem;
     font-family: var(--font-primary);
     font-size: 0.95rem;
     background: var(--light-gray);
     transition: all 0.2s;
+    width: 100%;
 }
 
 .perfil-card input:focus {
@@ -94,7 +104,7 @@
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
-    align-self: flex-start;
+    align-self: center;
 }
 
 .btn-guardar-perfil:hover {
@@ -158,4 +168,31 @@
     #perfil-avatar-selector {
         grid-template-columns: repeat(4, 1fr);
     }
+}
+
+.perfil-card-peligro {
+    border-color: #b00020;
+}
+
+.perfil-card-peligro .perfil-seccion-titulo {
+    color: #b00020;
+}
+
+.btn-eliminar-cuenta {
+    background: #fde8eb;
+    color: #b00020;
+    border: 2px solid #b00020;
+    border-radius: 12px;
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: center;
+}
+
+.btn-eliminar-cuenta:hover {
+    background: #b00020;
+    color: var(--white);
 }

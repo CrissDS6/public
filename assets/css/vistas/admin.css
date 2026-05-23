@@ -429,3 +429,21 @@
     font-size: 0.78rem;
     color: var(--descriptions);
 }
+
+/* ===== RESPONSIVE ADMIN ===== */
+@media (max-width: 600px) {
+
+    .admin-tabs {
+        gap: 0;
+    }
+
+    .admin-tab {
+        padding: 0.8rem 0.6rem;
+        font-size: 0.78rem;
+    }
+
+    .admin-ciudad-grid {
+        grid-template-columns: 1fr;
+        /* una columna en móvil */
+    }
+}
