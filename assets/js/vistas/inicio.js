@@ -2,16 +2,27 @@
 // Las variables API_KEY_TIEMPO y URL_TIEMPO vienen de dashboard.js
 
 ////////////////////////// FUNCIONES //////////////////////////
-function obtenerEmojiTiempo(codigo) {
-    if (codigo >= 200 && codigo < 300) return '⛈️'; // Tormenta eléctrica
-    if (codigo >= 300 && codigo < 400) return '🌦️'; // Llovizna
-    if (codigo >= 500 && codigo < 600) return '🌧️'; // Lluvia
-    if (codigo >= 600 && codigo < 700) return '❄️';  // Nieve
-    if (codigo >= 700 && codigo < 800) return '🌫️'; // Atmósfera
-    if (codigo === 800) return '☀️';                 // Cielo despejado
-    if (codigo === 801) return '🌤️';                // Pocas nubes
-    if (codigo >= 802) return '☁️';                 // Nublado
-    return '🌡️';
+function obtenerGifTiempo(codigo, temp, humedad) {
+    const base = 'assets/img/tiempo/';
+    if (codigo >= 200 && codigo < 300) return base + 'tormenta.gif';
+    if (codigo >= 300 && codigo < 400) return base + 'llovizna.gif';
+    if (codigo >= 500 && codigo < 600) return base + 'lluvia.gif';
+    if (codigo >= 600 && codigo < 700) return base + 'nieve.gif';
+    if (codigo == 731 || codigo == 751 || codigo == 761) return base + 'niebla.gif'; // calima
+    if (codigo == 771 || codigo == 781) return base + 'viento.gif';
+    if (codigo >= 700 && codigo < 800) return base + 'niebla.gif';
+    if (codigo === 800) {
+        if (temp >= 28) return base + 'caliente.gif';
+        if (temp <= 8) return base + 'frio.gif';
+        return base + 'sol.gif';
+    }
+    if (codigo === 801) return base + 'sol_nubes.gif';
+    if (codigo >= 802) {
+        if (humedad >= 70) return base + 'humedad.gif';
+        if (temp <= 8) return base + 'frio.gif';
+        return base + 'nublado.gif';
+    }
+    return base + 'estable.gif';
 }
 
 async function cargarTiempoInicio(ciudad, lat, lon) {
@@ -21,12 +32,22 @@ async function cargarTiempoInicio(ciudad, lat, lon) {
         const datos = await res.json();
 
         const temp = Math.round(datos.main.temp);
+        const humedad = datos.main.humidity;
         const descripcion = datos.weather[0].description;
         const codigo = datos.weather[0].id;
 
         document.querySelector('#inicio-ciudad').textContent = ciudad;
         document.querySelector('#inicio-temp').textContent = temp + '°C';
-        document.querySelector('#inicio-icono').textContent = obtenerEmojiTiempo(codigo);
+
+        const iconEl = document.querySelector('#inicio-icono');
+        iconEl.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = obtenerGifTiempo(codigo, temp, humedad);
+        img.alt = descripcion;
+        img.style.width = '80px';
+        img.style.height = '80px';
+        iconEl.appendChild(img);
+
         document.querySelector('#inicio-desc').textContent = descripcion.charAt(0).toUpperCase() + descripcion.slice(1);
 
     } catch {
@@ -35,24 +56,20 @@ async function cargarTiempoInicio(ciudad, lat, lon) {
 }
 
 async function initInicio() {
-    // Escuchadores de accesos rápidos
     document.querySelectorAll('.acceso-card').forEach(function (card) {
         card.addEventListener('click', function () {
             cargarVista(this.dataset.vista);
         });
     });
 
-    // Pedimos datos de sesión al servidor
     const res = await fetch('api/sesion.php');
     const datos = await res.json();
 
     if (!datos.success) return;
 
-    // Pintamos nombre y avatar
     document.querySelector('.saludo-nombre').textContent = datos.nombre;
     document.querySelector('.saludo-avatar').src = 'assets/img/avatares/' + datos.avatar;
 
-    // Si tiene ciudad principal cargamos el tiempo
     if (datos.latitud && datos.longitud) {
         cargarTiempoInicio(datos.ciudad, datos.latitud, datos.longitud);
     } else {

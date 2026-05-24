@@ -382,6 +382,19 @@ button.nav-link {
     overflow: hidden;
 }
 
+/* GIF dentro de la tarjeta de tiempo — fondo blanco para que se vea bien */
+.platform-card-highlight #weather-icon {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 0.5rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem auto;
+    position: relative;
+    z-index: 1;
+}
+
 .platform-card-highlight::before {
     content: '';
     position: absolute;

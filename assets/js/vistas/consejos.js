@@ -18,17 +18,18 @@ const TIPOS_TIEMPO = {
     801: 'calor', 802: 'humedad', 803: 'humedad', 804: 'humedad'
 };
 
-const EMOJIS_TIEMPO = {
-    'tormenta': '⛈️',
-    'lluvia': '🌧️',
-    'nieve': '❄️',
-    'niebla': '🌫️',
-    'viento': '💨',
-    'calor': '🌡️',
-    'humedad': '💧',
-    'frio': '🥶',
-    'estable': '😊',
-    'calima': '🟡'
+const GIFS_TIEMPO = {
+    'tormenta': 'assets/img/tiempo/tormenta.gif',
+    'lluvia': 'assets/img/tiempo/lluvia.gif',
+    'llovizna': 'assets/img/tiempo/llovizna.gif',
+    'nieve': 'assets/img/tiempo/nieve.gif',
+    'niebla': 'assets/img/tiempo/niebla.gif',
+    'viento': 'assets/img/tiempo/viento.gif',
+    'calor': 'assets/img/tiempo/caliente.gif',
+    'humedad': 'assets/img/tiempo/humedad.gif',
+    'frio': 'assets/img/tiempo/frio.gif',
+    'estable': 'assets/img/tiempo/estable.gif',
+    'calima': 'assets/img/tiempo/niebla.gif'
 };
 
 let consejosUsadosVista = {};
@@ -36,10 +37,11 @@ let consejosUsadosVista = {};
 ////////////////////////// FUNCIONES //////////////////////////
 function convertirCodigoATipo(codigo, temp, humedad) {
     if (codigo >= 200 && codigo < 300) return 'tormenta';
-    if (codigo >= 300 && codigo < 600) return 'lluvia';
+    if (codigo >= 300 && codigo < 400) return 'llovizna';
+    if (codigo >= 400 && codigo < 600) return 'lluvia';
     if (codigo >= 600 && codigo < 700) return 'nieve';
-    if (codigo >= 700 && codigo < 730) return 'niebla';
     if (codigo == 731 || codigo == 751 || codigo == 761) return 'calima';
+    if (codigo >= 700 && codigo < 730) return 'niebla';
     if (codigo >= 732 && codigo < 800) return 'niebla';
     if (codigo == 771 || codigo == 781) return 'viento';
     if (temp >= 28) return 'calor';
@@ -48,20 +50,32 @@ function convertirCodigoATipo(codigo, temp, humedad) {
     return 'estable';
 }
 
-function obtenerEmojiConsejos(codigo) {
-    if (codigo >= 200 && codigo < 300) return '⛈️';
-    if (codigo >= 300 && codigo < 600) return '🌧️';
-    if (codigo >= 600 && codigo < 700) return '❄️';
-    if (codigo >= 700 && codigo < 800) return '🌫️';
-    if (codigo == 800) return '☀️';
-    if (codigo == 801) return '🌤️';
-    if (codigo >= 802) return '☁️';
-    return '🌡️';
+function obtenerGifConsejos(codigo, temp, humedad) {
+    const base = 'assets/img/tiempo/';
+    if (codigo >= 200 && codigo < 300) return base + 'tormenta.gif';
+    if (codigo >= 300 && codigo < 400) return base + 'llovizna.gif';
+    if (codigo >= 500 && codigo < 600) return base + 'lluvia.gif';
+    if (codigo >= 600 && codigo < 700) return base + 'nieve.gif';
+    if (codigo == 731 || codigo == 751 || codigo == 761) return base + 'niebla.gif';
+    if (codigo == 771 || codigo == 781) return base + 'viento.gif';
+    if (codigo >= 700 && codigo < 800) return base + 'niebla.gif';
+    if (codigo === 800) {
+        if (temp >= 28) return base + 'caliente.gif';
+        if (temp <= 8) return base + 'frio.gif';
+        return base + 'sol.gif';
+    }
+    if (codigo === 801) return base + 'sol_nubes.gif';
+    if (codigo >= 802) {
+        if (humedad >= 70) return base + 'humedad.gif';
+        if (temp <= 8) return base + 'frio.gif';
+        return base + 'nublado.gif';
+    }
+    return base + 'estable.gif';
 }
 
 async function initConsejos() {
     consejosUsadosVista = {};
-    // Cargamos datos de sesión
+
     const resSesion = await fetch('api/sesion.php');
     const datosSession = await resSesion.json();
 
@@ -71,7 +85,6 @@ async function initConsejos() {
         return;
     }
 
-    // Llamamos a OpenWeatherMap
     const urlTiempo = URL_TIEMPO + '?lat=' + datosSession.latitud +
         '&lon=' + datosSession.longitud +
         '&appid=' + API_KEY_TIEMPO +
@@ -86,14 +99,21 @@ async function initConsejos() {
     const descripcion = datosTiempo.weather[0].description;
     const tipeTiempo = convertirCodigoATipo(codigo, temp, humedad);
 
-    // Pintamos la tarjeta del clima
     document.querySelector('#consejos-ciudad').textContent = datosSession.ciudad;
     document.querySelector('#consejos-temp').textContent = temp + '°C';
-    document.querySelector('#consejos-icono').textContent = obtenerEmojiConsejos(codigo);
+
+    const iconEl = document.querySelector('#consejos-icono');
+    iconEl.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = obtenerGifConsejos(codigo, temp, humedad);
+    img.alt = descripcion;
+    img.style.width = '80px';
+    img.style.height = '80px';
+    iconEl.appendChild(img);
+
     document.querySelector('#consejos-desc').textContent =
         descripcion.charAt(0).toUpperCase() + descripcion.slice(1);
 
-    // Pedimos los consejos según el tipo de tiempo
     const resConsejos = await fetch('api/consejos.php?tipo_tiempo=' + tipeTiempo);
     const datosConsejos = await resConsejos.json();
 
@@ -111,10 +131,8 @@ async function initConsejos() {
         const color = indice % 2 == 0 ? 'azul' : 'amarillo';
         clon.querySelector('.consejo-card').classList.add(color);
 
-        const emoji = consejo.nombre_especie == 'Perro' ? '🐶' : '🐱';
-        const emojiTiempo = EMOJIS_TIEMPO[tipeTiempo] || '🌡️';
+        const gifTiempo = GIFS_TIEMPO[tipeTiempo] || 'assets/img/tiempo/estable.gif';
 
-        // Elegimos consejo no repetido
         const clave = consejo.nombre_especie + '_' + tipeTiempo;
         if (!consejosUsadosVista[clave]) {
             consejosUsadosVista[clave] = [];
@@ -133,8 +151,31 @@ async function initConsejos() {
         const texto = disponibles[indiceAleatorio];
         consejosUsadosVista[clave].push(texto);
 
-        clon.querySelector('.consejo-emoji-mascota').textContent = emoji;
-        clon.querySelector('.consejo-titulo').textContent = consejo.nombre_mascota + ' te aconseja... ' + emojiTiempo;
+        // Imagen de especie personalizada
+        const imgEspecie = consejo.nombre_especie == 'Perro'
+            ? 'assets/img/ui/img_perro.png'
+            : 'assets/img/ui/img_gato.png';
+        const iconoEl = clon.querySelector('.consejo-emoji-mascota');
+        iconoEl.innerHTML = '';
+        const imgEl = document.createElement('img');
+        imgEl.src = imgEspecie;
+        imgEl.alt = consejo.nombre_especie;
+        imgEl.style.width = '40px';
+        imgEl.style.height = '40px';
+        imgEl.style.objectFit = 'contain';
+        iconoEl.appendChild(imgEl);
+
+        // Título con GIF del tiempo
+        const tituloEl = clon.querySelector('.consejo-titulo');
+        tituloEl.textContent = consejo.nombre_mascota + ' te aconseja... ';
+        const imgTitulo = document.createElement('img');
+        imgTitulo.src = gifTiempo;
+        imgTitulo.alt = tipeTiempo;
+        imgTitulo.style.width = '32px';
+        imgTitulo.style.height = '32px';
+        imgTitulo.style.verticalAlign = 'middle';
+        tituloEl.appendChild(imgTitulo);
+
         clon.querySelector('.consejo-texto').textContent = texto;
 
         lista.appendChild(clon);

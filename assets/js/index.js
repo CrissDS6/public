@@ -3,17 +3,27 @@ const API_KEY = '6503d50520029d03c68708a566d29cbe';
 const URL_API = 'https://api.openweathermap.org/data/2.5/weather';
 
 ////////////////////////// FUNCIONES //////////////////////////
-function obtenerEmoji(codigo) {
-    if (codigo >= 200 && codigo < 300) return '⛈️'; // Tormenta eléctrica
-    if (codigo >= 300 && codigo < 400) return '🌦️'; // Llovizna
-    if (codigo >= 500 && codigo < 600) return '🌧️'; // Lluvia
-    if (codigo >= 600 && codigo < 700) return '❄️';  // Nieve
-    if (codigo == 731 || codigo == 751 || codigo == 761) return '🟤'; // Calima
-    if (codigo >= 700 && codigo < 800) return '🌫️'; // Atmósfera (niebla, bruma, polvo...)
-    if (codigo === 800) return '☀️';                 // Cielo despejado
-    if (codigo === 801) return '🌤️';                // Pocas nubes (11-25%)
-    if (codigo >= 802) return '☁️';                 // Nublado (802=25-50%, 803=50-84%, 804=+85%)
-    return '🌡️';
+function obtenerGifTiempo(codigo, temp, humedad) {
+    const base = 'assets/img/tiempo/';
+    if (codigo >= 200 && codigo < 300) return base + 'tormenta.gif';
+    if (codigo >= 300 && codigo < 400) return base + 'llovizna.gif';
+    if (codigo >= 500 && codigo < 600) return base + 'lluvia.gif';
+    if (codigo >= 600 && codigo < 700) return base + 'nieve.gif';
+    if (codigo == 731 || codigo == 751 || codigo == 761) return base + 'niebla.gif'; // calima
+    if (codigo == 771 || codigo == 781) return base + 'viento.gif';
+    if (codigo >= 700 && codigo < 800) return base + 'niebla.gif';
+    if (codigo === 800) {
+        if (temp >= 28) return base + 'caliente.gif';
+        if (temp <= 8) return base + 'frio.gif';
+        return base + 'sol.gif';
+    }
+    if (codigo === 801) return base + 'sol_nubes.gif';
+    if (codigo >= 802) {
+        if (humedad >= 70) return base + 'humedad.gif';
+        if (temp <= 8) return base + 'frio.gif';
+        return base + 'nublado.gif';
+    }
+    return base + 'estable.gif';
 }
 
 async function cargarTiempo(lat, lon, nombreCiudad) {
@@ -23,12 +33,22 @@ async function cargarTiempo(lat, lon, nombreCiudad) {
         const datos = await res.json();
 
         const temp = Math.round(datos.main.temp);
+        const humedad = datos.main.humidity;
         const descripcion = datos.weather[0].description;
         const codigo = datos.weather[0].id;
         const ciudad = nombreCiudad || datos.name;
 
         document.querySelector('#weather-temp').textContent = temp + '°C';
-        document.querySelector('#weather-icon').textContent = obtenerEmoji(codigo);
+
+        const iconEl = document.querySelector('#weather-icon');
+        iconEl.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = obtenerGifTiempo(codigo, temp, humedad);
+        img.alt = descripcion;
+        img.style.width = '80px';
+        img.style.height = '80px';
+        iconEl.appendChild(img);
+
         document.querySelector('#weather-desc').textContent = descripcion.charAt(0).toUpperCase() + descripcion.slice(1);
         document.querySelector('#weather-ciudad').textContent = '📍 ' + ciudad;
 
@@ -323,7 +343,6 @@ if (window.location.search.includes('registro=1')) {
 
 ////////////////////////// ESCUCHADORES //////////////////////////
 
-// Menú móvil
 const menuToggle = document.querySelector('#menuToggle');
 const navbarNav = document.querySelector('#navbarNav');
 
@@ -339,12 +358,11 @@ document.querySelectorAll('.nav-link:not(#btn-abrir-login), .btn-register').forE
     });
 });
 
-// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
         if (href === '#') return;
-        if (href === '#contacto') return; // dejamos que lo maneje el modal
+        if (href === '#contacto') return;
         e.preventDefault();
         const target = document.querySelector(href);
         if (target) {
@@ -353,7 +371,6 @@ document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     });
 });
 
-// Navbar scroll
 window.addEventListener('scroll', function () {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
@@ -363,7 +380,6 @@ window.addEventListener('scroll', function () {
     }
 });
 
-// Modal login
 document.querySelector('#btn-abrir-login').addEventListener('click', function (e) {
     e.preventDefault();
     abrirModalLogin();
@@ -379,7 +395,6 @@ document.querySelector('#modal-login').addEventListener('click', function (e) {
     }
 });
 
-// Modal registro - abrir
 document.querySelectorAll('a[href="index.html?registro=1"], .btn-cta, .btn-register').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
         e.preventDefault();
@@ -387,7 +402,6 @@ document.querySelectorAll('a[href="index.html?registro=1"], .btn-cta, .btn-regis
     });
 });
 
-// Modal registro - cerrar
 document.querySelector('#modal-registro-cerrar').addEventListener('click', function () {
     document.querySelector('#modal-registro').classList.remove('visible');
 });
@@ -398,14 +412,12 @@ document.querySelector('#modal-registro').addEventListener('click', function (e)
     }
 });
 
-// Ir al login desde registro
 document.querySelector('#btn-ir-login').addEventListener('click', function (e) {
     e.preventDefault();
     document.querySelector('#modal-registro').classList.remove('visible');
     abrirModalLogin();
 });
 
-// Selector de provincia
 document.querySelector('#reg-provincia').addEventListener('change', function () {
     if (this.value !== '') {
         cargarCiudadesPorProvincia(this.value);
@@ -417,14 +429,12 @@ document.querySelector('#reg-provincia').addEventListener('change', function () 
     }
 });
 
-// Sugerir ciudad
 document.querySelector('#btn-sugerir-ciudad').addEventListener('click', function (e) {
     e.preventDefault();
     document.querySelector('#modal-registro').classList.remove('visible');
     alert('Para sugerir una ciudad, usa el formulario de contacto indicando el nombre de tu ciudad y provincia.');
 });
 
-// Botón registrarse
 document.querySelector('#btn-registrarse').addEventListener('click', function () {
     registrarUsuario();
 });
@@ -435,7 +445,6 @@ document.querySelector('#btn-abrir-registro').addEventListener('click', function
     abrirModalRegistro();
 });
 
-// Modal contacto
 document.querySelector('#modal-contacto-cerrar').addEventListener('click', function () {
     document.querySelector('#modal-contacto').classList.remove('visible');
 });
@@ -450,7 +459,6 @@ document.querySelector('#btn-enviar-contacto').addEventListener('click', functio
     enviarContacto();
 });
 
-// Enlace del footer
 document.querySelectorAll('a[href="#contacto"]').forEach(function (link) {
     link.addEventListener('click', function (e) {
         e.preventDefault();
@@ -458,7 +466,6 @@ document.querySelectorAll('a[href="#contacto"]').forEach(function (link) {
     });
 });
 
-// Mostrar/ocultar contraseña
 document.querySelectorAll('.btn-toggle-pass').forEach(function (btn) {
     btn.addEventListener('click', function () {
         var input = document.getElementById(btn.dataset.target);

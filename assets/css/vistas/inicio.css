@@ -122,6 +122,20 @@
     line-height: 1.5;
 }
 
+.acceso-icono {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+}
+
+.acceso-icono img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+
 @media (max-width: 600px) {
     .accesos-grid {
         grid-template-columns: 1fr;
