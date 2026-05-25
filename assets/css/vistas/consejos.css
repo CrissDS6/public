@@ -1,4 +1,8 @@
-/* ===== VISTA CONSEJOS ===== */
+/********************************
+    Estilos de la vista Consejos
+*********************************/
+
+/****** CONTENEDOR ******/
 #consejos-container {
     max-width: 900px;
     margin: 0 auto;
@@ -8,6 +12,7 @@
     gap: 2rem;
 }
 
+/****** TARJETA CLIMA ******/
 .consejos-clima-card {
     background: var(--white);
     border-radius: 20px;
@@ -20,47 +25,11 @@
     flex-wrap: wrap;
 }
 
-.consejos-bloque {
-    background: var(--white);
-    border-radius: 20px;
-    border: 2px solid var(--secondary-blue);
-    overflow: hidden;
-}
-
-.consejos-bloque-header {
-    background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
-    padding: 1.2rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-}
-
-.consejos-bloque-header h3 {
-    color: var(--white);
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0;
-}
-
-.consejos-bloque-header .tiempo-icono {
-    font-size: 1.8rem;
-}
-
-.consejos-bloque-body {
-    padding: 1.5rem;
+/****** LISTA DE CONSEJOS ******/
+#consejos-lista {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-}
-
-.consejo-item {
-    background: var(--light-blue);
-    border-radius: 12px;
-    padding: 1rem 1.2rem;
-    font-size: 0.95rem;
-    color: var(--text-dark);
-    line-height: 1.6;
-    border-left: 4px solid var(--secondary-blue);
+    gap: 1.2rem;
 }
 
 .consejos-vacio {
@@ -70,6 +39,7 @@
     font-size: 1rem;
 }
 
+/****** TARJETA DE CONSEJO ******/
 .consejo-card {
     border-radius: 20px;
     border: 2px solid var(--secondary-blue);
@@ -90,7 +60,7 @@
     border-color: #FFD93D;
 }
 
-/* HEADER — ahora en blanco para que el GIF no tenga fondo raro */
+/* Header en blanco para que el GIF no tenga fondo de color */
 .consejo-card-header {
     padding: 1rem 1.5rem;
     display: flex;
@@ -102,23 +72,15 @@
 .consejo-card-header h3 {
     font-size: 1rem;
     font-weight: 600;
+    color: var(--primary-blue);
     margin: 0;
 }
 
-.consejo-card.azul .consejo-card-header h3 {
-    color: var(--primary-blue);
-}
-
-.consejo-card.amarillo .consejo-card-header h3 {
-    color: var(--primary-blue);
-}
-
-/* BODY — ahora lleva el color */
+/* Body con color según variante */
 .consejo-card-body {
     padding: 1.2rem 1.5rem;
     font-size: 0.95rem;
     line-height: 1.7;
-    color: var(--white);
 }
 
 .consejo-card.azul .consejo-card-body {
@@ -131,7 +93,6 @@
     color: var(--primary-blue);
 }
 
-/* Hover */
 .consejo-card.azul:hover .consejo-card-body {
     background: #174a68;
 }
@@ -140,14 +101,12 @@
     background: linear-gradient(135deg, #FFD93D 0%, #E6A800 100%);
 }
 
-#consejos-lista {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-/* ===== RESPONSIVE ===== */
+/****** RESPONSIVE ******/
 @media (max-width: 768px) {
+    #consejos-container {
+        padding: 1rem;
+    }
+
     .consejos-clima-card {
         flex-direction: column;
         text-align: center;
@@ -162,9 +121,5 @@
     .clima-desc {
         font-size: 0.85rem;
         word-break: break-word;
-    }
-
-    #consejos-container {
-        padding: 1rem;
     }
 }

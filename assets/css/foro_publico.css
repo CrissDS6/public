@@ -1,3 +1,10 @@
+/****************************************************************
+    Estilos de foro_publico.html
+    Incluye estilos propios + clases de publicación compartidas
+    con la vista foro del dashboard
+******************************************************************/
+
+/****** BANNER REGISTRO ******/
 .foro-publico-banner {
     background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
     padding: 1rem 0;
@@ -34,6 +41,7 @@
     color: var(--white);
 }
 
+/****** CONTENIDO PRINCIPAL ******/
 .foro-publico-main {
     padding: 2rem 0;
     min-height: 60vh;
@@ -48,12 +56,61 @@
     margin-bottom: 1.5rem;
 }
 
-.pub-likes {
+/****** FILTROS ******/
+.btn-filtro {
+    background: var(--white);
+    color: var(--primary-blue);
+    border: 2px solid var(--secondary-blue);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
     font-size: 0.85rem;
-    color: var(--medium-gray);
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
+.btn-filtro:hover,
+.btn-filtro.activo {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+.btn-orden {
+    background: var(--white);
+    color: var(--descriptions);
+    border: 2px solid var(--medium-gray);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.btn-orden:hover,
+.btn-orden.activo-orden {
+    background: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+.select-provincia {
+    border: 2px solid var(--secondary-blue);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    background: var(--white);
+    cursor: pointer;
+    outline: none;
+}
+
+/****** TARJETAS DE PUBLICACIÓN ******/
 .publicacion-card {
     background: var(--white);
     border-radius: 16px;
@@ -140,55 +197,8 @@
     color: var(--medium-gray);
 }
 
-.btn-filtro {
-    background: var(--white);
-    color: var(--primary-blue);
-    border: 2px solid var(--secondary-blue);
-    border-radius: 20px;
-    padding: 0.4rem 1rem;
-    font-family: var(--font-primary);
+.pub-likes {
     font-size: 0.85rem;
+    color: var(--medium-gray);
     font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-filtro:hover,
-.btn-filtro.activo {
-    background: var(--secondary-blue);
-    color: var(--white);
-}
-
-.btn-orden {
-    background: var(--white);
-    color: var(--descriptions);
-    border: 2px solid var(--medium-gray);
-    border-radius: 20px;
-    padding: 0.4rem 1rem;
-    font-family: var(--font-primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-left: auto;
-}
-
-.btn-orden:hover,
-.btn-orden.activo-orden {
-    background: var(--primary-blue);
-    color: var(--white);
-    border-color: var(--primary-blue);
-}
-
-.select-provincia {
-    border: 2px solid var(--secondary-blue);
-    border-radius: 20px;
-    padding: 0.4rem 1rem;
-    font-family: var(--font-primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--primary-blue);
-    background: var(--white);
-    cursor: pointer;
-    outline: none;
 }

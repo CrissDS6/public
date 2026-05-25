@@ -1,7 +1,13 @@
 <?php
+// ************************************************************
+// Gestiona las ciudades favoritas del usuario autenticado
+// GET: listar favoritas o buscar en catálogo | POST: añadir
+// PUT: cambiar principal | DELETE: eliminar favorita
+// ************************************************************
 session_start();
 require_once __DIR__ . '/../config/db.php';
 
+// ***** VERIFICACIÓN DE SESIÓN *****
 if (!isset($_SESSION['usuario_id'])) {
     enviarError(401, 'No autorizado');
 }
@@ -9,10 +15,11 @@ if (!isset($_SESSION['usuario_id'])) {
 $metodo = $_SERVER['REQUEST_METHOD'];
 $id_usuario = $_SESSION['usuario_id'];
 
+// ***** GET — BUSCAR EN CATÁLOGO O LISTAR FAVORITAS *****
 if ($metodo == 'GET') {
     $conn = obtenerConexion();
 
-    // Si viene ?buscar=texto, buscamos en el catálogo
+    // Búsqueda en el catálogo general
     if (isset($_GET['buscar'])) {
         $buscar = '%' . $_GET['buscar'] . '%';
         $sql = "SELECT c.id_ciudad, c.nombre_ciudad, c.provincia
@@ -37,7 +44,7 @@ if ($metodo == 'GET') {
         enviarRespuesta($conn, ['success' => true, 'datos' => $ciudades]);
     }
 
-    // Si no, devolvemos las favoritas del usuario
+    // Favoritas del usuario
     $sql = "SELECT cf.id_favorita, cf.principal, c.id_ciudad, c.nombre_ciudad, c.provincia
             FROM ciudades_favoritas cf
             JOIN ciudades c ON cf.id_ciudad = c.id_ciudad
@@ -55,8 +62,9 @@ if ($metodo == 'GET') {
     $stmt->close();
 
     enviarRespuesta($conn, ['success' => true, 'datos' => $favoritas]);
+
+    // ***** POST — AÑADIR CIUDAD FAVORITA *****
 } elseif ($metodo == 'POST') {
-    // Añadir ciudad favorita
     if (!isset($_POST['id_ciudad'])) {
         enviarError(400, 'Falta el id de la ciudad');
     }
@@ -69,21 +77,18 @@ if ($metodo == 'GET') {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('ii', $id_usuario, $id_ciudad);
     $stmt->execute();
-    $resultado = $stmt->get_result();
-
-    if ($resultado->num_rows > 0) {
+    if ($stmt->get_result()->num_rows > 0) {
         enviarError(400, 'Esta ciudad ya está en tus favoritas', $conn);
     }
     $stmt->close();
 
-    // Si no tiene ninguna favorita, la marcamos como principal
+    // Si no tiene ninguna favorita, la marcamos como principal automáticamente
     $sql = "SELECT COUNT(*) AS total FROM ciudades_favoritas WHERE id_usuario = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $id_usuario);
     $stmt->execute();
     $total = $stmt->get_result()->fetch_assoc()['total'];
     $stmt->close();
-
     $principal = $total == 0 ? 1 : 0;
 
     $sql = "INSERT INTO ciudades_favoritas (id_usuario, id_ciudad, principal) VALUES (?, ?, ?)";
@@ -95,8 +100,9 @@ if ($metodo == 'GET') {
     } else {
         enviarError(500, 'Error al añadir la ciudad', $conn);
     }
+
+    // ***** PUT — CAMBIAR CIUDAD PRINCIPAL *****
 } elseif ($metodo == 'PUT') {
-    // Cambiar ciudad principal
     parse_str(file_get_contents('php://input'), $datos);
 
     if (!isset($datos['id_ciudad'])) {
@@ -106,14 +112,14 @@ if ($metodo == 'GET') {
     $id_ciudad = intval($datos['id_ciudad']);
     $conn = obtenerConexion();
 
-    // Quitamos principal a todas
+    // Quitamos principal a todas las ciudades del usuario
     $sql = "UPDATE ciudades_favoritas SET principal = 0 WHERE id_usuario = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $id_usuario);
     $stmt->execute();
     $stmt->close();
 
-    // Ponemos principal a la seleccionada
+    // Marcamos la seleccionada como principal
     $sql = "UPDATE ciudades_favoritas SET principal = 1 WHERE id_usuario = ? AND id_ciudad = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('ii', $id_usuario, $id_ciudad);
@@ -123,6 +129,8 @@ if ($metodo == 'GET') {
     } else {
         enviarError(500, 'Error al actualizar la ciudad principal', $conn);
     }
+
+    // ***** DELETE — ELIMINAR CIUDAD FAVORITA *****
 } elseif ($metodo == 'DELETE') {
     parse_str(file_get_contents('php://input'), $datos);
 
@@ -138,35 +146,14 @@ if ($metodo == 'GET') {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('ii', $id_usuario, $id_ciudad);
     $stmt->execute();
-    $resultado = $stmt->get_result();
-    $ciudadFav = $resultado->fetch_assoc();
+    $ciudadFav = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
     if ($ciudadFav && $ciudadFav['principal'] == 1) {
-        enviarError(400, 'No puedes eliminar la ciudad principal. Primero establece otra ciudad como principal.', $conn);
+        enviarError(400, 'No puedes eliminar la ciudad principal. Primero establece otra como principal.', $conn);
     }
 
-    // No permitimos eliminar la ciudad principal si es la única
-    $sql = "SELECT principal FROM ciudades_favoritas WHERE id_usuario = ? AND id_ciudad = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ii', $id_usuario, $id_ciudad);
-    $stmt->execute();
-    $fila = $stmt->get_result()->fetch_assoc();
-    $stmt->close();
-
-    if ($fila && $fila['principal'] == 1) {
-        $sql = "SELECT COUNT(*) AS total FROM ciudades_favoritas WHERE id_usuario = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('i', $id_usuario);
-        $stmt->execute();
-        $total = $stmt->get_result()->fetch_assoc()['total'];
-        $stmt->close();
-
-        if ($total == 1) {
-            enviarError(400, 'No puedes eliminar tu única ciudad favorita', $conn);
-        }
-    }
-
+    // Eliminamos la ciudad favorita
     $sql = "DELETE FROM ciudades_favoritas WHERE id_usuario = ? AND id_ciudad = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('ii', $id_usuario, $id_ciudad);

@@ -1,9 +1,11 @@
 ////////////////////////// VARIABLES //////////////////////////
-let filtroEspecie = 0;
-let ordenForo = 'likes';
-let filtroProvincia = '';
+let filtroEspecie = 0;    // Especie seleccionada en el filtro (0 = todas)
+let ordenForo = 'likes';  // Orden de las publicaciones: 'likes' o 'fecha'
+let filtroProvincia = ''; // Provincia seleccionada en el filtro (vacío = todas)
 
 ////////////////////////// FUNCIONES //////////////////////////
+
+///// Convierte una fecha en texto legible como "Hace 3h" o "Hace 2d" /////
 function formatearFecha(fechaStr) {
     const fecha = new Date(fechaStr);
     const ahora = new Date();
@@ -16,6 +18,7 @@ function formatearFecha(fechaStr) {
     return fecha.toLocaleDateString('es-ES');
 }
 
+///// Actualiza el select de provincias con las que tienen publicaciones /////
 function actualizarSelectProvincias(provincias) {
     const select = document.querySelector('#filtro-provincia');
     const valorActual = select.value;
@@ -30,6 +33,7 @@ function actualizarSelectProvincias(provincias) {
     });
 }
 
+///// Dibuja las publicaciones en la lista usando el template del HTML /////
 function pintarPublicaciones(publicaciones) {
     const lista = document.querySelector('#lista-publicaciones');
     lista.innerHTML = '';
@@ -47,7 +51,6 @@ function pintarPublicaciones(publicaciones) {
     publicaciones.forEach(function (pub) {
         const clon = template.content.cloneNode(true);
 
-        const card = clon.querySelector('.publicacion-card');
         const ubicacion = pub.ciudad ? '📍 ' + pub.ciudad + (pub.provincia ? ', ' + pub.provincia : '') : '';
 
         clon.querySelector('.foro-avatar').src = 'assets/img/avatares/' + (pub.avatar || 'avatar_default.png');
@@ -68,6 +71,7 @@ function pintarPublicaciones(publicaciones) {
     });
 }
 
+///// Pide las publicaciones a la API aplicando los filtros activos y las pinta /////
 async function cargarPublicaciones() {
     const url = 'api/foro.php?especie=' + filtroEspecie + '&orden=' + ordenForo + '&provincia=' + encodeURIComponent(filtroProvincia);
     const response = await fetch(url);
@@ -79,6 +83,7 @@ async function cargarPublicaciones() {
     }
 }
 
+///// Da o quita el like a una publicación y recarga la lista /////
 async function toggleLike(id_publicacion) {
     const response = await fetch('api/foro.php', {
         method: 'PUT',
@@ -90,6 +95,7 @@ async function toggleLike(id_publicacion) {
     if (success) cargarPublicaciones();
 }
 
+///// Valida y envía una nueva publicación al foro /////
 async function enviarPublicacion() {
     const titulo = document.querySelector('#pub-titulo').value.trim();
     const contenido = document.querySelector('#pub-contenido').value.trim();
@@ -141,6 +147,8 @@ async function enviarPublicacion() {
         mensaje.className = 'error';
     }
 }
+
+///// Carga las provincias disponibles en el select del modal de nueva publicación /////
 async function cargarProvinciasForo() {
     const response = await fetch('api/ciudades_catalogo.php');
     const { success, datos } = await response.json();
@@ -157,6 +165,7 @@ async function cargarProvinciasForo() {
     });
 }
 
+///// Carga las ciudades de una provincia en el select del modal de nueva publicación /////
 async function cargarCiudadesForo(provincia) {
     const selectCiudad = document.querySelector('#pub-ciudad');
     selectCiudad.innerHTML = '<option value="">Cargando...</option>';
@@ -181,10 +190,11 @@ async function cargarCiudadesForo(provincia) {
     selectCiudad.disabled = false;
 }
 
+///// Arranca la vista foro: carga publicaciones y registra todos los escuchadores /////
 async function initForo() {
     await cargarPublicaciones();
 
-    // Filtros especie
+    ///// Filtra las publicaciones por especie al pulsar los botones de filtro /////
     document.querySelectorAll('.btn-filtro').forEach(function (btn) {
         btn.addEventListener('click', function () {
             document.querySelectorAll('.btn-filtro').forEach(function (b) {
@@ -196,7 +206,7 @@ async function initForo() {
         });
     });
 
-    // Orden
+    ///// Cambia el orden de las publicaciones al pulsar los botones de orden /////
     document.querySelectorAll('.btn-orden').forEach(function (btn) {
         btn.addEventListener('click', function () {
             document.querySelectorAll('.btn-orden').forEach(function (b) {
@@ -208,20 +218,20 @@ async function initForo() {
         });
     });
 
-    // Like por delegación
+    ///// Da o quita el like al pulsar el botón de corazón de una publicación /////
     document.querySelector('#lista-publicaciones').addEventListener('click', function (e) {
         if (e.target.classList.contains('btn-like')) {
             toggleLike(e.target.dataset.id);
         }
     });
 
-    // Filtro provincia
+    ///// Filtra por provincia al cambiar el selector /////
     document.querySelector('#filtro-provincia').addEventListener('change', function () {
         filtroProvincia = this.value;
         cargarPublicaciones();
     });
 
-    // Modal nueva publicación
+    ///// Limpia y abre el modal de nueva publicación /////
     document.querySelector('#btn-nueva-publicacion').addEventListener('click', function () {
         document.querySelector('#pub-titulo').value = '';
         document.querySelector('#pub-contenido').value = '';
@@ -234,6 +244,7 @@ async function initForo() {
         document.querySelector('#modal-publicacion').classList.add('visible');
     });
 
+    ///// Carga las ciudades al cambiar la provincia en el modal /////
     document.querySelector('#pub-provincia').addEventListener('change', function () {
         if (this.value !== '') {
             cargarCiudadesForo(this.value);
@@ -243,17 +254,21 @@ async function initForo() {
         }
     });
 
+    ///// Cierra el modal de publicación al pulsar la X /////
     document.querySelector('#modal-publicacion-cerrar').addEventListener('click', function () {
         document.querySelector('#modal-publicacion').classList.remove('visible');
     });
 
+    ///// Cierra el modal de publicación al pulsar fuera del contenido /////
     document.querySelector('#modal-publicacion').addEventListener('click', function (e) {
         if (e.target == document.querySelector('#modal-publicacion')) {
             document.querySelector('#modal-publicacion').classList.remove('visible');
         }
     });
 
+    ///// Llama a la función de envío al pulsar el botón del formulario /////
     document.querySelector('#btn-enviar-publicacion').addEventListener('click', function () {
         enviarPublicacion();
     });
 }
+

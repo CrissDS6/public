@@ -1,4 +1,8 @@
-/* ===== VISTA INICIO ===== */
+/********************************************
+    Estilos de la vista Inicio del dashboard
+*********************************************/
+
+/****** CONTENEDOR ******/
 #inicio-container {
     max-width: 900px;
     margin: 0 auto;
@@ -8,28 +12,45 @@
     gap: 2rem;
 }
 
+/****** SALUDO ******/
 .inicio-saludo {
     background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
     border-radius: 20px;
     padding: 2rem 2.5rem;
     color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 }
 
-.inicio-saludo h1 {
+.saludo-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 3px solid var(--accent-yellow);
+    background-color: rgba(255, 255, 255, 0.35);
+    flex-shrink: 0;
+}
+
+.saludo-texto h1 {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.3rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .saludo-nombre {
     color: var(--accent-yellow);
 }
 
-.inicio-saludo p {
+.saludo-texto p {
     opacity: 0.85;
     font-size: 1rem;
 }
 
+/****** TARJETA CLIMA ******/
 .inicio-clima-card {
     background: var(--white);
     border-radius: 20px;
@@ -73,6 +94,7 @@
     font-weight: 500;
 }
 
+/****** ACCESOS RÁPIDOS ******/
 .accesos-titulo {
     font-size: 1.2rem;
     font-weight: 600;
@@ -105,8 +127,17 @@
 }
 
 .acceso-icono {
-    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
     margin-bottom: 0.8rem;
+}
+
+.acceso-icono img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
 }
 
 .acceso-card h3 {
@@ -122,58 +153,10 @@
     line-height: 1.5;
 }
 
-.acceso-icono {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 150px;
-}
-
-.acceso-icono img {
-    width: 150px;
-    height: 150px;
-    object-fit: contain;
-}
-
-
-@media (max-width: 600px) {
-    .accesos-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .inicio-clima-card {
-        flex-direction: column;
-        text-align: center;
-    }
-}
-
-.saludo-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center top;
-    border: 3px solid var(--accent-yellow);
-    background-color: rgba(255, 255, 255, 0.35);
-    flex-shrink: 0;
-}
-
-.inicio-saludo {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.inicio-saludo h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
+/****** RESPONSIVE ******/
 @media (max-width: 768px) {
-    .inicio-saludo h1 {
-        font-size: 1.3rem;
+    #inicio-container {
+        padding: 1rem;
     }
 
     .inicio-saludo {
@@ -181,12 +164,21 @@
         gap: 1rem;
     }
 
+    .saludo-texto h1 {
+        font-size: 1.3rem;
+    }
+
     .saludo-avatar {
         width: 60px;
         height: 60px;
     }
 
-    #inicio-container {
-        padding: 1rem;
+    .inicio-clima-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .accesos-grid {
+        grid-template-columns: 1fr;
     }
 }

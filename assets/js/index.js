@@ -3,6 +3,8 @@ const API_KEY = '6503d50520029d03c68708a566d29cbe';
 const URL_API = 'https://api.openweathermap.org/data/2.5/weather';
 
 ////////////////////////// FUNCIONES //////////////////////////
+
+///// Elige qué gif del tiempo mostrar según el código de la API, temperatura y humedad /////
 function obtenerGifTiempo(codigo, temp, humedad) {
     const base = 'assets/img/tiempo/';
     if (codigo >= 200 && codigo < 300) return base + 'tormenta.gif';
@@ -26,6 +28,7 @@ function obtenerGifTiempo(codigo, temp, humedad) {
     return base + 'estable.gif';
 }
 
+///// Llama a la API del tiempo y pinta la tarjeta del widget en la landing /////
 async function cargarTiempo(lat, lon, nombreCiudad) {
     try {
         const url = URL_API + '?lat=' + lat + '&lon=' + lon + '&appid=' + API_KEY + '&units=metric&lang=es&t=' + Date.now();
@@ -57,6 +60,7 @@ async function cargarTiempo(lat, lon, nombreCiudad) {
     }
 }
 
+///// Pide la ubicación al navegador y arranca el widget del tiempo /////
 function iniciarWidget() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -72,14 +76,17 @@ function iniciarWidget() {
     }
 }
 
+///// Abre el modal de inicio de sesión /////
 function abrirModalLogin() {
     document.querySelector('#modal-login').classList.add('visible');
 }
 
+///// Cierra el modal de inicio de sesión /////
 function cerrarModalLogin() {
     document.querySelector('#modal-login').classList.remove('visible');
 }
 
+///// Carga los avatares disponibles y los muestra en el selector del registro /////
 async function generarSelectorAvatares() {
     const selector = document.querySelector('#avatar-selector');
     selector.innerHTML = '';
@@ -111,6 +118,7 @@ async function generarSelectorAvatares() {
     });
 }
 
+///// Carga las provincias disponibles en el select del formulario de registro /////
 async function cargarProvinciasRegistro() {
     const response = await fetch('api/ciudades_catalogo.php');
     const { success, datos } = await response.json();
@@ -127,6 +135,7 @@ async function cargarProvinciasRegistro() {
     });
 }
 
+///// Carga las ciudades de una provincia concreta en el select del registro /////
 async function cargarCiudadesPorProvincia(provincia) {
     const selectCiudad = document.querySelector('#reg-ciudad');
     selectCiudad.innerHTML = '<option value="">Cargando...</option>';
@@ -153,6 +162,7 @@ async function cargarCiudadesPorProvincia(provincia) {
     document.querySelector('#ciudad-no-encontrada').style.display = 'block';
 }
 
+///// Limpia y abre el modal de registro /////
 function abrirModalRegistro() {
     generarSelectorAvatares();
     cargarProvinciasRegistro();
@@ -170,6 +180,7 @@ function abrirModalRegistro() {
     document.querySelector('#modal-registro').classList.add('visible');
 }
 
+///// Valida los datos del registro y envía el formulario a la API /////
 async function registrarUsuario() {
     const nombre = document.querySelector('#reg-nombre').value.trim();
     const email = document.querySelector('#reg-email').value.trim();
@@ -231,6 +242,7 @@ async function registrarUsuario() {
     }
 }
 
+///// Convierte una fecha en texto legible como "Hace 3h" o "Hace 2d" /////
 function formatearFechaLanding(fechaStr) {
     const fecha = new Date(fechaStr);
     const ahora = new Date();
@@ -243,6 +255,7 @@ function formatearFechaLanding(fechaStr) {
     return fecha.toLocaleDateString('es-ES');
 }
 
+///// Carga las últimas publicaciones del foro y las muestra en la landing /////
 async function cargarForoLanding() {
     const response = await fetch('api/foro_publico.php');
     const { success, datos } = await response.json();
@@ -266,6 +279,7 @@ async function cargarForoLanding() {
     });
 }
 
+///// Comprueba que la contraseña cumple los requisitos de seguridad /////
 function validarPassword(password) {
     const errores = [];
     if (password.length < 8) errores.push('al menos 8 caracteres');
@@ -275,6 +289,7 @@ function validarPassword(password) {
     return errores;
 }
 
+///// Limpia y abre el modal de contacto /////
 function abrirModalContacto() {
     document.querySelector('#contacto-nombre').value = '';
     document.querySelector('#contacto-email').value = '';
@@ -286,6 +301,7 @@ function abrirModalContacto() {
     document.querySelector('#modal-contacto').classList.add('visible');
 }
 
+///// Valida y envía el formulario de contacto a la API /////
 async function enviarContacto() {
     const nombre = document.querySelector('#contacto-nombre').value.trim();
     const email = document.querySelector('#contacto-email').value.trim();
@@ -346,11 +362,13 @@ if (window.location.search.includes('registro=1')) {
 const menuToggle = document.querySelector('#menuToggle');
 const navbarNav = document.querySelector('#navbarNav');
 
+///// Abre y cierra el menú de navegación en móvil /////
 menuToggle.addEventListener('click', function () {
     navbarNav.classList.toggle('active');
     menuToggle.classList.toggle('active');
 });
 
+///// Cierra el menú móvil al pulsar cualquier enlace de navegación /////
 document.querySelectorAll('.nav-link:not(#btn-abrir-login), .btn-register').forEach(function (link) {
     link.addEventListener('click', function () {
         navbarNav.classList.remove('active');
@@ -358,6 +376,7 @@ document.querySelectorAll('.nav-link:not(#btn-abrir-login), .btn-register').forE
     });
 });
 
+///// Hace scroll suave al pulsar enlaces internos de la página /////
 document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
@@ -371,6 +390,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     });
 });
 
+///// Añade fondo más oscuro al navbar cuando el usuario hace scroll /////
 window.addEventListener('scroll', function () {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
@@ -380,21 +400,25 @@ window.addEventListener('scroll', function () {
     }
 });
 
+///// Abre el modal de login al pulsar el botón de la navbar /////
 document.querySelector('#btn-abrir-login').addEventListener('click', function (e) {
     e.preventDefault();
     abrirModalLogin();
 });
 
+///// Cierra el modal de login al pulsar la X /////
 document.querySelector('#modal-login-cerrar').addEventListener('click', function () {
     cerrarModalLogin();
 });
 
+///// Cierra el modal de login al pulsar fuera del contenido /////
 document.querySelector('#modal-login').addEventListener('click', function (e) {
     if (e.target == document.querySelector('#modal-login')) {
         cerrarModalLogin();
     }
 });
 
+///// Abre el modal de registro al pulsar los botones de registro de la landing /////
 document.querySelectorAll('a[href="index.html?registro=1"], .btn-cta, .btn-register').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
         e.preventDefault();
@@ -402,22 +426,26 @@ document.querySelectorAll('a[href="index.html?registro=1"], .btn-cta, .btn-regis
     });
 });
 
+///// Cierra el modal de registro al pulsar la X /////
 document.querySelector('#modal-registro-cerrar').addEventListener('click', function () {
     document.querySelector('#modal-registro').classList.remove('visible');
 });
 
+///// Cierra el modal de registro al pulsar fuera del contenido /////
 document.querySelector('#modal-registro').addEventListener('click', function (e) {
     if (e.target == document.querySelector('#modal-registro')) {
         document.querySelector('#modal-registro').classList.remove('visible');
     }
 });
 
+///// Va al modal de login desde el enlace del modal de registro /////
 document.querySelector('#btn-ir-login').addEventListener('click', function (e) {
     e.preventDefault();
     document.querySelector('#modal-registro').classList.remove('visible');
     abrirModalLogin();
 });
 
+///// Carga las ciudades al cambiar la provincia en el registro /////
 document.querySelector('#reg-provincia').addEventListener('change', function () {
     if (this.value !== '') {
         cargarCiudadesPorProvincia(this.value);
@@ -429,36 +457,43 @@ document.querySelector('#reg-provincia').addEventListener('change', function () 
     }
 });
 
+///// Cierra el registro y avisa al usuario de cómo sugerir una ciudad /////
 document.querySelector('#btn-sugerir-ciudad').addEventListener('click', function (e) {
     e.preventDefault();
     document.querySelector('#modal-registro').classList.remove('visible');
     alert('Para sugerir una ciudad, usa el formulario de contacto indicando el nombre de tu ciudad y provincia.');
 });
 
+///// Llama a la función de registro al pulsar el botón de crear cuenta /////
 document.querySelector('#btn-registrarse').addEventListener('click', function () {
     registrarUsuario();
 });
 
+///// Va al modal de registro desde el enlace del modal de login /////
 document.querySelector('#btn-abrir-registro').addEventListener('click', function (e) {
     e.preventDefault();
     cerrarModalLogin();
     abrirModalRegistro();
 });
 
+///// Cierra el modal de contacto al pulsar la X /////
 document.querySelector('#modal-contacto-cerrar').addEventListener('click', function () {
     document.querySelector('#modal-contacto').classList.remove('visible');
 });
 
+///// Cierra el modal de contacto al pulsar fuera del contenido /////
 document.querySelector('#modal-contacto').addEventListener('click', function (e) {
     if (e.target == document.querySelector('#modal-contacto')) {
         document.querySelector('#modal-contacto').classList.remove('visible');
     }
 });
 
+///// Llama a la función de envío al pulsar el botón del formulario de contacto /////
 document.querySelector('#btn-enviar-contacto').addEventListener('click', function () {
     enviarContacto();
 });
 
+///// Abre el modal de contacto al pulsar el enlace del footer /////
 document.querySelectorAll('a[href="#contacto"]').forEach(function (link) {
     link.addEventListener('click', function (e) {
         e.preventDefault();
@@ -466,6 +501,7 @@ document.querySelectorAll('a[href="#contacto"]').forEach(function (link) {
     });
 });
 
+///// Muestra u oculta la contraseña al pulsar el icono del ojo /////
 document.querySelectorAll('.btn-toggle-pass').forEach(function (btn) {
     btn.addEventListener('click', function () {
         var input = document.getElementById(btn.dataset.target);

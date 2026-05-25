@@ -1,4 +1,8 @@
-/* ===== VISTA CIUDADES ===== */
+/******************************************
+    Estilos de la vista Ciudades Favoritas
+*******************************************/
+
+/****** CONTENEDOR ******/
 #ciudades-container {
     max-width: 900px;
     margin: 0 auto;
@@ -8,6 +12,7 @@
     gap: 2rem;
 }
 
+/****** BUSCADOR ******/
 .ciudades-buscador {
     position: relative;
 }
@@ -83,6 +88,7 @@
     color: var(--white);
 }
 
+/****** TARJETAS DE CIUDAD ******/
 .ciudad-card {
     background: var(--white);
     border-radius: 16px;

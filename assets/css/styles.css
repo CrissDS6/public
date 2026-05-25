@@ -1,4 +1,8 @@
-/* ***************   VARIABLES Y CONFIGURACIÓN GENERAL  *************** */
+/*************************************************************
+    Estilos globales de index.html y modales
+**************************************************************/
+
+/* ***** VARIABLES Y RESET ***** */
 :root {
     --primary-blue: #1E5A7D;
     --secondary-blue: #4A9FD8;
@@ -33,7 +37,7 @@ body {
     padding: 0 2rem;
 }
 
-/* ***************   NAVBAR   *************** */
+/****** NAVBAR ******/
 .navbar {
     background: linear-gradient(135deg, rgba(74, 159, 216, 0.85) 0%, rgba(30, 90, 125, 0.80) 100%);
     backdrop-filter: blur(10px);
@@ -179,7 +183,7 @@ button.nav-link {
     font-size: inherit;
 }
 
-/****************    HERO SECTION   ****************/
+/****** HERO ******/
 .hero {
     background: linear-gradient(135deg, var(--light-blue) 0%, #F0F8FF 50%, #FFFEF0 100%);
     padding: 5rem 0;
@@ -271,18 +275,6 @@ button.nav-link {
     position: relative;
 }
 
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
 .hero-image {
     width: 100%;
     height: auto;
@@ -291,7 +283,7 @@ button.nav-link {
     display: block;
 }
 
-/****************    SECCIONES GENERALES   ****************/
+/****** SECCIONES GENERALES ******/
 .section-header {
     text-align: center;
     margin-bottom: 3rem;
@@ -315,7 +307,20 @@ button.nav-link {
     margin: 0 auto;
 }
 
-/****************   EN METEOPET ENCONTRARÁS   ****************/
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: var(--descriptions);
+    font-size: 0.95rem;
+}
+
+.text-white {
+    color: var(--white);
+}
+
+/****** SECCIÓN CARACTERÍSTICAS ******/
 .section-features {
     background: linear-gradient(135deg, #F5F9FF 0%, #EEF6FF 100%);
     padding: 5rem 0;
@@ -342,7 +347,6 @@ button.nav-link {
     box-shadow: 0 12px 28px rgba(255, 217, 61, 0.65);
 }
 
-/* Icono de las tarjetas de características */
 .card-icon,
 .icon {
     display: flex;
@@ -369,30 +373,12 @@ button.nav-link {
     margin: 0;
 }
 
-.text-muted {
-    color: var(--descriptions);
-    font-size: 0.95rem;
-}
-
-/* Tarjeta destacada (TIEMPO ACTUAL) */
+/*Tarjeta destacada del tiempo actual*/
 .platform-card-highlight {
     background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
     color: var(--white);
     position: relative;
     overflow: hidden;
-}
-
-/* GIF dentro de la tarjeta de tiempo — fondo blanco para que se vea bien */
-.platform-card-highlight #weather-icon {
-    background: var(--white);
-    border-radius: 16px;
-    padding: 0.5rem;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0.5rem auto;
-    position: relative;
-    z-index: 1;
 }
 
 .platform-card-highlight::before {
@@ -410,6 +396,24 @@ button.nav-link {
     border-color: transparent;
 }
 
+.platform-card-highlight .text-white {
+    position: relative;
+    z-index: 1;
+}
+
+/*GIF del tiempo — fondo blanco para contraste*/
+.platform-card-highlight #weather-icon {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 0.5rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem auto;
+    position: relative;
+    z-index: 1;
+}
+
 .weather-badge {
     background: rgba(255, 255, 255, 0.2);
     padding: 0.5rem 1rem;
@@ -424,10 +428,6 @@ button.nav-link {
     z-index: 1;
 }
 
-.badge-icon {
-    font-size: 1.2rem;
-}
-
 .stat-number {
     font-size: 3rem;
     font-weight: 700;
@@ -436,16 +436,7 @@ button.nav-link {
     z-index: 1;
 }
 
-.text-white {
-    color: var(--white);
-}
-
-.platform-card-highlight .text-white {
-    position: relative;
-    z-index: 1;
-}
-
-/***************   CONVERSACIONES RECIENTES   ***************/
+/****** SECCIÓN FORO LANDING ******/
 .section-forum {
     background: var(--white);
     padding: 5rem 0;
@@ -481,10 +472,6 @@ button.nav-link {
     flex-shrink: 0;
 }
 
-.avatar-icon {
-    font-size: 3rem;
-}
-
 .forum-content {
     flex: 1;
 }
@@ -513,8 +500,20 @@ button.nav-link {
     margin: 0;
 }
 
-.text-center {
-    text-align: center;
+.forum-avatar-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 2px solid var(--secondary-blue);
+    background-color: var(--light-gray);
+}
+
+.forum-especie {
+    color: var(--medium-gray);
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    display: block;
 }
 
 .btn-outline-primary {
@@ -538,7 +537,7 @@ button.nav-link {
     transform: translateY(-3px);
 }
 
-/****************   CREAR CUENTA   ****************/
+/****** SECCIÓN CTA ******/
 .section-cta {
     background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
     padding: 4rem 0;
@@ -582,7 +581,7 @@ button.nav-link {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/****************   FOOTER   ***************/
+/****** FOOTER ******/
 .footer {
     background: var(--primary-blue);
     color: var(--white);
@@ -647,12 +646,6 @@ button.nav-link {
     justify-content: center;
 }
 
-.social-links a img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-}
-
 .social-links a {
     width: 40px;
     height: 40px;
@@ -666,6 +659,12 @@ button.nav-link {
     text-decoration: none;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.social-links a img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
 }
 
 .social-links a:hover {
@@ -732,7 +731,7 @@ button.nav-link {
     color: #ff6b6b;
 }
 
-/* ===== MODAL LOGIN ===== */
+/****** MODAL LOGIN ******/
 .modal-overlay {
     display: none;
     position: fixed;
@@ -745,6 +744,30 @@ button.nav-link {
 
 .modal-overlay.visible {
     display: flex;
+}
+
+.modal-cerrar {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--medium-gray);
+    cursor: pointer;
+    z-index: 10;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.modal-cerrar:hover {
+    color: var(--primary-blue);
+}
+
+.modal-subtitulo {
+    color: #78909C;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
 }
 
 .modal-login-contenido {
@@ -799,28 +822,50 @@ button.nav-link {
     font-size: 1.6rem;
 }
 
-.modal-subtitulo {
-    color: #78909C;
-    font-size: 0.9rem;
+.modal-login-right .form-group {
     margin-bottom: 1rem;
 }
 
-.modal-cerrar {
-    position: absolute;
-    top: 1rem;
-    right: 1.2rem;
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    color: var(--medium-gray);
-    cursor: pointer;
-    z-index: 10;
-    line-height: 1;
-    transition: color 0.2s;
+.modal-login-right label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text-dark);
 }
 
-.modal-cerrar:hover {
-    color: var(--primary-blue);
+.modal-login-right .input-wrapper {
+    position: relative;
+}
+
+.modal-login-right .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+}
+
+.modal-login-right input[type="email"],
+.modal-login-right input[type="password"],
+.modal-login-right input[type="text"] {
+    width: 100%;
+    padding: 1rem 3rem 1rem 3rem;
+    border: 2px solid var(--light-gray);
+    border-radius: 15px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    background: var(--light-gray);
+    transition: all 0.3s ease;
+}
+
+.modal-login-right input[type="email"]:focus,
+.modal-login-right input[type="password"]:focus,
+.modal-login-right input[type="text"]:focus {
+    outline: none;
+    border-color: var(--secondary-blue);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(74, 159, 216, 0.1);
 }
 
 .modal-error-msg {
@@ -876,54 +921,7 @@ button.nav-link {
     text-decoration: underline;
 }
 
-/* ===== CAMBIO: añadido input[type="text"] para cuando el ojo cambia el tipo ===== */
-.modal-login-right input[type="email"],
-.modal-login-right input[type="password"],
-.modal-login-right input[type="text"] {
-    width: 100%;
-    padding: 1rem 3rem 1rem 3rem;
-    border: 2px solid var(--light-gray);
-    border-radius: 15px;
-    font-family: var(--font-primary);
-    font-size: 1rem;
-    background: var(--light-gray);
-    transition: all 0.3s ease;
-}
-
-.modal-login-right input[type="email"]:focus,
-.modal-login-right input[type="password"]:focus,
-.modal-login-right input[type="text"]:focus {
-    outline: none;
-    border-color: var(--secondary-blue);
-    background: var(--white);
-    box-shadow: 0 0 0 4px rgba(74, 159, 216, 0.1);
-}
-
-.modal-login-right .input-wrapper {
-    position: relative;
-}
-
-.modal-login-right .input-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.1rem;
-}
-
-.modal-login-right .form-group {
-    margin-bottom: 1rem;
-}
-
-.modal-login-right label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    font-size: 0.95rem;
-    color: var(--text-dark);
-}
-
-/* ===== MODAL REGISTRO ===== */
+/****** MODAL REGISTRO ******/
 .modal-registro-contenido {
     background: var(--white);
     border-radius: 30px;
@@ -994,7 +992,6 @@ button.nav-link {
     font-size: 1.1rem;
 }
 
-/* ===== CAMBIO: añadido input[type="text"] para cuando el ojo cambia el tipo ===== */
 .modal-registro-body input[type="text"],
 .modal-registro-body input[type="email"],
 .modal-registro-body input[type="password"],
@@ -1071,29 +1068,13 @@ button.nav-link {
     text-align: center;
 }
 
-.forum-avatar-img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    object-fit: contain;
-    border: 2px solid var(--secondary-blue);
-    background-color: var(--light-gray);
-}
-
-.forum-especie {
-    color: var(--medium-gray);
-    font-size: 0.8rem;
-    margin-top: 0.3rem;
-    display: block;
-}
-
 .password-requisitos {
     color: #78909C;
     font-size: 0.78rem;
     margin-top: 0.2rem;
 }
 
-/* ===== MODAL CONTACTO ===== */
+/****** MODAL CONTACTO ******/
 .modal-contacto-contenido {
     background: var(--white);
     border-radius: 24px;
@@ -1198,7 +1179,7 @@ button.nav-link {
     text-align: center;
 }
 
-/* ===== OJO CONTRASEÑA ===== */
+/****** OJO CONTRASEÑA ******/
 .btn-toggle-pass {
     background: none;
     border: none;
@@ -1213,7 +1194,7 @@ button.nav-link {
     transform: translateY(-50%);
 }
 
-/*************** RESPONSIVE ***************/
+/****** RESPONSIVE ******/
 @media (max-width: 992px) {
     .hero-title {
         font-size: 2.5rem;

@@ -88,12 +88,18 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
                         <div class="nav-dropdown" id="dropdown-perfil">
                             <?php if ($_SESSION['usuario_rol'] == 'administrador'): ?>
                             <a href="#" data-vista="admin" class="dropdown-item">
-                                ⚙️ Panel Admin
+                                <img src="assets/img/ui/rueda.png" alt="admin" class="dropdown-icon">
+                                Panel Admin
                                 <span id="badge-mensajes" class="badge-nuevo" style="display:none">0</span>
                             </a>
                             <?php endif; ?>
-                            <a href="#" data-vista="perfil" class="dropdown-item">👤 Mi Perfil</a>
-                            <a href="auth/logout.php" class="dropdown-item">🚪 Cerrar sesión</a>
+                            <a href="#" data-vista="perfil" class="dropdown-item">
+                                <img src="assets/img/ui/perfil.png" alt="perfil" class="dropdown-icon"> Mi Perfil
+                            </a>
+                            <a href="auth/logout.php" class="dropdown-item">
+                                <img src="assets/img/ui/puerta.png" alt="cerrar sesión" class="dropdown-icon"> Cerrar
+                                sesión
+                            </a>
                         </div>
                     </li>
                 </ul>

@@ -1,4 +1,6 @@
 ////////////////////////// VARIABLES //////////////////////////
+
+// Tabla que relaciona cada código de la API con un tipo de tiempo
 const TIPOS_TIEMPO = {
     200: 'tormenta', 201: 'tormenta', 202: 'tormenta',
     210: 'tormenta', 211: 'tormenta', 212: 'tormenta',
@@ -18,6 +20,7 @@ const TIPOS_TIEMPO = {
     801: 'calor', 802: 'humedad', 803: 'humedad', 804: 'humedad'
 };
 
+// Ruta del gif que corresponde a cada tipo de tiempo
 const GIFS_TIEMPO = {
     'tormenta': 'assets/img/tiempo/tormenta.gif',
     'lluvia': 'assets/img/tiempo/lluvia.gif',
@@ -32,9 +35,12 @@ const GIFS_TIEMPO = {
     'calima': 'assets/img/tiempo/niebla.gif'
 };
 
+// Controla qué consejos ya se han mostrado para no repetirlos en la misma sesión
 let consejosUsadosVista = {};
 
 ////////////////////////// FUNCIONES //////////////////////////
+
+///// Convierte el código de la API del tiempo en un tipo de tiempo legible /////
 function convertirCodigoATipo(codigo, temp, humedad) {
     if (codigo >= 200 && codigo < 300) return 'tormenta';
     if (codigo >= 300 && codigo < 400) return 'llovizna';
@@ -50,6 +56,7 @@ function convertirCodigoATipo(codigo, temp, humedad) {
     return 'estable';
 }
 
+///// Elige qué gif del tiempo mostrar en la tarjeta del clima de consejos /////
 function obtenerGifConsejos(codigo, temp, humedad) {
     const base = 'assets/img/tiempo/';
     if (codigo >= 200 && codigo < 300) return base + 'tormenta.gif';
@@ -73,6 +80,7 @@ function obtenerGifConsejos(codigo, temp, humedad) {
     return base + 'estable.gif';
 }
 
+///// Arranca la vista consejos: carga el tiempo, pide consejos y los pinta por mascota /////
 async function initConsejos() {
     consejosUsadosVista = {};
 
@@ -99,6 +107,7 @@ async function initConsejos() {
     const descripcion = datosTiempo.weather[0].description;
     const tipeTiempo = convertirCodigoATipo(codigo, temp, humedad);
 
+    // Pintamos la tarjeta del clima
     document.querySelector('#consejos-ciudad').textContent = datosSession.ciudad;
     document.querySelector('#consejos-temp').textContent = temp + '°C';
 
@@ -124,15 +133,18 @@ async function initConsejos() {
         return;
     }
 
+    // Creamos una tarjeta de consejo por cada mascota
     datosConsejos.consejos.forEach(function (consejo, indice) {
         const template = document.querySelector('#template-consejo');
         const clon = template.content.cloneNode(true);
 
+        // Las tarjetas alternan entre azul y amarillo
         const color = indice % 2 == 0 ? 'azul' : 'amarillo';
         clon.querySelector('.consejo-card').classList.add(color);
 
         const gifTiempo = GIFS_TIEMPO[tipeTiempo] || 'assets/img/tiempo/estable.gif';
 
+        // Elegimos un consejo que no se haya mostrado ya en esta sesión
         const clave = consejo.nombre_especie + '_' + tipeTiempo;
         if (!consejosUsadosVista[clave]) {
             consejosUsadosVista[clave] = [];
@@ -151,7 +163,7 @@ async function initConsejos() {
         const texto = disponibles[indiceAleatorio];
         consejosUsadosVista[clave].push(texto);
 
-        // Imagen de especie personalizada
+        // Imagen de la especie (perro o gato)
         const imgEspecie = consejo.nombre_especie == 'Perro'
             ? 'assets/img/ui/img_perro.png'
             : 'assets/img/ui/img_gato.png';
@@ -165,7 +177,7 @@ async function initConsejos() {
         imgEl.style.objectFit = 'contain';
         iconoEl.appendChild(imgEl);
 
-        // Título con GIF del tiempo
+        // Título con el nombre de la mascota y el gif del tiempo
         const tituloEl = clon.querySelector('.consejo-titulo');
         tituloEl.textContent = consejo.nombre_mascota + ' te aconseja... ';
         const imgTitulo = document.createElement('img');

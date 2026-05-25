@@ -2,6 +2,8 @@
 let avatarSeleccionado = '';
 
 ////////////////////////// FUNCIONES //////////////////////////
+
+///// Comprueba que la contraseña cumple los requisitos de seguridad /////
 function validarPassword(password) {
     const errores = [];
     if (password.length < 8) errores.push('al menos 8 caracteres');
@@ -11,6 +13,7 @@ function validarPassword(password) {
     return errores;
 }
 
+///// Muestra un mensaje de éxito o error bajo un campo del formulario y lo borra a los 3 segundos /////
 function mostrarMensaje(idElemento, texto, tipo) {
     const el = document.querySelector(idElemento);
     el.textContent = texto;
@@ -21,6 +24,7 @@ function mostrarMensaje(idElemento, texto, tipo) {
     }, 3000);
 }
 
+///// Carga los avatares disponibles y los muestra en el selector del perfil /////
 async function cargarAvataresPerfil() {
     const response = await fetch('api/avatares.php');
     const { success, avatares } = await response.json();
@@ -56,6 +60,7 @@ async function cargarAvataresPerfil() {
     });
 }
 
+///// Guarda el avatar seleccionado y lo actualiza también en el navbar /////
 async function guardarAvatar() {
     if (!avatarSeleccionado) {
         mostrarMensaje('#msg-avatar', 'Selecciona un avatar primero', 'error');
@@ -78,6 +83,7 @@ async function guardarAvatar() {
     }
 }
 
+///// Guarda el nombre del usuario y lo actualiza también en el navbar /////
 async function guardarDatos() {
     const nombre = document.querySelector('#perfil-nombre').value.trim();
 
@@ -102,6 +108,7 @@ async function guardarDatos() {
     }
 }
 
+///// Valida y guarda la nueva contraseña del usuario /////
 async function guardarPassword() {
     const passActual = document.querySelector('#perfil-pass-actual').value;
     const passNueva = document.querySelector('#perfil-pass-nueva').value;
@@ -143,6 +150,7 @@ async function guardarPassword() {
     }
 }
 
+///// Carga los datos del usuario, rellena el formulario y registra los escuchadores /////
 async function initPerfil() {
     const response = await fetch('api/perfil.php');
     const { success, datos } = await response.json();
@@ -158,20 +166,22 @@ async function initPerfil() {
 
     await cargarAvataresPerfil();
 
-    // Escuchadores
+    ///// Guarda el avatar al pulsar el botón /////
     document.querySelector('#btn-guardar-avatar').addEventListener('click', function () {
         guardarAvatar();
     });
 
+    ///// Guarda el nombre al pulsar el botón /////
     document.querySelector('#btn-guardar-datos').addEventListener('click', function () {
         guardarDatos();
     });
 
+    ///// Cambia la contraseña al pulsar el botón /////
     document.querySelector('#btn-guardar-password').addEventListener('click', function () {
         guardarPassword();
     });
 
-    // Ojo contraseña — los tres campos del perfil
+    ///// Muestra u oculta la contraseña al pulsar el icono del ojo /////
     document.querySelectorAll('.btn-toggle-pass').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var input = document.getElementById(btn.dataset.target);
@@ -185,6 +195,7 @@ async function initPerfil() {
         });
     });
 
+    ///// Pide confirmación y elimina la cuenta del usuario al pulsar el botón /////
     document.querySelector('#btn-eliminar-cuenta').addEventListener('click', async function () {
         if (!confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) return;
         if (!confirm('¿Seguro seguro? Se borrarán todos tus datos, mascotas y publicaciones.')) return;

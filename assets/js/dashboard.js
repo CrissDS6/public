@@ -18,6 +18,8 @@ const btnPerfil = document.querySelector('#btn-perfil');
 const dropdownPerfil = document.querySelector('#dropdown-perfil');
 
 ////////////////////////// FUNCIONES //////////////////////////
+
+///// Añade el botón "← Inicio" al principio de cualquier vista que no sea la de inicio /////
 function añadirBotonVolver() {
     const contenido = document.querySelector('#contenido-principal');
     const container = contenido.querySelector('[id$="-container"]');
@@ -33,6 +35,7 @@ function añadirBotonVolver() {
     container.insertBefore(btnVolver, container.firstChild);
 }
 
+///// Carga una vista parcial dentro del contenido principal del dashboard /////
 async function cargarVista(nombre) {
     const contenido = document.querySelector('#contenido-principal');
 
@@ -66,6 +69,7 @@ async function cargarVista(nombre) {
     else if (nombre == 'admin') initAdmin();
 }
 
+///// Consulta cuántos mensajes y publicaciones pendientes hay y actualiza el badge del admin /////
 async function cargarBadgeAdmin() {
     const badge = document.querySelector('#badge-mensajes');
     if (!badge) return;
@@ -79,6 +83,7 @@ async function cargarBadgeAdmin() {
     }
 }
 
+///// Abre el modal de contacto del dashboard y rellena nombre y email si el usuario está identificado /////
 async function abrirModalContactoDash() {
     const response = await fetch('api/sesion.php');
     const sesion = await response.json();
@@ -106,6 +111,7 @@ async function abrirModalContactoDash() {
     document.querySelector('#modal-contacto-dash').classList.add('visible');
 }
 
+///// Valida y envía el formulario de contacto del dashboard a la API /////
 async function enviarContactoDash() {
     const nombre = document.querySelector('#dash-contacto-nombre').value.trim();
     const email = document.querySelector('#dash-contacto-email').value.trim();
@@ -151,6 +157,8 @@ async function enviarContactoDash() {
         mensaje.className = 'error';
     }
 }
+
+///// Carga el avatar del usuario desde la sesión y lo muestra en el navbar /////
 async function cargarAvatarNav() {
     const response = await fetch('api/sesion.php');
     const { success, avatar } = await response.json();
@@ -164,42 +172,44 @@ cargarBadgeAdmin();
 cargarAvatarNav();
 
 ////////////////////////// ESCUCHADORES //////////////////////////
+
+///// Carga la vista correspondiente al pulsar cualquier enlace del navbar o del dropdown /////
 document.querySelector('.navbar').addEventListener('click', function (e) {
     if (e.target.classList.contains('nav-link') || e.target.classList.contains('dropdown-item')) {
         if (e.target.dataset.vista) {
             cargarVista(e.target.dataset.vista);
-            // Cerramos el menú móvil al navegar
             navbarNav.classList.remove('active');
             menuToggle.classList.remove('active');
         }
     }
 });
 
+///// Abre y cierra el menú de navegación en móvil /////
 menuToggle.addEventListener('click', function () {
     navbarNav.classList.toggle('active');
     menuToggle.classList.toggle('active');
 });
 
+///// Abre y cierra el dropdown del perfil al pulsar el botón con el nombre del usuario /////
 btnPerfil.addEventListener('click', function (e) {
     e.stopPropagation();
     dropdownPerfil.classList.toggle('visible');
-    // Evitamos que el click en el botón perfil cierre el menú móvil
     navbarNav.classList.add('active');
     menuToggle.classList.add('active');
 });
 
+///// Cierra el dropdown y el menú móvil al hacer click fuera de ellos /////
 document.addEventListener('click', function (e) {
-    // Cerramos el dropdown si se hace click fuera
     if (!btnPerfil.contains(e.target) && !dropdownPerfil.contains(e.target)) {
         dropdownPerfil.classList.remove('visible');
     }
-    // Cerramos el menú móvil si se hace click fuera del navbar
     if (!navbarNav.contains(e.target) && !menuToggle.contains(e.target)) {
         navbarNav.classList.remove('active');
         menuToggle.classList.remove('active');
     }
 });
 
+///// Añade fondo más oscuro al navbar cuando el usuario hace scroll /////
 window.addEventListener('scroll', function () {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
@@ -209,7 +219,7 @@ window.addEventListener('scroll', function () {
     }
 });
 
-// Contacto dashboard
+///// Abre el modal de contacto al pulsar el enlace del footer /////
 document.querySelectorAll('a[href="#contacto"]').forEach(function (link) {
     link.addEventListener('click', function (e) {
         e.preventDefault();
@@ -217,16 +227,19 @@ document.querySelectorAll('a[href="#contacto"]').forEach(function (link) {
     });
 });
 
+///// Cierra el modal de contacto al pulsar la X /////
 document.querySelector('#modal-contacto-dash-cerrar').addEventListener('click', function () {
     document.querySelector('#modal-contacto-dash').classList.remove('visible');
 });
 
+///// Cierra el modal de contacto al pulsar fuera del contenido /////
 document.querySelector('#modal-contacto-dash').addEventListener('click', function (e) {
     if (e.target == document.querySelector('#modal-contacto-dash')) {
         document.querySelector('#modal-contacto-dash').classList.remove('visible');
     }
 });
 
+///// Llama a la función de envío al pulsar el botón del formulario de contacto /////
 document.querySelector('#btn-dash-enviar-contacto').addEventListener('click', function () {
     enviarContactoDash();
 });

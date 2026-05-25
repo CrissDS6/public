@@ -1,4 +1,8 @@
-/* ===== VISTA MIS MASCOTAS ===== */
+/**************************************************
+    Estilos de la vista Mis Mascotas y sus modales
+***************************************************/
+
+/****** CONTENEDOR Y CABECERA ******/
 #mascotas-container {
     max-width: 800px;
     margin: 0 auto;
@@ -37,6 +41,7 @@
     transform: translateY(-2px);
 }
 
+/****** GALERÍA DE MASCOTAS ******/
 #galeria-mascotas {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -108,7 +113,7 @@
     grid-column: 1 / -1;
 }
 
-/* ===== MODAL MASCOTA ===== */
+/****** MODAL FICHA MASCOTA ******/
 .modal-mascota-contenido {
     background: var(--white);
     border-radius: 24px;
@@ -208,27 +213,7 @@
     color: var(--white);
 }
 
-@media (max-width: 600px) {
-    #galeria-mascotas {
-        grid-template-columns: 1fr;
-    }
-}
-
-.modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-overlay.visible {
-    display: flex;
-}
-
-/* ===== MODAL FORMULARIO ===== */
+/****** MODAL FORMULARIO (AÑADIR / EDITAR) ******/
 .modal-form-contenido {
     background: #C5DFF0;
     border-radius: 24px;
@@ -350,7 +335,7 @@
     display: block;
 }
 
-/* ===== SECCIÓN CONSEJO EN MODAL ===== */
+/****** CONSEJO EN MODAL ******/
 .modal-consejo-section {
     padding: 0 2rem 1.5rem;
     display: flex;
@@ -404,6 +389,9 @@
     font-size: 0.9rem;
 }
 
-.consejo-tiempo-emoji {
-    font-size: 1.4rem;
+/****** RESPONSIVE ******/
+@media (max-width: 600px) {
+    #galeria-mascotas {
+        grid-template-columns: 1fr;
+    }
 }

@@ -1,9 +1,11 @@
 ////////////////////////// VARIABLES //////////////////////////
-let filtroEspecie = 0;
-let ordenForo = 'likes';
-let filtroProvincia = '';
+let filtroEspecie = 0;    // Especie seleccionada en el filtro (0 = todas)
+let ordenForo = 'likes';  // Orden de las publicaciones: 'likes' o 'fecha'
+let filtroProvincia = ''; // Provincia seleccionada en el filtro (vacío = todas)
 
 ////////////////////////// FUNCIONES //////////////////////////
+
+///// Convierte una fecha en texto legible como "Hace 3h" o "Hace 2d" /////
 function formatearFecha(fechaStr) {
     const fecha = new Date(fechaStr);
     const ahora = new Date();
@@ -16,6 +18,7 @@ function formatearFecha(fechaStr) {
     return fecha.toLocaleDateString('es-ES');
 }
 
+///// Actualiza el select de provincias con las que tienen publicaciones /////
 function actualizarSelectProvincias(provincias) {
     const select = document.querySelector('#filtro-provincia');
     const valorActual = select.value;
@@ -30,6 +33,7 @@ function actualizarSelectProvincias(provincias) {
     });
 }
 
+///// Dibuja las publicaciones en la lista usando el template del HTML /////
 function pintarPublicaciones(publicaciones) {
     const lista = document.querySelector('#lista-publicaciones-publico');
     lista.innerHTML = '';
@@ -59,6 +63,7 @@ function pintarPublicaciones(publicaciones) {
     });
 }
 
+///// Pide las publicaciones a la API aplicando los filtros activos y las pinta /////
 async function cargarPublicaciones() {
     const url = 'api/foro_publico.php?especie=' + filtroEspecie +
         '&orden=' + ordenForo +
@@ -73,10 +78,12 @@ async function cargarPublicaciones() {
     }
 }
 
+///// Abre el modal de inicio de sesión /////
 function abrirModalLogin() {
     document.querySelector('#modal-login').classList.add('visible');
 }
 
+///// Cierra el modal de inicio de sesión /////
 function cerrarModalLogin() {
     document.querySelector('#modal-login').classList.remove('visible');
 }
@@ -84,7 +91,14 @@ function cerrarModalLogin() {
 ////////////////////////// LLAMADAS //////////////////////////
 cargarPublicaciones();
 
+if (window.location.search.includes('error=1')) {
+    abrirModalLogin();
+    document.querySelector('#modal-error').style.display = 'block';
+}
+
 ////////////////////////// ESCUCHADORES //////////////////////////
+
+///// Filtra las publicaciones por especie al pulsar los botones de filtro /////
 document.querySelectorAll('.btn-filtro').forEach(function (btn) {
     btn.addEventListener('click', function () {
         document.querySelectorAll('.btn-filtro').forEach(function (b) {
@@ -96,6 +110,7 @@ document.querySelectorAll('.btn-filtro').forEach(function (btn) {
     });
 });
 
+///// Cambia el orden de las publicaciones al pulsar los botones de orden /////
 document.querySelectorAll('.btn-orden').forEach(function (btn) {
     btn.addEventListener('click', function () {
         document.querySelectorAll('.btn-orden').forEach(function (b) {
@@ -107,12 +122,13 @@ document.querySelectorAll('.btn-orden').forEach(function (btn) {
     });
 });
 
+///// Filtra por provincia al cambiar el selector /////
 document.querySelector('#filtro-provincia').addEventListener('change', function () {
     filtroProvincia = this.value;
     cargarPublicaciones();
 });
 
-// Navbar móvil
+///// Abre y cierra el menú de navegación en móvil /////
 const menuToggle = document.querySelector('#menuToggle');
 const navbarNav = document.querySelector('#navbarNav');
 
@@ -121,7 +137,7 @@ menuToggle.addEventListener('click', function () {
     menuToggle.classList.toggle('active');
 });
 
-// Navbar scroll
+///// Añade fondo más oscuro al navbar cuando el usuario hace scroll /////
 window.addEventListener('scroll', function () {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
@@ -131,24 +147,20 @@ window.addEventListener('scroll', function () {
     }
 });
 
-// Modal login
+///// Abre el modal de login al pulsar el botón de la navbar /////
 document.querySelector('#btn-abrir-login').addEventListener('click', function (e) {
     e.preventDefault();
     abrirModalLogin();
 });
 
+///// Cierra el modal de login al pulsar la X /////
 document.querySelector('#modal-login-cerrar').addEventListener('click', function () {
     cerrarModalLogin();
 });
 
+///// Cierra el modal de login al pulsar fuera del contenido /////
 document.querySelector('#modal-login').addEventListener('click', function (e) {
     if (e.target == document.querySelector('#modal-login')) {
         cerrarModalLogin();
     }
 });
-
-// Si hay error de login
-if (window.location.search.includes('error=1')) {
-    abrirModalLogin();
-    document.querySelector('#modal-error').style.display = 'block';
-}

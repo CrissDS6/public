@@ -1,4 +1,8 @@
-/* ===== VISTA PERFIL ===== */
+/**********************************
+    Estilos de la vista Mi Perfil
+***********************************/
+
+/****** CONTENEDOR ******/
 #perfil-container {
     max-width: 900px;
     margin: 0 auto;
@@ -8,6 +12,7 @@
     gap: 1.5rem;
 }
 
+/****** TARJETA DE SECCIÓN ******/
 .perfil-card {
     background: var(--white);
     border-radius: 20px;
@@ -26,6 +31,15 @@
     text-align: center;
 }
 
+.perfil-card-peligro {
+    border-color: #b00020;
+}
+
+.perfil-card-peligro .perfil-seccion-titulo {
+    color: #b00020;
+}
+
+/****** AVATAR ******/
 .perfil-avatar-section {
     display: flex;
     flex-direction: column;
@@ -47,87 +61,6 @@
     grid-template-columns: repeat(8, 1fr);
     gap: 0.5rem;
     width: 100%;
-}
-
-.perfil-card .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.perfil-card label {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-dark);
-}
-
-/* ===== OJO CONTRASEÑA — wrapper relativo para los inputs del perfil ===== */
-.perfil-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.perfil-card input[type="text"],
-.perfil-card input[type="email"],
-.perfil-card input[type="password"],
-.perfil-card input[type="text"].perfil-input-wrapper input {
-    border: 2px solid var(--light-gray);
-    border-radius: 10px;
-    padding: 0.8rem 3rem 0.8rem 1rem;
-    font-family: var(--font-primary);
-    font-size: 0.95rem;
-    background: var(--light-gray);
-    transition: all 0.2s;
-    width: 100%;
-}
-
-.perfil-card input:focus {
-    outline: none;
-    border-color: var(--secondary-blue);
-    background: var(--white);
-}
-
-.perfil-card input:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.btn-guardar-perfil {
-    background: var(--accent-yellow);
-    color: var(--primary-blue);
-    border: none;
-    border-radius: 12px;
-    padding: 0.8rem 1.5rem;
-    font-family: var(--font-primary);
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    align-self: center;
-}
-
-.btn-guardar-perfil:hover {
-    background: var(--secondary-blue);
-    color: var(--accent-yellow);
-}
-
-.msg-exito {
-    color: #2d7a2d;
-    background-color: #e6f4e6;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.msg-error {
-    color: #b00020;
-    background-color: #fde8eb;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
 }
 
 #perfil-avatar-selector .avatar-opcion {
@@ -158,24 +91,73 @@
     box-shadow: 0 0 0 2px var(--accent-yellow);
 }
 
+/****** FORMULARIOS ******/
+.perfil-card .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.perfil-card label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.perfil-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.perfil-card input[type="text"],
+.perfil-card input[type="email"],
+.perfil-card input[type="password"] {
+    border: 2px solid var(--light-gray);
+    border-radius: 10px;
+    padding: 0.8rem 3rem 0.8rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    background: var(--light-gray);
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.perfil-card input:focus {
+    outline: none;
+    border-color: var(--secondary-blue);
+    background: var(--white);
+}
+
+.perfil-card input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .password-requisitos {
     color: var(--medium-gray);
     font-size: 0.78rem;
     margin-top: 0.2rem;
 }
 
-@media (max-width: 600px) {
-    #perfil-avatar-selector {
-        grid-template-columns: repeat(4, 1fr);
-    }
+/****** BOTONES ******/
+.btn-guardar-perfil {
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: 12px;
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: center;
 }
 
-.perfil-card-peligro {
-    border-color: #b00020;
-}
-
-.perfil-card-peligro .perfil-seccion-titulo {
-    color: #b00020;
+.btn-guardar-perfil:hover {
+    background: var(--secondary-blue);
+    color: var(--accent-yellow);
 }
 
 .btn-eliminar-cuenta {
@@ -195,4 +177,30 @@
 .btn-eliminar-cuenta:hover {
     background: #b00020;
     color: var(--white);
+}
+
+/****** MENSAJES ******/
+.msg-exito {
+    color: #2d7a2d;
+    background-color: #e6f4e6;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.msg-error {
+    color: #b00020;
+    background-color: #fde8eb;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/****** RESPONSIVE ******/
+@media (max-width: 600px) {
+    #perfil-avatar-selector {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }

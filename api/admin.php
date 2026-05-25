@@ -1,7 +1,13 @@
 <?php
+// ****************************************************************************
+// Panel de administración — solo accesible para administradores
+// GET: foro/mensajes/ciudades/usuarios/badge/mascotas_usuario
+// PUT: moderar foro | actualizar mensaje | añadir ciudad | resetear password
+// ****************************************************************************
 session_start();
 require_once __DIR__ . '/../config/db.php';
 
+// ***** VERIFICACIÓN DE ROL ADMINISTRADOR *****
 if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_rol'] !== 'administrador') {
     enviarError(403, 'Acceso denegado');
 }
@@ -9,10 +15,12 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_rol'] !== 'administrad
 $metodo = $_SERVER['REQUEST_METHOD'];
 $id_admin = $_SESSION['usuario_id'];
 
+// ***** GET *****
 if ($metodo == 'GET') {
     $conn = obtenerConexion();
     $tipo = $_GET['tipo'] ?? 'foro';
 
+    // -- Publicaciones pendientes del foro --
     if ($tipo == 'foro') {
         $sql = "SELECT f.id_publicacion, f.titulo, f.contenido, f.ciudad, f.provincia,
                     f.fecha_envio, f.estado,
@@ -31,44 +39,45 @@ if ($metodo == 'GET') {
         }
 
         enviarRespuesta($conn, ['success' => true, 'datos' => $publicaciones]);
+
+        // -- Mensajes de contacto --
     } elseif ($tipo == 'mensajes') {
-        $filtro_estado = isset($_GET['estado']) ? $_GET['estado'] : '';
+        $filtro_estado = $_GET['estado'] ?? '';
 
         if ($filtro_estado !== '') {
-            $sql = "SELECT m.id_mensaje, m.nombre, m.email, m.asunto, m.texto,
-                    m.fecha_envio, m.tipo, m.estado
-                FROM mensajes m
-                WHERE m.estado = '$filtro_estado'
-                ORDER BY m.fecha_envio DESC";
+            $sql = "SELECT id_mensaje, nombre, email, asunto, texto, fecha_envio, tipo, estado
+                    FROM mensajes WHERE estado = ? ORDER BY fecha_envio DESC";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $filtro_estado);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
         } else {
-            $sql = "SELECT m.id_mensaje, m.nombre, m.email, m.asunto, m.texto,
-                    m.fecha_envio, m.tipo, m.estado
-                FROM mensajes m
-                ORDER BY m.fecha_envio DESC";
+            $sql = "SELECT id_mensaje, nombre, email, asunto, texto, fecha_envio, tipo, estado
+                    FROM mensajes ORDER BY fecha_envio DESC";
+            $resultado = $conn->query($sql);
         }
 
-        $resultado = $conn->query($sql);
         $mensajes = [];
         while ($fila = $resultado->fetch_assoc()) {
             $mensajes[] = $fila;
         }
 
-        // Contamos mensajes pendientes para el badge
-        $sqlPendientes = "SELECT COUNT(*) AS total FROM mensajes WHERE estado = 'pendiente'";
-        $resPendientes = $conn->query($sqlPendientes);
-        $totalPendientes = $resPendientes->fetch_assoc()['total'];
+        // Badge de mensajes pendientes
+        $resPendientes = $conn->query("SELECT COUNT(*) AS total FROM mensajes WHERE estado = 'pendiente'");
+        $totalPendientes = intval($resPendientes->fetch_assoc()['total']);
 
         enviarRespuesta($conn, [
-            'success'   => true,
-            'datos'     => $mensajes,
-            'pendientes' => intval($totalPendientes)
+            'success' => true,
+            'datos' => $mensajes,
+            'pendientes' => $totalPendientes
         ]);
+
+        // -- Sugerencias de ciudades --
     } elseif ($tipo == 'ciudades') {
-        // Mensajes de tipo sugerencia_ciudad
-        $sql = "SELECT m.id_mensaje, m.nombre, m.email, m.asunto, m.texto, m.fecha_envio, m.estado
-            FROM mensajes m
-            WHERE m.tipo = 'sugerencia_ciudad'
-            ORDER BY m.fecha_envio DESC";
+        $sql = "SELECT id_mensaje, nombre, email, asunto, texto, fecha_envio, estado
+                FROM mensajes
+                WHERE tipo = 'sugerencia_ciudad'
+                ORDER BY fecha_envio DESC";
 
         $resultado = $conn->query($sql);
         $sugerencias = [];
@@ -77,10 +86,12 @@ if ($metodo == 'GET') {
         }
 
         enviarRespuesta($conn, ['success' => true, 'datos' => $sugerencias]);
+
+        // -- Lista de usuarios --
     } elseif ($tipo == 'usuarios') {
         $sql = "SELECT id_usuario, nombre, email, avatar, fecha_registro, rol
-            FROM usuarios
-            ORDER BY fecha_registro DESC";
+                FROM usuarios
+                ORDER BY fecha_registro DESC";
 
         $resultado = $conn->query($sql);
         $usuarios = [];
@@ -89,25 +100,20 @@ if ($metodo == 'GET') {
         }
 
         enviarRespuesta($conn, ['success' => true, 'datos' => $usuarios]);
+
+        // -- Badge del navbar (mensajes + foro pendientes) --
     } elseif ($tipo == 'badge') {
-        // Mensajes pendientes
-        $sqlMensajes = "SELECT COUNT(*) AS total FROM mensajes WHERE estado = 'pendiente'";
-        $resMensajes = $conn->query($sqlMensajes);
-        $totalMensajes = intval($resMensajes->fetch_assoc()['total']);
-
-        // Publicaciones foro pendientes
-        $sqlForo = "SELECT COUNT(*) AS total FROM foro_consejos WHERE estado = 'pendiente'";
-        $resForo = $conn->query($sqlForo);
-        $totalForo = intval($resForo->fetch_assoc()['total']);
-
-        $total = $totalMensajes + $totalForo;
+        $totalMensajes = intval($conn->query("SELECT COUNT(*) AS total FROM mensajes WHERE estado = 'pendiente'")->fetch_assoc()['total']);
+        $totalForo = intval($conn->query("SELECT COUNT(*) AS total FROM foro_consejos WHERE estado = 'pendiente'")->fetch_assoc()['total']);
 
         enviarRespuesta($conn, [
-            'success'    => true,
-            'pendientes' => $total,
-            'mensajes'   => $totalMensajes,
-            'foro'       => $totalForo
+            'success' => true,
+            'pendientes' => $totalMensajes + $totalForo,
+            'mensajes' => $totalMensajes,
+            'foro' => $totalForo
         ]);
+
+        // -- Mascotas de un usuario concreto --
     } elseif ($tipo == 'mascotas_usuario') {
         $id_usuario_consulta = intval($_GET['id_usuario'] ?? 0);
         if ($id_usuario_consulta == 0) {
@@ -115,11 +121,10 @@ if ($metodo == 'GET') {
         }
 
         $sql = "SELECT m.nombre, m.edad, m.sexo, m.foto, m.raza, e.nombre_especie
-            FROM mascotas m
-            JOIN especies e ON m.id_especie = e.id_especie
-            WHERE m.id_usuario = ?
-            ORDER BY m.nombre ASC";
-
+                FROM mascotas m
+                JOIN especies e ON m.id_especie = e.id_especie
+                WHERE m.id_usuario = ?
+                ORDER BY m.nombre ASC";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('i', $id_usuario_consulta);
         $stmt->execute();
@@ -133,11 +138,14 @@ if ($metodo == 'GET') {
 
         enviarRespuesta($conn, ['success' => true, 'datos' => $mascotas]);
     }
+
+    // ***** PUT *****
 } elseif ($metodo == 'PUT') {
     parse_str(file_get_contents('php://input'), $datos);
     $conn = obtenerConexion();
     $tipo = $datos['tipo'] ?? '';
 
+    // -- Moderar publicación del foro --
     if ($tipo == 'foro') {
         $id_publicacion = intval($datos['id_publicacion']);
         $estado = $datos['estado'];
@@ -156,9 +164,11 @@ if ($metodo == 'GET') {
         } else {
             enviarError(500, 'Error al actualizar', $conn);
         }
+
+        // -- Actualizar estado de un mensaje --
     } elseif ($tipo == 'mensaje') {
         $id_mensaje = intval($datos['id_mensaje']);
-        $estado = $datos['estado'];
+        $estado     = $datos['estado'];
 
         if (!in_array($estado, ['pendiente', 'en_proceso', 'resuelto'])) {
             enviarError(400, 'Estado no válido', $conn);
@@ -173,13 +183,14 @@ if ($metodo == 'GET') {
         } else {
             enviarError(500, 'Error al actualizar', $conn);
         }
-    } elseif ($tipo == 'ciudad') {
-        $nombre    = trim($datos['nombre'] ?? '');
-        $provincia = trim($datos['provincia'] ?? '');
-        $latitud   = floatval($datos['latitud'] ?? 0);
-        $longitud  = floatval($datos['longitud'] ?? 0);
 
-        // Validar campos obligatorios
+        // -- Añadir ciudad con coordenadas automáticas --
+    } elseif ($tipo == 'ciudad') {
+        $nombre = trim($datos['nombre'] ?? '');
+        $provincia = trim($datos['provincia'] ?? '');
+        $latitud = floatval($datos['latitud'] ?? 0);
+        $longitud = floatval($datos['longitud'] ?? 0);
+
         if ($nombre === '' || $provincia === '' || $latitud == 0 || $longitud == 0) {
             enviarError(400, 'Todos los campos son obligatorios', $conn);
         }
@@ -189,22 +200,20 @@ if ($metodo == 'GET') {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ss', $nombre, $provincia);
         $stmt->execute();
-        $resultado = $stmt->get_result();
-        if ($resultado->num_rows > 0) {
+        if ($stmt->get_result()->num_rows > 0) {
             enviarError(400, 'Esa ciudad ya existe en esa provincia', $conn);
         }
         $stmt->close();
 
-        // Comprobar si las coordenadas ya están usadas
-        $margen = 0.01; // margen de ~1km
+        // Comprobar coordenadas duplicadas con margen de ~1km
+        $margen = 0.01;
+        $sql = "SELECT nombre_ciudad FROM ciudades
+                WHERE latitud BETWEEN ? AND ? AND longitud BETWEEN ? AND ?";
+        $stmt = $conn->prepare($sql);
         $latMin = $latitud - $margen;
         $latMax = $latitud + $margen;
         $lonMin = $longitud - $margen;
         $lonMax = $longitud + $margen;
-
-        $sql = "SELECT nombre_ciudad FROM ciudades 
-            WHERE latitud BETWEEN ? AND ? AND longitud BETWEEN ? AND ?";
-        $stmt = $conn->prepare($sql);
         $stmt->bind_param('dddd', $latMin, $latMax, $lonMin, $lonMax);
         $stmt->execute();
         $resultado = $stmt->get_result();
@@ -214,7 +223,7 @@ if ($metodo == 'GET') {
         }
         $stmt->close();
 
-        // Insertar
+        // Insertar nueva ciudad
         $sql = "INSERT INTO ciudades (nombre_ciudad, provincia, pais, latitud, longitud) VALUES (?, ?, 'España', ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssdd', $nombre, $provincia, $latitud, $longitud);
@@ -224,6 +233,8 @@ if ($metodo == 'GET') {
         } else {
             enviarError(500, 'Error al añadir la ciudad', $conn);
         }
+
+        // -- Resetear contraseña de un usuario --
     } elseif ($tipo == 'resetear_password') {
         $id_usuario = intval($datos['id_usuario'] ?? 0);
 
@@ -231,7 +242,7 @@ if ($metodo == 'GET') {
             enviarError(400, 'Falta el id del usuario', $conn);
         }
 
-        // Generamos contraseña temporal
+        // Generamos contraseña temporal de 10 caracteres
         $caracteres = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$';
         $passTemp = '';
         for ($i = 0; $i < 10; $i++) {
@@ -239,7 +250,6 @@ if ($metodo == 'GET') {
         }
 
         $hash = password_hash($passTemp, PASSWORD_DEFAULT);
-
         $sql = "UPDATE usuarios SET password_hash = ? WHERE id_usuario = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('si', $hash, $id_usuario);

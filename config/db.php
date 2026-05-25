@@ -1,6 +1,9 @@
 <?php
-// config/db.php
+// *************************************************************
+// Carga de variables de entorno y funciones de base de datos
+// *************************************************************
 
+// ***** CARGA DEL ARCHIVO .ENV *****
 function cargarEnv($ruta)
 {
     if (!file_exists($ruta)) {
@@ -15,23 +18,21 @@ function cargarEnv($ruta)
     $lineas = file($ruta, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
     foreach ($lineas as $linea) {
-        // Ignorar comentarios
-        if (strpos(trim($linea), '#') === 0) continue;
-
-        // Separar clave=valor
+        if (strpos(trim($linea), '#') === 0) continue; // Ignorar comentarios
         list($clave, $valor) = explode('=', $linea, 2);
         $_ENV[trim($clave)] = trim($valor);
     }
 }
 
-// Cargar el .env desde la raíz de public/
 cargarEnv(__DIR__ . '/../.env');
 
+// ***** VARIABLES DE CONEXIÓN *****
 $DB_HOST = $_ENV['DB_HOST'];
 $DB_USER = $_ENV['DB_USER'];
 $DB_PASS = $_ENV['DB_PASS'];
 $DB_NAME = $_ENV['DB_NAME'];
 
+// ***** FUNCIONES *****
 function obtenerConexion()
 {
     global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;

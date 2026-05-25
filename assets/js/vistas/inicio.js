@@ -1,7 +1,9 @@
 ////////////////////////// VARIABLES //////////////////////////
-// Las variables API_KEY_TIEMPO y URL_TIEMPO vienen de dashboard.js
+// API_KEY_TIEMPO y URL_TIEMPO vienen de dashboard.js
 
 ////////////////////////// FUNCIONES //////////////////////////
+
+///// Elige qué gif del tiempo mostrar según el código de la API, temperatura y humedad /////
 function obtenerGifTiempo(codigo, temp, humedad) {
     const base = 'assets/img/tiempo/';
     if (codigo >= 200 && codigo < 300) return base + 'tormenta.gif';
@@ -25,6 +27,7 @@ function obtenerGifTiempo(codigo, temp, humedad) {
     return base + 'estable.gif';
 }
 
+///// Llama a la API del tiempo y pinta la tarjeta del clima en la vista inicio /////
 async function cargarTiempoInicio(ciudad, lat, lon) {
     try {
         const url = URL_TIEMPO + '?lat=' + lat + '&lon=' + lon + '&appid=' + API_KEY_TIEMPO + '&units=metric&lang=es&t=' + Date.now();
@@ -55,7 +58,9 @@ async function cargarTiempoInicio(ciudad, lat, lon) {
     }
 }
 
+///// Arranca la vista inicio: pinta el saludo, el avatar, el tiempo y registra los accesos rápidos /////
 async function initInicio() {
+    ///// Cada tarjeta de acceso rápido carga su vista al hacer click /////
     document.querySelectorAll('.acceso-card').forEach(function (card) {
         card.addEventListener('click', function () {
             cargarVista(this.dataset.vista);

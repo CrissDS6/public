@@ -1,4 +1,8 @@
-/* ===== PANEL ADMIN ===== */
+/***************************************
+    Estilos del Panel de Administración
+****************************************/
+
+/****** CONTENEDOR ******/
 #admin-container {
     max-width: 900px;
     margin: 0 auto;
@@ -8,6 +12,7 @@
     gap: 1.5rem;
 }
 
+/****** PESTAÑAS ******/
 .admin-tabs {
     display: flex;
     gap: 0.5rem;
@@ -38,6 +43,7 @@
     border-bottom-color: var(--primary-blue);
 }
 
+/****** TARJETAS ******/
 .admin-card {
     background: var(--white);
     border-radius: 16px;
@@ -107,6 +113,19 @@
     color: var(--primary-blue);
 }
 
+.admin-card-titulo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.admin-card-contenido {
+    font-size: 0.92rem;
+    color: var(--text-dark);
+    line-height: 1.7;
+}
+
 .admin-card-acciones {
     display: flex;
     gap: 0.5rem;
@@ -114,6 +133,14 @@
     flex-shrink: 0;
 }
 
+.admin-vacio {
+    text-align: center;
+    color: var(--medium-gray);
+    padding: 3rem 0;
+    font-size: 1rem;
+}
+
+/****** BOTONES DE ACCIÓN ******/
 .btn-aprobar {
     background: #e6f4e6;
     color: #2d7a2d;
@@ -150,19 +177,43 @@
     color: var(--white);
 }
 
-.admin-card-titulo {
-    font-size: 1rem;
-    font-weight: 700;
+.btn-resetear-pass {
+    background: #FFF9E6;
+    color: #E65100;
+    border: 2px solid #FFD93D;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-resetear-pass:hover {
+    background: #FFD93D;
     color: var(--primary-blue);
-    margin-bottom: 0.5rem;
 }
 
-.admin-card-contenido {
-    font-size: 0.92rem;
-    color: var(--text-dark);
-    line-height: 1.7;
+.btn-ver-mascotas-admin {
+    background: var(--light-blue);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
+.btn-ver-mascotas-admin:hover {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+/****** ESTADOS Y BADGES ******/
 .select-estado {
     border: 2px solid var(--secondary-blue);
     border-radius: 8px;
@@ -173,13 +224,6 @@
     background: var(--white);
     cursor: pointer;
     outline: none;
-}
-
-.admin-vacio {
-    text-align: center;
-    color: var(--medium-gray);
-    padding: 3rem 0;
-    font-size: 1rem;
 }
 
 .admin-estado-badge {
@@ -204,6 +248,43 @@
     color: #2d7a2d;
 }
 
+.admin-usuario-rol {
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--light-blue);
+    color: var(--primary-blue);
+}
+
+/****** FILTROS DE MENSAJES ******/
+.admin-filtros {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.btn-filtro-msg {
+    background: var(--white);
+    color: var(--primary-blue);
+    border: 2px solid var(--secondary-blue);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-filtro-msg:hover,
+.btn-filtro-msg.activo {
+    background: var(--secondary-blue);
+    color: var(--white);
+}
+
+/****** FORMULARIO AÑADIR CIUDAD ******/
 .admin-ciudad-form {
     background: var(--white);
     border-radius: 16px;
@@ -231,7 +312,8 @@
     color: var(--text-dark);
 }
 
-.admin-ciudad-form input {
+.admin-ciudad-form input,
+.admin-ciudad-form select {
     border: 2px solid var(--light-gray);
     border-radius: 10px;
     padding: 0.8rem 1rem;
@@ -239,10 +321,13 @@
     font-size: 0.95rem;
     background: var(--light-gray);
     transition: all 0.2s;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
 }
 
-.admin-ciudad-form input:focus {
-    outline: none;
+.admin-ciudad-form input:focus,
+.admin-ciudad-form select:focus {
     border-color: var(--secondary-blue);
     background: var(--white);
 }
@@ -267,24 +352,7 @@
     margin-bottom: 0.5rem;
 }
 
-.admin-ciudad-form select {
-    border: 2px solid var(--light-gray);
-    border-radius: 10px;
-    padding: 0.8rem 1rem;
-    font-family: var(--font-primary);
-    font-size: 0.95rem;
-    background: var(--light-gray);
-    transition: all 0.2s;
-    width: 100%;
-    cursor: pointer;
-    outline: none;
-}
-
-.admin-ciudad-form select:focus {
-    border-color: var(--secondary-blue);
-    background: var(--white);
-}
-
+/****** USUARIOS Y MASCOTAS ******/
 .admin-usuario-avatar {
     width: 40px;
     height: 40px;
@@ -293,33 +361,6 @@
     border: 2px solid var(--secondary-blue);
     background-color: var(--light-gray);
     flex-shrink: 0;
-}
-
-.admin-usuario-rol {
-    padding: 0.2rem 0.6rem;
-    border-radius: 10px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    background: var(--light-blue);
-    color: var(--primary-blue);
-}
-
-.btn-resetear-pass {
-    background: #FFF9E6;
-    color: #E65100;
-    border: 2px solid #FFD93D;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-family: var(--font-primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-resetear-pass:hover {
-    background: #FFD93D;
-    color: var(--primary-blue);
 }
 
 .admin-pass-resultado {
@@ -336,50 +377,6 @@
     margin-top: 0.3rem;
     color: var(--descriptions);
     font-size: 0.8rem;
-}
-
-.admin-filtros {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-}
-
-.btn-filtro-msg {
-    background: var(--white);
-    color: var(--primary-blue);
-    border: 2px solid var(--secondary-blue);
-    border-radius: 20px;
-    padding: 0.4rem 1rem;
-    font-family: var(--font-primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-filtro-msg:hover,
-.btn-filtro-msg.activo {
-    background: var(--secondary-blue);
-    color: var(--white);
-}
-
-.btn-ver-mascotas-admin {
-    background: var(--light-blue);
-    color: var(--primary-blue);
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-family: var(--font-primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-ver-mascotas-admin:hover {
-    background: var(--secondary-blue);
-    color: var(--white);
 }
 
 .admin-mascotas-contenedor {
@@ -430,9 +427,8 @@
     color: var(--descriptions);
 }
 
-/* ===== RESPONSIVE ADMIN ===== */
+/****** RESPONSIVE ******/
 @media (max-width: 600px) {
-
     .admin-tabs {
         gap: 0;
     }
@@ -444,6 +440,5 @@
 
     .admin-ciudad-grid {
         grid-template-columns: 1fr;
-        /* una columna en móvil */
     }
 }

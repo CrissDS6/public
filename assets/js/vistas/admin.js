@@ -1,13 +1,16 @@
 ////////////////////////// VARIABLES //////////////////////////
-let tabActiva = 'foro';
-let filtroEstadoMensajes = '';
+let tabActiva = 'foro';          // Pestaña activa del panel de admin
+let filtroEstadoMensajes = '';   // Filtro de estado activo en la sección de mensajes
 
 ////////////////////////// FUNCIONES //////////////////////////
+
+///// Convierte una fecha en formato legible con hora /////
 function formatearFecha(fechaStr) {
     const fecha = new Date(fechaStr);
     return fecha.toLocaleDateString('es-ES') + ' ' + fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 }
 
+///// Devuelve el texto con emoji que corresponde al tipo de mensaje de contacto /////
 function obtenerLabelTipo(tipo) {
     const tipos = {
         'problema': '🔴 Problema',
@@ -18,6 +21,7 @@ function obtenerLabelTipo(tipo) {
     return tipos[tipo] || tipo;
 }
 
+///// Carga y pinta las publicaciones del foro que están pendientes de aprobar /////
 async function cargarPendientes() {
     const response = await fetch('api/admin.php?tipo=foro');
     const { success, datos } = await response.json();
@@ -54,6 +58,7 @@ async function cargarPendientes() {
     });
 }
 
+///// Carga y pinta los mensajes de contacto, aplicando el filtro de estado si hay uno activo /////
 async function cargarMensajes() {
     const url = 'api/admin.php?tipo=mensajes' + (filtroEstadoMensajes ? '&estado=' + filtroEstadoMensajes : '');
     const response = await fetch(url);
@@ -97,6 +102,7 @@ async function cargarMensajes() {
     });
 }
 
+///// Carga las provincias disponibles en el select de añadir ciudad /////
 async function cargarProvinciasAdmin() {
     const response = await fetch('api/ciudades_catalogo.php');
     const { success, datos } = await response.json();
@@ -111,6 +117,7 @@ async function cargarProvinciasAdmin() {
     });
 }
 
+///// Actualiza el número del badge de mensajes pendientes en el navbar /////
 function actualizarBadge(total) {
     const badge = document.querySelector('#badge-mensajes');
     if (!badge) return;
@@ -122,6 +129,7 @@ function actualizarBadge(total) {
     }
 }
 
+///// Aprueba o rechaza una publicación del foro y recarga la lista /////
 async function moderarPublicacion(id, estado) {
     const response = await fetch('api/admin.php', {
         method: 'PUT',
@@ -133,6 +141,7 @@ async function moderarPublicacion(id, estado) {
     if (success) cargarPendientes();
 }
 
+///// Cambia el estado de un mensaje de contacto (pendiente, en proceso, resuelto) /////
 async function actualizarEstadoMensaje(id, estado) {
     const response = await fetch('api/admin.php', {
         method: 'PUT',
@@ -144,6 +153,7 @@ async function actualizarEstadoMensaje(id, estado) {
     if (!success) alert('Error al actualizar el estado');
 }
 
+///// Carga y pinta los mensajes de tipo sugerencia de ciudad /////
 async function cargarSugerenciasCiudad() {
     const response = await fetch('api/admin.php?tipo=ciudades');
     const { success, datos } = await response.json();
@@ -179,6 +189,7 @@ async function cargarSugerenciasCiudad() {
     });
 }
 
+///// Busca las coordenadas de la ciudad en la API del tiempo y la guarda en la base de datos /////
 async function anadirCiudadAdmin() {
     const nombre = document.querySelector('#nueva-ciudad').value.trim();
     const provincia = document.querySelector('#nueva-provincia').value;
@@ -196,7 +207,6 @@ async function anadirCiudadAdmin() {
         return;
     }
 
-    // Obtenemos coordenadas desde OpenWeatherMap
     mensaje.textContent = 'Buscando coordenadas...';
     mensaje.className = '';
 
@@ -246,6 +256,7 @@ async function anadirCiudadAdmin() {
     }
 }
 
+///// Carga y pinta la lista de usuarios registrados /////
 async function cargarUsuariosAdmin() {
     const response = await fetch('api/admin.php?tipo=usuarios');
     const { success, datos } = await response.json();
@@ -293,6 +304,7 @@ async function cargarUsuariosAdmin() {
         contenedorMascotas.style.display = 'none';
         card.appendChild(contenedorMascotas);
 
+        ///// Muestra u oculta las mascotas del usuario al pulsar el botón /////
         btnVerMascotas.addEventListener('click', function () {
             verMascotasUsuario(this.dataset.id, contenedorMascotas);
         });
@@ -301,6 +313,7 @@ async function cargarUsuariosAdmin() {
     });
 }
 
+///// Genera una contraseña temporal y la muestra en la tarjeta del usuario /////
 async function resetearPassword(id, card) {
     if (!confirm('¿Resetear la contraseña de este usuario?')) return;
 
@@ -321,11 +334,12 @@ async function resetearPassword(id, card) {
     }
 }
 
+///// Arranca el panel admin: carga provincias, publicaciones pendientes y registra escuchadores /////
 async function initAdmin() {
     await cargarProvinciasAdmin();
     await cargarPendientes();
 
-    // Pestañas
+    ///// Cambia de pestaña y carga el contenido correspondiente /////
     document.querySelectorAll('.admin-tab').forEach(function (tab) {
         tab.addEventListener('click', function () {
             document.querySelectorAll('.admin-tab').forEach(function (t) {
@@ -338,6 +352,7 @@ async function initAdmin() {
             document.querySelector('#admin-tab-mensajes').style.display = tabActiva == 'mensajes' ? 'block' : 'none';
             document.querySelector('#admin-tab-ciudades').style.display = tabActiva == 'ciudades' ? 'block' : 'none';
             document.querySelector('#admin-tab-usuarios').style.display = tabActiva == 'usuarios' ? 'block' : 'none';
+
             const filtrosMensajes = document.querySelector('#filtros-mensajes');
             if (filtrosMensajes) {
                 filtrosMensajes.style.display = tabActiva == 'mensajes' ? 'flex' : 'none';
@@ -362,7 +377,7 @@ async function initAdmin() {
         });
     });
 
-    // Aprobar/rechazar por delegación
+    ///// Aprueba o rechaza publicaciones del foro al pulsar los botones /////
     document.querySelector('#lista-pendientes').addEventListener('click', function (e) {
         if (e.target.classList.contains('btn-aprobar')) {
             moderarPublicacion(e.target.dataset.id, 'aprobado');
@@ -372,19 +387,19 @@ async function initAdmin() {
         }
     });
 
-    // Cambiar estado de mensajes por delegación
+    ///// Cambia el estado de un mensaje al cambiar el selector /////
     document.querySelector('#lista-mensajes').addEventListener('change', function (e) {
         if (e.target.classList.contains('select-estado')) {
             actualizarEstadoMensaje(e.target.dataset.id, e.target.value);
         }
     });
 
-    // Añadir ciudad
+    ///// Llama a la función de añadir ciudad al pulsar el botón /////
     document.querySelector('#btn-anadir-ciudad-admin').addEventListener('click', function () {
         anadirCiudadAdmin();
     });
 
-    // Resetear password usuario
+    ///// Resetea la contraseña de un usuario al pulsar el botón de su tarjeta /////
     document.querySelector('#lista-usuarios-admin').addEventListener('click', function (e) {
         if (e.target.classList.contains('btn-resetear-pass')) {
             const card = e.target.closest('.admin-card');
@@ -392,7 +407,7 @@ async function initAdmin() {
         }
     });
 
-    // Filtros mensajes
+    ///// Filtra los mensajes por estado al pulsar los botones de filtro /////
     const btnsFiltroMsg = document.querySelectorAll('.btn-filtro-msg');
     if (btnsFiltroMsg.length > 0) {
         btnsFiltroMsg.forEach(function (btn) {
@@ -408,6 +423,7 @@ async function initAdmin() {
     }
 }
 
+///// Muestra u oculta las mascotas de un usuario dentro de su tarjeta /////
 async function verMascotasUsuario(id, contenedor) {
     if (contenedor.style.display == 'block') {
         contenedor.style.display = 'none';

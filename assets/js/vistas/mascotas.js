@@ -1,8 +1,10 @@
 ////////////////////////// VARIABLES //////////////////////////
-let mascotasData = [];
-let consejosUsados = {};
+let mascotasData = [];   // Guarda todas las mascotas del usuario cargadas de la API
+let consejosUsados = {}; // Controla qué consejos ya se han mostrado para no repetirlos
 
 ////////////////////////// FUNCIONES //////////////////////////
+
+///// Convierte el código de la API del tiempo en un tipo de tiempo legible /////
 function convertirCodigoATipo(codigo, temp, humedad) {
     if (codigo >= 200 && codigo < 300) return 'tormenta';
     if (codigo >= 300 && codigo < 400) return 'llovizna';
@@ -18,6 +20,7 @@ function convertirCodigoATipo(codigo, temp, humedad) {
     return 'estable';
 }
 
+///// Elige qué gif del tiempo mostrar según el código de la API, temperatura y humedad /////
 function obtenerGifTiempo(codigo, temp, humedad) {
     const base = 'assets/img/tiempo/';
     if (codigo >= 200 && codigo < 300) return base + 'tormenta.gif';
@@ -40,6 +43,8 @@ function obtenerGifTiempo(codigo, temp, humedad) {
     }
     return base + 'estable.gif';
 }
+
+///// Rellena y abre el modal con la información de una mascota /////
 function abrirModalMascota(mascota) {
     const fotoSrc = mascota.foto
         ? mascota.foto
@@ -57,15 +62,16 @@ function abrirModalMascota(mascota) {
     document.querySelector('#modal-btn-eliminar').dataset.id = mascota.id_mascota;
 
     document.querySelector('#modal-mascota').classList.add('visible');
-    //Reseteamos consejo cada vez que se abre el modal
     document.querySelector('#modal-consejo-resultado').classList.add('oculto');
     document.querySelector('#btn-ver-consejo').textContent = '🐾 Ver consejo';
 }
 
+///// Cierra el modal de información de la mascota /////
 function cerrarModalMascota() {
     document.querySelector('#modal-mascota').classList.remove('visible');
 }
 
+///// Recoge los datos del formulario y guarda una nueva mascota /////
 async function guardarMascota() {
     const nombre = document.querySelector('#input-nombre').value.trim();
     const idEspecie = document.querySelector('#input-especie').value;
@@ -99,7 +105,6 @@ async function guardarMascota() {
     if (success) {
         mensaje.textContent = '¡Mascota añadida correctamente!';
         mensaje.className = 'exito';
-        // Recargamos la galería
         setTimeout(function () {
             document.querySelector('#modal-anadir').classList.remove('visible');
             recargarGaleria();
@@ -110,6 +115,7 @@ async function guardarMascota() {
     }
 }
 
+///// Vuelve a pedir las mascotas a la API y redibuja la galería /////
 async function recargarGaleria() {
     const galeria = document.querySelector('#galeria-mascotas');
     galeria.innerHTML = '';
@@ -127,7 +133,7 @@ async function recargarGaleria() {
     });
 }
 
-//Función para eliminar mascotas
+///// Pide confirmación y elimina una mascota de la base de datos /////
 async function eliminarMascota(id) {
     if (!confirm('¿Estás seguro de que quieres eliminar esta mascota?')) return;
 
@@ -147,6 +153,7 @@ async function eliminarMascota(id) {
     }
 }
 
+///// Cierra el modal de info y abre el de edición con los datos de la mascota /////
 function abrirModalEditar(mascota) {
     cerrarModalMascota();
 
@@ -165,6 +172,7 @@ function abrirModalEditar(mascota) {
     document.querySelector('#modal-editar').classList.add('visible');
 }
 
+///// Recoge los datos del formulario de edición y actualiza la mascota /////
 async function actualizarMascota() {
     const id = document.querySelector('#edit-id-mascota').value;
     const nombre = document.querySelector('#edit-nombre').value.trim();
@@ -211,7 +219,9 @@ async function actualizarMascota() {
     }
 }
 
+///// Registra los escuchadores del modal y formulario de añadir mascota /////
 function initEscuchadoresAnadir() {
+    ///// Limpia el formulario y abre el modal de añadir mascota /////
     document.querySelector('#btn-añadir-mascota').addEventListener('click', function () {
         document.querySelector('#input-nombre').value = '';
         document.querySelector('#input-raza').value = '';
@@ -225,16 +235,19 @@ function initEscuchadoresAnadir() {
         document.querySelector('#modal-anadir').classList.add('visible');
     });
 
+    ///// Cierra el modal de añadir al pulsar la X /////
     document.querySelector('#modal-anadir-cerrar').addEventListener('click', function () {
         document.querySelector('#modal-anadir').classList.remove('visible');
     });
 
+    ///// Cierra el modal de añadir al pulsar fuera del contenido /////
     document.querySelector('#modal-anadir').addEventListener('click', function (e) {
         if (e.target == document.querySelector('#modal-anadir')) {
             document.querySelector('#modal-anadir').classList.remove('visible');
         }
     });
 
+    ///// Muestra una previsualización de la foto seleccionada /////
     document.querySelector('#input-foto').addEventListener('change', function (e) {
         const archivo = e.target.files[0];
         if (!archivo) return;
@@ -246,12 +259,15 @@ function initEscuchadoresAnadir() {
         preview.appendChild(img);
     });
 
+    ///// Llama a la función de guardar al pulsar el botón del formulario /////
     document.querySelector('#btn-guardar-mascota').addEventListener('click', function () {
         guardarMascota();
     });
 }
 
+///// Registra los escuchadores del modal y formulario de editar mascota /////
 function initEscuchadoresEditar() {
+    ///// Abre el modal de edición con los datos de la mascota seleccionada /////
     document.querySelector('#modal-btn-editar').addEventListener('click', function () {
         const id = this.dataset.id;
         const mascota = mascotasData.find(function (m) {
@@ -260,16 +276,19 @@ function initEscuchadoresEditar() {
         abrirModalEditar(mascota);
     });
 
+    ///// Cierra el modal de edición al pulsar la X /////
     document.querySelector('#modal-editar-cerrar').addEventListener('click', function () {
         document.querySelector('#modal-editar').classList.remove('visible');
     });
 
+    ///// Cierra el modal de edición al pulsar fuera del contenido /////
     document.querySelector('#modal-editar').addEventListener('click', function (e) {
         if (e.target == document.querySelector('#modal-editar')) {
             document.querySelector('#modal-editar').classList.remove('visible');
         }
     });
 
+    ///// Muestra una previsualización de la nueva foto seleccionada /////
     document.querySelector('#edit-foto').addEventListener('change', function (e) {
         const archivo = e.target.files[0];
         if (!archivo) return;
@@ -281,26 +300,32 @@ function initEscuchadoresEditar() {
         preview.appendChild(img);
     });
 
+    ///// Llama a la función de actualizar al pulsar el botón del formulario /////
     document.querySelector('#btn-actualizar-mascota').addEventListener('click', function () {
         actualizarMascota();
     });
 }
 
+///// Registra los escuchadores del modal de información de la mascota /////
 function initEscuchadoresModalInfo() {
+    ///// Cierra el modal de info al pulsar la X /////
     document.querySelector('#modal-mascota-cerrar2').addEventListener('click', function () {
         cerrarModalMascota();
     });
 
+    ///// Cierra el modal de info al pulsar fuera del contenido /////
     document.querySelector('#modal-mascota').addEventListener('click', function (e) {
         if (e.target == document.querySelector('#modal-mascota')) {
             cerrarModalMascota();
         }
     });
 
+    ///// Elimina la mascota al pulsar el botón de eliminar /////
     document.querySelector('#modal-btn-eliminar').addEventListener('click', function () {
         eliminarMascota(this.dataset.id);
     });
 
+    ///// Carga y muestra un consejo para la mascota al pulsar el botón /////
     document.querySelector('#btn-ver-consejo').addEventListener('click', function () {
         const id = document.querySelector('#modal-btn-editar').dataset.id;
         const mascota = mascotasData.find(function (m) {
@@ -310,6 +335,7 @@ function initEscuchadoresModalInfo() {
     });
 }
 
+///// Consulta el tiempo actual y muestra un consejo personalizado para la mascota /////
 async function cargarConsejoMascota(mascota) {
     const btnConsejo = document.querySelector('#btn-ver-consejo');
     const resultado = document.querySelector('#modal-consejo-resultado');
@@ -352,27 +378,21 @@ async function cargarConsejoMascota(mascota) {
         if (bloqueEspecie && bloqueEspecie.textos.length > 0) {
             const clave = mascota.id_especie + '_' + tipeTiempo;
 
-            // Inicializamos el array de usados para esta especie+tiempo si no existe
             if (!consejosUsados[clave]) {
                 consejosUsados[clave] = [];
             }
 
-            // Filtramos los que no se han usado aún
             let disponibles = bloqueEspecie.textos.filter(function (t) {
                 return !consejosUsados[clave].includes(t);
             });
 
-            // Si no quedan disponibles, reseteamos y volvemos a usar todos
             if (disponibles.length == 0) {
                 consejosUsados[clave] = [];
                 disponibles = bloqueEspecie.textos;
             }
 
-            // Elegimos uno aleatorio de los disponibles
             const indice = Math.floor(Math.random() * disponibles.length);
             texto = disponibles[indice];
-
-            // Lo marcamos como usado
             consejosUsados[clave].push(texto);
         }
 
@@ -385,9 +405,7 @@ async function cargarConsejoMascota(mascota) {
         `;
         resultado.classList.remove('oculto');
 
-    } catch (err) {
-        console.log('Error:', err);
-        console.log('datosTiempo:', typeof datosTiempo !== 'undefined' ? datosTiempo : 'no definido');
+    } catch {
         resultado.innerHTML = '<p>No se pudo cargar el consejo.</p>';
         resultado.classList.remove('oculto');
     } finally {
@@ -395,6 +413,8 @@ async function cargarConsejoMascota(mascota) {
         btnConsejo.disabled = false;
     }
 }
+
+///// Crea la tarjeta visual de una mascota a partir del template del HTML /////
 function crearTarjetaMascota(mascota) {
     const template = document.querySelector('#template-mascota');
     const clon = template.content.cloneNode(true);
@@ -402,7 +422,6 @@ function crearTarjetaMascota(mascota) {
     const card = clon.querySelector('.mascota-card');
     card.dataset.id = mascota.id_mascota;
 
-    // Foto o placeholder
     const placeholder = clon.querySelector('.mascota-foto-placeholder');
     if (mascota.foto) {
         const img = document.createElement('img');
@@ -416,6 +435,7 @@ function crearTarjetaMascota(mascota) {
 
     clon.querySelector('.mascota-nombre').textContent = mascota.nombre;
 
+    ///// Abre el modal de info al pulsar una tarjeta de mascota /////
     card.addEventListener('click', function () {
         const mascotaSeleccionada = mascotasData.find(function (m) {
             return m.id_mascota == card.dataset.id;
@@ -425,6 +445,8 @@ function crearTarjetaMascota(mascota) {
 
     return clon;
 }
+
+///// Arranca la vista: registra escuchadores, carga las mascotas y las pinta en la galería /////
 async function initMisMascotas() {
     initEscuchadoresModalInfo();
     initEscuchadoresAnadir();
@@ -451,4 +473,3 @@ async function initMisMascotas() {
     });
 }
 
-////////////////////////// ESCUCHADORES //////////////////////////
