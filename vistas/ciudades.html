@@ -3,12 +3,15 @@
         <h2 class="vista-titulo">Ciudades Favoritas</h2>
     </div>
 
-    <!-- BUSCADOR -->
+    <!-- ********** BUSCADOR ********** -->
+    <!-- Busca en api/ciudades.php?buscar=texto — con debounce de 400ms -->
     <div class="ciudades-buscador">
         <input type="text" id="input-buscar-ciudad" placeholder="🔍 Busca una ciudad...">
+        <!-- Los resultados se generan aquí por JS usando #template-resultado de dashboard.php -->
         <div id="resultados-busqueda" class="resultados-busqueda"></div>
     </div>
 
-    <!-- LISTA DE FAVORITAS -->
+    <!-- ********** CIUDADES FAVORITAS ********** -->
+    <!-- Las tarjetas se generan aquí por JS usando #template-ciudad de dashboard.php -->
     <div id="lista-ciudades-favoritas"></div>
 </div>

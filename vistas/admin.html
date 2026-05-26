@@ -4,7 +4,8 @@
         <h2 class="vista-titulo">⚙️ Panel de Administración</h2>
     </div>
 
-    <!-- PESTAÑAS -->
+    <!-- ********** PESTAÑAS ********** -->
+    <!-- El JS muestra/oculta cada sección según la pestaña activa -->
     <div class="admin-tabs">
         <button class="admin-tab activo" data-tab="foro">📋 Foro pendiente</button>
         <button class="admin-tab" data-tab="mensajes">✉️ Mensajes</button>
@@ -12,19 +13,22 @@
         <button class="admin-tab" data-tab="usuarios">👥 Usuarios</button>
     </div>
 
-    <!-- SECCIÓN FORO PENDIENTE -->
+    <!-- ********** SECCIÓN FORO PENDIENTE ********** -->
+    <!-- Las tarjetas se generan desde api/admin.php?tipo=foro usando #template-pendiente -->
     <div id="admin-tab-foro" class="admin-tab-content">
         <div id="lista-pendientes"></div>
     </div>
 
-    <!-- SECCIÓN MENSAJES -->
+    <!-- ********** SECCIÓN MENSAJES ********** -->
+    <!-- Los filtros de estado viven en dashboard.php y el JS los mueve aquí al activar esta pestaña -->
     <div id="admin-tab-mensajes" class="admin-tab-content" style="display:none">
         <div id="lista-mensajes"></div>
     </div>
 
-    <!-- SECCIÓN CIUDADES -->
+    <!-- ********** SECCIÓN CIUDADES ********** -->
     <div id="admin-tab-ciudades" class="admin-tab-content" style="display:none">
 
+        <!-- Formulario para añadir ciudad — las coordenadas las obtiene el JS desde OpenWeatherMap -->
         <div class="admin-ciudad-form">
             <h3 class="perfil-seccion-titulo">Añadir nueva ciudad</h3>
             <div class="admin-ciudad-grid">
@@ -34,6 +38,7 @@
                 </div>
                 <div class="form-group">
                     <label for="nueva-provincia">Provincia</label>
+                    <!-- Las opciones se cargan desde api/ciudades_catalogo.php -->
                     <select id="nueva-provincia">
                         <option value="">Selecciona una provincia...</option>
                     </select>
@@ -43,11 +48,13 @@
             <button class="btn-guardar-perfil" id="btn-anadir-ciudad-admin">Guardar</button>
         </div>
 
+        <!-- Sugerencias recibidas por formulario de contacto con tipo=sugerencia_ciudad -->
         <h3 class="perfil-seccion-titulo" style="margin-top:2rem">Sugerencias de ciudades recibidas</h3>
         <div id="lista-sugerencias-ciudad"></div>
     </div>
 
-    <!-- SECCIÓN USUARIOS -->
+    <!-- ********** SECCIÓN USUARIOS ********** -->
+    <!-- Las tarjetas se generan desde api/admin.php?tipo=usuarios usando #template-usuario-admin -->
     <div id="admin-tab-usuarios" class="admin-tab-content" style="display:none">
         <div id="lista-usuarios-admin"></div>
     </div>

@@ -5,14 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foro - MeteoPet</title>
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos: base + estilos propios del foro público -->
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/foro_publico.css">
+
+    <!-- Script del foro público -->
     <script defer src="assets/js/foro_publico.js"></script>
 </head>
 
 <body>
-    <!-- NAVBAR -->
+
+    <!-- ********** NAVBAR ********** -->
     <nav class="navbar">
         <div class="container">
             <a class="navbar-brand" href="index.html">
@@ -47,7 +54,7 @@
         </div>
     </nav>
 
-    <!-- BANNER REGISTRO -->
+    <!-- ********** BANNER REGISTRO ********** -->
     <div class="foro-publico-banner">
         <div class="container">
             <p>🐾 <strong>¿Quieres participar?</strong> Regístrate gratis para publicar avisos y dar likes.</p>
@@ -55,14 +62,14 @@
         </div>
     </div>
 
-    <!-- CONTENIDO -->
+    <!-- ********** CONTENIDO PRINCIPAL ********** -->
     <main class="foro-publico-main">
         <div class="container">
             <div class="vista-header">
                 <h2 class="section-title">Foro de la Comunidad</h2>
             </div>
 
-            <!-- FILTROS -->
+            <!-- Filtros — el select de provincias se rellena desde api/foro_publico.php -->
             <div class="foro-filtros">
                 <button class="btn-filtro activo" data-especie="0">Todos</button>
                 <button class="btn-filtro" data-especie="1">🐶 Perros</button>
@@ -74,11 +81,13 @@
                 <button class="btn-orden activo-orden" data-orden="likes">Más valorados</button>
             </div>
 
+            <!-- Las publicaciones se generan aquí por JS -->
             <div id="lista-publicaciones-publico"></div>
         </div>
     </main>
 
-    <!-- TEMPLATE -->
+    <!-- ********** TEMPLATE PUBLICACIÓN ********** -->
+    <!-- El JS lo clona con cloneNode para cada publicación -->
     <template id="template-pub-publico">
         <div class="publicacion-card">
             <div class="publicacion-header">
@@ -95,12 +104,13 @@
             <p class="publicacion-contenido"></p>
             <div class="publicacion-footer">
                 <span class="publicacion-ubicacion"></span>
+                <!-- Los usuarios no autenticados ven los likes pero no pueden darlos -->
                 <span class="pub-likes">❤️ <span class="like-count"></span></span>
             </div>
         </div>
     </template>
 
-    <!-- FOOTER -->
+    <!-- ********** FOOTER ********** -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -115,25 +125,28 @@
                     <div class="social-links">
                         <a href="#" aria-label="Facebook">f</a>
                         <a href="#" aria-label="Equis">𝕏</a>
-                        <a href="#" aria-label="Instagram"><img src="assets/img/ui/instagram.png" alt="instagram"></a>
+                        <a href="#" aria-label="Instagram">
+                            <img src="assets/img/ui/instagram.png" alt="instagram">
+                        </a>
                     </div>
                 </div>
                 <div class="footer-col">
                     <h6>Contacto</h6>
                     <ul class="footer-links">
                         <li><span class="footer-icon-small">✉</span> info@meteopet.com</li>
-                        <li><span class="footer-icon-small">📍</span> Zafra, Badajoz</li>
+                        <li><span class="footer-icon-small">📍</span> Hornachos, Badajoz</li>
                     </ul>
                 </div>
             </div>
             <hr class="footer-divider">
             <div class="footer-bottom">
-                <p>© 2026 MeteoPet. Hecho con <span class="heart">❤️</span> para tus mascotas.</p>
+                <p>© 2026 MeteoPet. Hecho con <span class="heart">❤️</span> para tus peludos.</p>
             </div>
         </div>
     </footer>
 
-    <!-- MODAL LOGIN -->
+    <!-- ********** MODAL LOGIN ********** -->
+    <!-- El formulario se envía directamente a PHP — sin fetch -->
     <div id="modal-login" class="modal-overlay">
         <div class="modal-login-contenido">
             <button id="modal-login-cerrar" class="modal-cerrar">&times;</button>
@@ -147,6 +160,7 @@
             <div class="modal-login-right">
                 <h1>Iniciar Sesión</h1>
                 <p class="modal-subtitulo">Accede a tu cuenta de MeteoPet</p>
+                <!-- Mensaje de error — visible solo si la URL tiene ?error=1 -->
                 <div id="modal-error" class="modal-error-msg" style="display:none;">
                     Email o contraseña incorrectos.
                 </div>

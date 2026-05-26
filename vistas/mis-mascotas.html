@@ -5,11 +5,13 @@
         <button class="btn-añadir" id="btn-añadir-mascota">+ Añadir mascota</button>
     </div>
 
+    <!-- Las tarjetas de mascotas se generan aquí por JS desde api/mascotas.php -->
     <div id="galeria-mascotas"></div>
 
 </div>
 
-<!-- MODAL MASCOTA -->
+<!-- ********** MODAL FICHA MASCOTA ********** -->
+<!-- Se abre al pulsar una tarjeta de la galería -->
 <div id="modal-mascota" class="modal-overlay">
     <div class="modal-mascota-contenido">
         <img id="modal-mascota-foto" src="" alt="" class="modal-mascota-img">
@@ -25,6 +27,7 @@
                 <button class="btn-cerrar-modal" id="modal-mascota-cerrar2" title="Cerrar">✕</button>
             </div>
 
+            <!-- El consejo se carga desde api/consejos.php al pulsar el botón -->
             <div class="modal-consejo-section">
                 <button class="btn-consejo" id="btn-ver-consejo">🐾 Ver consejo</button>
                 <div id="modal-consejo-resultado" class="modal-consejo-resultado oculto"></div>
@@ -33,20 +36,18 @@
     </div>
 </div>
 
-<!-- MODAL ANADIR MASCOTA -->
+<!-- ********** MODAL AÑADIR MASCOTA ********** -->
 <div id="modal-anadir" class="modal-overlay">
     <div class="modal-form-contenido">
         <div class="modal-form-header">
             <h2>Nueva Mascota</h2>
             <button id="modal-anadir-cerrar" class="modal-cerrar">&times;</button>
         </div>
-
         <div class="modal-form-body">
             <div class="form-group">
                 <label for="input-nombre">Nombre</label>
                 <input type="text" id="input-nombre" placeholder="Nombre de tu mascota" required>
             </div>
-
             <div class="form-group">
                 <label for="input-especie">Especie</label>
                 <select id="input-especie">
@@ -54,17 +55,14 @@
                     <option value="2">Gato</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label for="input-raza">Raza</label>
                 <input type="text" id="input-raza" placeholder="Raza (opcional)">
             </div>
-
             <div class="form-group">
                 <label for="input-edad">Edad (años)</label>
                 <input type="number" id="input-edad" min="0" max="30" placeholder="Edad">
             </div>
-
             <div class="form-group">
                 <label for="input-sexo">Sexo</label>
                 <select id="input-sexo">
@@ -72,36 +70,32 @@
                     <option value="hembra">Hembra</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label for="input-foto">Foto</label>
                 <input type="file" id="input-foto" accept="image/*">
+                <!-- La previsualización de la foto se inserta aquí por JS -->
                 <div id="preview-foto" class="preview-foto"></div>
             </div>
-
             <div id="form-mascota-mensaje"></div>
-
             <button id="btn-guardar-mascota" class="btn-guardar">Guardar mascota</button>
         </div>
     </div>
 </div>
 
-<!-- MODAL EDITAR MASCOTA -->
+<!-- ********** MODAL EDITAR MASCOTA ********** -->
+<!-- El id de la mascota se guarda en el campo oculto para enviarlo con PUT -->
 <div id="modal-editar" class="modal-overlay">
     <div class="modal-form-contenido">
         <div class="modal-form-header">
             <h2>Editar Mascota</h2>
             <button id="modal-editar-cerrar" class="modal-cerrar">&times;</button>
         </div>
-
         <div class="modal-form-body">
             <input type="hidden" id="edit-id-mascota">
-
             <div class="form-group">
                 <label for="edit-nombre">Nombre</label>
                 <input type="text" id="edit-nombre" required>
             </div>
-
             <div class="form-group">
                 <label for="edit-especie">Especie</label>
                 <select id="edit-especie">
@@ -109,17 +103,14 @@
                     <option value="2">Gato</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label for="edit-raza">Raza</label>
                 <input type="text" id="edit-raza" placeholder="Raza (opcional)">
             </div>
-
             <div class="form-group">
                 <label for="edit-edad">Edad (años)</label>
                 <input type="number" id="edit-edad" min="0" max="30">
             </div>
-
             <div class="form-group">
                 <label for="edit-sexo">Sexo</label>
                 <select id="edit-sexo">
@@ -127,15 +118,13 @@
                     <option value="hembra">Hembra</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label for="edit-foto">Nueva foto (opcional)</label>
                 <input type="file" id="edit-foto" accept="image/*">
+                <!-- La previsualización de la foto nueva se inserta aquí por JS -->
                 <div id="edit-preview-foto" class="preview-foto"></div>
             </div>
-
             <div id="edit-mascota-mensaje"></div>
-
             <button id="btn-actualizar-mascota" class="btn-guardar">Guardar cambios</button>
         </div>
     </div>

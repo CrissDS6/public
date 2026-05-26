@@ -1,4 +1,5 @@
 <?php
+// Comprobamos que el usuario ha iniciado sesión — si no, lo mandamos al inicio
 session_start();
 
 if (!isset($_SESSION["usuario_id"])) {
@@ -8,8 +9,6 @@ if (!isset($_SESSION["usuario_id"])) {
 
 $nombreUsuario = $_SESSION["usuario_nombre"];
 ?>
-
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -18,11 +17,10 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Dashboard - MeteoPet</title>
 
-
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <!-- Estilos: shell del dashboard + una hoja por cada vista -->
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/vistas/inicio.css">
     <link rel="stylesheet" href="assets/css/vistas/mascotas.css">
@@ -31,7 +29,9 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
     <link rel="stylesheet" href="assets/css/vistas/foro.css">
     <link rel="stylesheet" href="assets/css/vistas/perfil.css">
     <link rel="stylesheet" href="assets/css/vistas/admin.css">
-    <!-- Script  -->
+
+    <!-- Scripts: dashboard primero (define cargarVista y las constantes del tiempo) -->
+    <!-- Los JS de vistas se cargan después porque usan funciones del dashboard -->
     <script defer src="assets/js/dashboard.js"></script>
     <script defer src="assets/js/vistas/inicio.js"></script>
     <script defer src="assets/js/vistas/mascotas.js"></script>
@@ -43,9 +43,11 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
 </head>
 
 <body>
-    <!-- HEADER/NAVBAR -->
+
+    <!-- ********** NAVBAR ********** -->
     <nav class="navbar">
         <div class="container">
+            <!-- El logo lleva al dashboard, no a index.html -->
             <a class="navbar-brand" href="dashboard.php">
                 <div class="logo-icon">
                     <img src="assets/img/ui/logo.png" alt="logo_meteopet">
@@ -61,6 +63,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
             </button>
             <div class="navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                    <!-- Los enlaces no navegan a otra página: el JS carga la vista en #contenido-principal -->
                     <li class="nav-item">
                         <a class="nav-link" data-vista="inicio" href="#">Inicio</a>
                     </li>
@@ -76,16 +79,20 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
                     <li class="nav-item">
                         <a class="nav-link" data-vista="foro" href="#">Foro</a>
                     </li>
+
+                    <!-- Dropdown del perfil — el nombre y avatar se cargan desde PHP y JS -->
                     <li class="nav-item nav-item-perfil">
                         <button class="nav-link nav-dropdown-btn" id="btn-perfil">
                             <img id="nav-avatar" src="assets/img/avatares/avatar_default.png" alt="avatar"
                                 class="nav-avatar-img">
                             <?php
+                            // Mostramos solo el primer nombre del usuario
                             $primerNombre = explode(' ', $nombreUsuario)[0];
                             echo htmlspecialchars($primerNombre);
                             ?> ▼
                         </button>
                         <div class="nav-dropdown" id="dropdown-perfil">
+                            <!-- El enlace de admin solo aparece si el usuario es administrador -->
                             <?php if ($_SESSION['usuario_rol'] == 'administrador'): ?>
                             <a href="#" data-vista="admin" class="dropdown-item">
                                 <img src="assets/img/ui/rueda.png" alt="admin" class="dropdown-icon">
@@ -107,54 +114,57 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </nav>
 
-    <!-- DASHBOARD CONTENT -->
+    <!-- ********** CONTENIDO PRINCIPAL ********** -->
+    <!-- Las vistas parciales se cargan aquí por JS con fetch() e innerHTML -->
     <main id="contenido-principal"></main>
 
-    <!-- FOOTER -->
+    <!-- ********** FOOTER ********** -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <!-- Columna 1: Información de MeteoPet -->
                 <div class="footer-col">
                     <div class="footer-brand">
                         <img src="assets/img/ui/titulo_logoGris.png" alt="Meteopet" class="footer-title">
                     </div>
-                    <p class="text-light-gray">
-                        Cuidando de tus mascotas inteligentemente.
-                    </p>
+                    <p class="text-light-gray">Cuidando de tus mascotas inteligentemente.</p>
                 </div>
 
-                <!-- Columna 2: Redes Sociales -->
                 <div class="footer-col footer-col-center">
                     <h6>Síguenos</h6>
                     <div class="social-links">
                         <a href="#" aria-label="Facebook">f</a>
                         <a href="#" aria-label="Equis">𝕏</a>
-                        <a href="#" aria-label="Instagram"><img src="assets/img/ui/instagram.png"
-                                alt="logo instagram"></a>
+                        <a href="#" aria-label="Instagram">
+                            <img src="assets/img/ui/instagram.png" alt="logo instagram">
+                        </a>
                     </div>
                 </div>
 
-                <!-- Columna 3: Contacto -->
                 <div class="footer-col">
                     <h6>Contacto</h6>
                     <ul class="footer-links">
                         <li><span class="footer-icon-small">✉</span> info@meteopet.com</li>
-                        <li><span class="footer-icon-small">📍</span> Zafra, Badajoz</li>
-                        <li><a href="#contacto"><span class="footer-icon-small">📝</span> Formulario de contacto</a>
+                        <li><span class="footer-icon-small">📍</span> Hornachos, Badajoz</li>
+                        <li>
+                            <a href="#contacto">
+                                <span class="footer-icon-small">📝</span> Formulario de contacto
+                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
             <hr class="footer-divider">
-
             <div class="footer-bottom">
-                <p>© 2026 MeteoPet. Hecho con <span class="heart">❤️</span> para tus mascotas.</p>
+                <p>© 2026 MeteoPet. Hecho con <span class="heart">❤️</span> para tus peludos.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Templates globales -->
+    <!-- ********** TEMPLATES GLOBALES ********** -->
+    <!-- Estos templates están aquí porque las vistas se cargan con innerHTML
+        y los elementos dentro de un innerHTML no pueden contener templates.-->
+
+    <!-- Template: tarjeta de ciudad favorita -->
     <template id="template-ciudad">
         <div class="ciudad-card">
             <div class="ciudad-info">
@@ -165,6 +175,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </template>
 
+    <!-- Template: resultado de búsqueda de ciudad -->
     <template id="template-resultado">
         <div class="resultado-item">
             <div>
@@ -175,6 +186,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </template>
 
+    <!-- Template: tarjeta de mascota en la galería -->
     <template id="template-mascota">
         <div class="mascota-card">
             <div class="mascota-foto-placeholder"></div>
@@ -183,6 +195,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </template>
 
+    <!-- Template: publicación del foro -->
     <template id="template-publicacion">
         <div class="publicacion-card">
             <div class="publicacion-header">
@@ -204,6 +217,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </template>
 
+    <!-- Template: tarjeta de consejo por mascota -->
     <template id="template-consejo">
         <div class="consejo-card">
             <div class="consejo-card-header">
@@ -216,6 +230,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </template>
 
+    <!-- Template: publicación del foro pendiente de moderar (admin) -->
     <template id="template-pendiente">
         <div class="admin-card">
             <div class="admin-card-header">
@@ -235,6 +250,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </template>
 
+    <!-- Template: mensaje de contacto (admin) -->
     <template id="template-mensaje">
         <div class="admin-card">
             <div class="admin-card-header">
@@ -257,47 +273,7 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </template>
 
-    <template id="template-pendiente">
-        <div class="admin-card">
-            <div class="admin-card-header">
-                <div class="admin-card-info">
-                    <span class="admin-card-autor"></span>
-                    <span class="admin-card-fecha"></span>
-                    <span class="admin-card-especie"></span>
-                    <span class="admin-card-ubicacion"></span>
-                </div>
-                <div class="admin-card-acciones">
-                    <button class="btn-aprobar">✅ Aprobar</button>
-                    <button class="btn-rechazar">❌ Rechazar</button>
-                </div>
-            </div>
-            <h3 class="admin-card-titulo"></h3>
-            <p class="admin-card-contenido"></p>
-        </div>
-    </template>
-
-    <template id="template-mensaje">
-        <div class="admin-card">
-            <div class="admin-card-header">
-                <div class="admin-card-info">
-                    <span class="admin-card-autor"></span>
-                    <span class="admin-card-email"></span>
-                    <span class="admin-card-tipo-badge"></span>
-                    <span class="admin-card-fecha"></span>
-                </div>
-                <div class="admin-card-acciones">
-                    <select class="select-estado">
-                        <option value="pendiente">Pendiente</option>
-                        <option value="en_proceso">En proceso</option>
-                        <option value="resuelto">Resuelto</option>
-                    </select>
-                </div>
-            </div>
-            <h3 class="admin-card-titulo"></h3>
-            <p class="admin-card-contenido"></p>
-        </div>
-    </template>
-
+    <!-- Template: tarjeta de usuario (admin) -->
     <template id="template-usuario-admin">
         <div class="admin-card">
             <div class="admin-card-header">
@@ -319,7 +295,8 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         </div>
     </template>
 
-    <!-- FILTROS MENSAJES -->
+    <!-- ********** FILTROS MENSAJES ADMIN ********** -->
+    <!-- Vive fuera del tab para poder moverlo con JS según la pestaña activa -->
     <div id="filtros-mensajes" style="display:none" class="admin-filtros">
         <button class="btn-filtro-msg activo" data-estado="">Todos</button>
         <button class="btn-filtro-msg" data-estado="pendiente">🔴 Pendiente</button>
@@ -327,7 +304,8 @@ $nombreUsuario = $_SESSION["usuario_nombre"];
         <button class="btn-filtro-msg" data-estado="resuelto">🟢 Resuelto</button>
     </div>
 
-    <!-- MODAL CONTACTO DASHBOARD -->
+    <!-- ********** MODAL CONTACTO DASHBOARD ********** -->
+    <!-- El envío se gestiona por fetch en dashboard.js → api/contacto.php -->
     <div id="modal-contacto-dash" class="modal-overlay">
         <div class="modal-contacto-contenido">
             <button id="modal-contacto-dash-cerrar" class="modal-cerrar">&times;</button>

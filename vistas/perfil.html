@@ -4,7 +4,8 @@
         <h2 class="vista-titulo">Mi Perfil</h2>
     </div>
 
-    <!-- AVATAR -->
+    <!-- ********** AVATAR ********** -->
+    <!-- Los avatares disponibles se cargan desde api/avatares.php -->
     <div class="perfil-card">
         <h3 class="perfil-seccion-titulo">Mi avatar</h3>
         <div class="perfil-avatar-section">
@@ -15,7 +16,8 @@
         <div id="msg-avatar"></div>
     </div>
 
-    <!-- DATOS PERSONALES -->
+    <!-- ********** DATOS PERSONALES ********** -->
+    <!-- El email está deshabilitado — no se puede cambiar -->
     <div class="perfil-card">
         <h3 class="perfil-seccion-titulo">Datos personales</h3>
         <div class="form-group">
@@ -30,7 +32,8 @@
         <div id="msg-datos"></div>
     </div>
 
-    <!-- CAMBIAR CONTRASEÑA -->
+    <!-- ********** CAMBIAR CONTRASEÑA ********** -->
+    <!-- El ojo de cada campo se gestiona en perfil.js con btn-toggle-pass -->
     <div class="perfil-card">
         <h3 class="perfil-seccion-titulo">Cambiar contraseña</h3>
         <div class="form-group">
@@ -61,7 +64,8 @@
         <div id="msg-password"></div>
     </div>
 
-    <!-- ELIMINAR CUENTA -->
+    <!-- ********** ELIMINAR CUENTA ********** -->
+    <!-- Pide doble confirmación antes de borrar — ver perfil.js -->
     <div class="perfil-card perfil-card-peligro">
         <h3 class="perfil-seccion-titulo">¿Nos abandonas?</h3>
         <p style="font-size:0.9rem;color:var(--dark-gray)">Si eliminas tu cuenta se borrarán todos tus datos, mascotas,

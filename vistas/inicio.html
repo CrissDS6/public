@@ -1,6 +1,7 @@
 <div id="inicio-container">
 
-    <!-- SALUDO -->
+    <!-- ********** SALUDO ********** -->
+    <!-- El nombre y el avatar se rellenan desde api/sesion.php en inicio.js -->
     <div class="inicio-saludo">
         <img src="assets/img/avatares/avatar1.png" alt="avatar" class="saludo-avatar">
         <div class="saludo-texto">
@@ -10,7 +11,8 @@
         </div>
     </div>
 
-    <!-- CLIMA ACTUAL -->
+    <!-- ********** CLIMA ACTUAL ********** -->
+    <!-- Los datos se cargan desde la API del tiempo en inicio.js -->
     <div class="inicio-clima-card">
         <div class="clima-ciudad">
             <span class="clima-pin"></span>
@@ -23,7 +25,8 @@
         </div>
     </div>
 
-    <!-- ACCESOS RÁPIDOS -->
+    <!-- ********** ACCESOS RÁPIDOS ********** -->
+    <!-- Cada tarjeta tiene data-vista — el JS carga la vista correspondiente al hacer click -->
     <div class="inicio-accesos">
         <h2 class="accesos-titulo">¿Qué quieres hacer hoy?</h2>
         <div class="accesos-grid">

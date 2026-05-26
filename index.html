@@ -9,16 +9,16 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <!-- Estilos -->
     <link rel="stylesheet" href="assets/css/styles.css">
 
-    <!-- Script -->
+    <!-- Script principal de la landing -->
     <script defer src="assets/js/index.js"></script>
-
 </head>
 
 <body>
-    <!-- HEADER/NAVBAR -->
+
+    <!-- ********* NAVBAR ********* -->
     <nav class="navbar">
         <div class="container">
             <a class="navbar-brand" href="#inicio">
@@ -53,7 +53,7 @@
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
+    <!-- ********* HERO ********* -->
     <section class="hero" id="inicio">
         <div class="container">
             <div class="hero-content">
@@ -79,7 +79,7 @@
         </div>
     </section>
 
-    <!--  EN METEOPET ENCONTRARÁS... -->
+    <!-- ********* EN METEOPET ENCONTRARÁS ********* -->
     <section class="section-features">
         <div class="container">
             <div class="section-header">
@@ -107,7 +107,7 @@
                     <p class="text-muted">Foro para intercambiar consejos para tu peludo.</p>
                 </div>
 
-                <!-- Tarjeta con información de la API del tiempo  -->
+                <!-- Tarjeta del tiempo — se rellena por JS con la API de OpenWeatherMap -->
                 <div class="platform-card platform-card-highlight">
                     <div class="weather-badge">
                         <span>TIEMPO ACTUAL</span>
@@ -131,7 +131,8 @@
         </div>
     </section>
 
-    <!-- CONVERSACIONES RECIENTES -->
+    <!-- ********* CONVERSACIONES RECIENTES ********* -->
+    <!-- Las tarjetas se generan por JS desde api/foro_publico.php -->
     <section class="section-forum" id="foro">
         <div class="container">
             <div class="section-header">
@@ -140,6 +141,7 @@
             </div>
 
             <div class="forum-grid" id="foro-landing"></div>
+
             <template id="template-foro-landing">
                 <div class="forum-card">
                     <div class="forum-avatar">
@@ -164,7 +166,7 @@
         </div>
     </section>
 
-    <!-- CREAR CUENTA SECTION -->
+    <!-- ********* CTA CREAR CUENTA ********* -->
     <section class="section-cta">
         <div class="container">
             <div class="cta-box">
@@ -175,7 +177,7 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- ********* FOOTER ********* -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -183,9 +185,7 @@
                     <div class="footer-brand">
                         <img src="assets/img/ui/titulo_logoGris.png" alt="Meteopet" class="footer-title">
                     </div>
-                    <p class="text-light-gray">
-                        Cuidando de tus mascotas inteligentemente.
-                    </p>
+                    <p class="text-light-gray">Cuidando de tus mascotas inteligentemente.</p>
                 </div>
 
                 <div class="footer-col footer-col-center">
@@ -193,8 +193,9 @@
                     <div class="social-links">
                         <a href="#" aria-label="Facebook">f</a>
                         <a href="#" aria-label="Equis">𝕏</a>
-                        <a href="#" aria-label="Instagram"><img src="assets/img/ui/instagram.png"
-                                alt="logo instagram"></a>
+                        <a href="#" aria-label="Instagram">
+                            <img src="assets/img/ui/instagram.png" alt="logo instagram">
+                        </a>
                     </div>
                 </div>
 
@@ -218,7 +219,7 @@
         </div>
     </footer>
 
-    <!-- MODAL LOGIN -->
+    <!-- ********* MODAL LOGIN ********* -->
     <div id="modal-login" class="modal-overlay">
         <div class="modal-login-contenido">
             <button id="modal-login-cerrar" class="modal-cerrar">&times;</button>
@@ -235,10 +236,12 @@
                 <h1>Iniciar Sesión</h1>
                 <p class="modal-subtitulo">Accede a tu cuenta de MeteoPet</p>
 
+                <!-- Mensaje de error de login — visible solo si la URL tiene ?error=1 -->
                 <div id="modal-error" class="modal-error-msg" style="display:none;">
                     Email o contraseña incorrectos.
                 </div>
 
+                <!-- El formulario se envía a PHP directamente -->
                 <form method="POST" action="auth/login_process.php">
                     <div class="form-group">
                         <label for="email">Correo electrónico</label>
@@ -272,7 +275,8 @@
         </div>
     </div>
 
-    <!-- MODAL REGISTRO -->
+    <!-- ********* MODAL REGISTRO ********* -->
+    <!-- El registro se gestiona por fetch en index.js → api/registro.php -->
     <div id="modal-registro" class="modal-overlay">
         <div class="modal-registro-contenido">
             <button id="modal-registro-cerrar" class="modal-cerrar">&times;</button>
@@ -322,6 +326,7 @@
                         <label for="reg-provincia">Provincia</label>
                         <div class="input-wrapper">
                             <span class="input-icon">🗺️</span>
+                            <!-- Las opciones se cargan desde api/ciudades_catalogo.php -->
                             <select id="reg-provincia" required>
                                 <option value="">Selecciona una provincia...</option>
                             </select>
@@ -332,6 +337,7 @@
                         <label for="reg-ciudad">Ciudad principal</label>
                         <div class="input-wrapper">
                             <span class="input-icon">📍</span>
+                            <!-- Se activa al elegir provincia -->
                             <select id="reg-ciudad" required disabled>
                                 <option value="">Primero selecciona una provincia</option>
                             </select>
@@ -345,6 +351,7 @@
 
                 <div class="form-group">
                     <label>Elige tu avatar</label>
+                    <!-- Los avatares se cargan desde api/avatares.php -->
                     <div class="avatar-selector" id="avatar-selector"></div>
                     <input type="hidden" id="reg-avatar" value="avatar_default.png">
                 </div>
@@ -362,7 +369,8 @@
         </div>
     </div>
 
-    <!-- MODAL CONTACTO -->
+    <!-- ********* MODAL CONTACTO ********* -->
+    <!-- El envío se gestiona por fetch en index.js → api/contacto.php -->
     <div id="modal-contacto" class="modal-overlay">
         <div class="modal-contacto-contenido">
             <button id="modal-contacto-cerrar" class="modal-cerrar">&times;</button>

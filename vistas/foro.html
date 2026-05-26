@@ -1,67 +1,69 @@
-<div id="foro-container">
-    <div class="vista-header">
-        <h2 class="vista-titulo">Foro de la Comunidad</h2>
-        <button class="btn-añadir" id="btn-nueva-publicacion">+ Publicar</button>
-    </div>
+<div id="inicio-container">
 
-    <!-- FILTROS -->
-    <div class="foro-filtros">
-        <button class="btn-filtro activo" data-especie="0">Todos</button>
-        <button class="btn-filtro" data-especie="1">🐶 Perros</button>
-        <button class="btn-filtro" data-especie="2">🐱 Gatos</button>
-        <button class="btn-orden" data-orden="fecha">Más recientes</button>
-        <button class="btn-orden activo-orden" data-orden="likes">Más valorados</button>
-        <select id="filtro-provincia" class="select-provincia">
-            <option value="">Todas las provincias</option>
-        </select>
-    </div>
-
-    <!-- LISTA DE PUBLICACIONES -->
-    <div id="lista-publicaciones"></div>
-</div>
-
-<!-- MODAL NUEVA PUBLICACION -->
-<div id="modal-publicacion" class="modal-overlay">
-    <div class="modal-form-contenido">
-        <div class="modal-form-header">
-            <h2>Nuevo Aviso</h2>
-            <button id="modal-publicacion-cerrar" class="modal-cerrar">&times;</button>
-        </div>
-        <div class="modal-form-body">
-            <div class="form-group">
-                <label for="pub-titulo">Título</label>
-                <input type="text" id="pub-titulo" placeholder="Título del aviso" required>
-            </div>
-
-            <div class="form-group">
-                <label for="pub-especie">Especie</label>
-                <select id="pub-especie">
-                    <option value="1">🐶 Perro</option>
-                    <option value="2">🐱 Gato</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="pub-provincia">Provincia</label>
-                <select id="pub-provincia">
-                    <option value="">Selecciona una provincia...</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="pub-ciudad">Ciudad</label>
-                <select id="pub-ciudad" disabled>
-                    <option value="">Primero selecciona una provincia</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="pub-contenido">Contenido</label>
-                <textarea id="pub-contenido" rows="4" placeholder="Describe el aviso..."></textarea>
-            </div>
-
-            <div id="pub-mensaje"></div>
-            <button id="btn-enviar-publicacion" class="btn-guardar">Enviar aviso</button>
+    <!-- ********** SALUDO ********** -->
+    <!-- El nombre y el avatar se rellenan desde api/sesion.php en inicio.js -->
+    <div class="inicio-saludo">
+        <img src="assets/img/avatares/avatar1.png" alt="avatar" class="saludo-avatar">
+        <div class="saludo-texto">
+            <h1>¡Hola, <span class="saludo-nombre"></span>! <img src="assets/img/ui/huellas.png" alt="huellas"
+                    style="width:40px;height:40px;object-fit:contain;vertical-align:middle;"></h1>
+            <p>Aquí tienes un resumen de hoy para ti y tus peludos</p>
         </div>
     </div>
+
+    <!-- ********** CLIMA ACTUAL ********** -->
+    <!-- Los datos se cargan desde la API del tiempo en inicio.js -->
+    <div class="inicio-clima-card">
+        <div class="clima-ciudad">
+            <span class="clima-pin"></span>
+            <span id="inicio-ciudad"></span>
+        </div>
+        <div class="clima-datos">
+            <div class="clima-temp" id="inicio-temp"></div>
+            <div class="clima-icono" id="inicio-icono"></div>
+            <div class="clima-desc" id="inicio-desc"></div>
+        </div>
+    </div>
+
+    <!-- ********** ACCESOS RÁPIDOS ********** -->
+    <!-- Cada tarjeta tiene data-vista — el JS carga la vista correspondiente al hacer click -->
+    <div class="inicio-accesos">
+        <h2 class="accesos-titulo">¿Qué quieres hacer hoy?</h2>
+        <div class="accesos-grid">
+
+            <div class="acceso-card" data-vista="consejos">
+                <div class="acceso-icono">
+                    <img src="assets/img/ui/img_consejos.png" alt="Consejos">
+                </div>
+                <h3>Consejos</h3>
+                <p>Recomendaciones según el tiempo para tus mascotas</p>
+            </div>
+
+            <div class="acceso-card" data-vista="mis-mascotas">
+                <div class="acceso-icono">
+                    <img src="assets/img/ui/img_mis_mascotas.png" alt="Mis Mascotas">
+                </div>
+                <h3>Mis Mascotas</h3>
+                <p>Gestiona los perfiles de tus peludos</p>
+            </div>
+
+            <div class="acceso-card" data-vista="ciudades">
+                <div class="acceso-icono">
+                    <img src="assets/img/ui/img_ciudades_favoritas.png" alt="Ciudades Favoritas">
+                </div>
+                <h3>Ciudades Favoritas</h3>
+                <p>Cambia tu ciudad principal o añade nuevas</p>
+            </div>
+
+            <div class="acceso-card" data-vista="foro">
+                <div class="acceso-icono">
+                    <img src="assets/img/ui/img_foro.png" alt="Foro">
+                </div>
+                <h3>Foro</h3>
+                <p>Lee y publica avisos de tu comunidad</p>
+            </div>
+
+        </div>
+    </div>
+
 </div>
