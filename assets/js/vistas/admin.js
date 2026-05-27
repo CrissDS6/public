@@ -368,10 +368,12 @@ async function initAdmin() {
                 tabMensajes.insertBefore(filtros, tabMensajes.firstChild);
                 cargarMensajes();
             } else if (tabActiva == 'ciudades') {
-                document.querySelector('#filtros-mensajes').style.display = 'none';
+                const filtrosMensajes = document.querySelector('#filtros-mensajes');
+                if (filtrosMensajes) filtrosMensajes.style.display = 'none';
                 cargarSugerenciasCiudad();
             } else if (tabActiva == 'usuarios') {
-                document.querySelector('#filtros-mensajes').style.display = 'none';
+                const filtrosMensajes = document.querySelector('#filtros-mensajes');
+                if (filtrosMensajes) filtrosMensajes.style.display = 'none';
                 cargarUsuariosAdmin();
             }
         });

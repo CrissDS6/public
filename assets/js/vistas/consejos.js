@@ -172,8 +172,8 @@ async function initConsejos() {
         const imgEl = document.createElement('img');
         imgEl.src = imgEspecie;
         imgEl.alt = consejo.nombre_especie;
-        imgEl.style.width = '40px';
-        imgEl.style.height = '40px';
+        imgEl.style.width = '60px';
+        imgEl.style.height = '60px';
         imgEl.style.objectFit = 'contain';
         iconoEl.appendChild(imgEl);
 
