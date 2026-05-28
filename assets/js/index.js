@@ -203,6 +203,12 @@ async function registrarUsuario() {
         return;
     }
 
+    if (!document.querySelector('#reg-terminos').checked) {
+        mensaje.textContent = 'Debes aceptar los términos y condiciones';
+        mensaje.className = 'error';
+        return;
+    }
+
     if (password !== password2) {
         mensaje.textContent = 'Las contraseñas no coinciden';
         mensaje.className = 'error';
@@ -513,4 +519,29 @@ document.querySelectorAll('.btn-toggle-pass').forEach(function (btn) {
             btn.textContent = '👁️';
         }
     });
+});
+
+///// Abre el modal de contacto al pulsar ¿Olvidaste tu contraseña? /////
+document.querySelector('#btn-recuperar-pass').addEventListener('click', function (e) {
+    e.preventDefault();
+    cerrarModalLogin();
+    document.querySelector('#contacto-tipo').value = 'problema';
+    abrirModalContacto();
+});
+
+///// Abre el modal de términos y condiciones /////
+document.querySelector('#btn-ver-terminos').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector('#modal-terminos').classList.add('visible');
+});
+
+///// Cierra el modal de términos y marca el checkbox como aceptado /////
+document.querySelector('#btn-aceptar-terminos').addEventListener('click', function () {
+    document.querySelector('#reg-terminos').checked = true;
+    document.querySelector('#modal-terminos').classList.remove('visible');
+});
+
+///// Cierra el modal de términos al pulsar la X /////
+document.querySelector('#modal-terminos-cerrar').addEventListener('click', function () {
+    document.querySelector('#modal-terminos').classList.remove('visible');
 });
