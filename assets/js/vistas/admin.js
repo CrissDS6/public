@@ -222,9 +222,11 @@ async function anadirCiudadAdmin() {
             return;
         }
 
+        //Extraemos coordenadas
         const latitud = datosTiempo.coord.lat;
         const longitud = datosTiempo.coord.lon;
 
+        //Una vez obtenidas las coordenadas, las envía al backend junto con el nombre y la provincia para guardarlas en la base de datos
         const response = await fetch('api/admin.php', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
