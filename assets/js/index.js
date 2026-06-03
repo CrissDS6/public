@@ -271,7 +271,7 @@ async function cargarForoLanding() {
     const contenedor = document.querySelector('#foro-landing');
     const template = document.querySelector('#template-foro-landing');
 
-    datos.forEach(function (pub) {
+    datos.slice(0, 3).forEach(function (pub) {
         const clon = template.content.cloneNode(true);
 
         clon.querySelector('.forum-avatar-img').src = 'assets/img/avatares/' + (pub.avatar || 'avatar_default.png');
