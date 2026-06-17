@@ -41,15 +41,16 @@ let consejosUsadosVista = {};
 ////////////////////////// FUNCIONES //////////////////////////
 
 ///// Convierte el código de la API del tiempo en un tipo de tiempo legible /////
-function convertirCodigoATipo(codigo, temp, humedad) {
-    if (codigo >= 200 && codigo < 300) return 'tormenta';
-    if (codigo >= 300 && codigo < 400) return 'llovizna';
-    if (codigo >= 400 && codigo < 600) return 'lluvia';
-    if (codigo >= 600 && codigo < 700) return 'nieve';
-    if (codigo == 731 || codigo == 751 || codigo == 761) return 'calima';
-    if (codigo >= 700 && codigo < 730) return 'niebla';
-    if (codigo >= 732 && codigo < 800) return 'niebla';
-    if (codigo == 771 || codigo == 781) return 'viento';
+function convertirCodigoATipo(codigo, temp, humedad, todosLosCodigos) {
+    const codigos = todosLosCodigos || [codigo];
+
+    if (codigos.some(c => c >= 200 && c < 300)) return 'tormenta';
+    if (codigos.some(c => c >= 600 && c < 700)) return 'nieve';
+    if (codigos.some(c => c == 771 || c == 781)) return 'viento';
+    if (codigos.some(c => c == 731 || c == 751 || c == 761)) return 'calima';
+    if (codigos.some(c => c >= 500 && c < 600)) return 'lluvia';
+    if (codigos.some(c => c >= 300 && c < 400)) return 'llovizna';
+    if (codigos.some(c => c >= 700 && c < 800)) return 'niebla';
     if (temp >= 28) return 'calor';
     if (temp <= 8) return 'frio';
     if (humedad >= 70) return 'humedad';
@@ -105,7 +106,8 @@ async function initConsejos() {
     const temp = Math.round(datosTiempo.main.temp);
     const humedad = datosTiempo.main.humidity;
     const descripcion = datosTiempo.weather[0].description;
-    const tipeTiempo = convertirCodigoATipo(codigo, temp, humedad);
+    const todosLosCodigos = datosTiempo.weather.map(w => w.id);
+    const tipeTiempo = convertirCodigoATipo(codigo, temp, humedad, todosLosCodigos);
 
     // Pintamos la tarjeta del clima
     document.querySelector('#consejos-ciudad').textContent = datosSession.ciudad;
